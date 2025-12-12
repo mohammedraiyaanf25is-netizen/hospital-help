@@ -1,376 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Hospital Help — CSS-only Language + Directions</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shree Care Hospital – QR Navigation</title>
+
 <style>
-  :root{
-    --blue:#0a69ff; --bg:#f4f7fb; --text:#1a2b3c; --muted:#556276;
-  }
-  *{box-sizing:border-box}
-  body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--bg);color:var(--text)}
-  .wrap{max-width:1100px;margin:22px auto;padding:18px}
-  header{background:var(--blue);color:#fff;padding:18px;border-radius:10px}
-  h1{margin:0 0 6px;font-size:1.4rem}
-  header p{margin:0;opacity:.95}
+:root{
+  --blue:#0a69ff;
+  --bg:#f4f7fb;
+  --text:#1a2b3c;
+  --muted:#556276;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.wrap{max-width:1100px;margin:20px auto;padding:16px}
+header{
+  background:linear-gradient(135deg,#0a69ff,#4f9cff);
+  color:#fff;
+  padding:20px;
+  border-radius:14px;
+}
+h1{margin:0;font-size:1.5rem}
+p{margin:6px 0}
 
-  /* LANGUAGE RADIOS (hidden) */
-  .lang-switch { display:flex; gap:10px; margin:12px 0; }
-  .lang-switch input { display:none; }
-  .lang-switch label {
-    padding:8px 12px; border-radius:8px; background:#e7efff; color:#052a63; cursor:pointer; font-weight:700;
-    border:2px solid transparent;
-  }
-  /* active style by checking radio */
-  #lang-en:checked ~ .wrap .lang-switch label[for="lang-en"],
-  #lang-hi:checked ~ .wrap .lang-switch label[for="lang-hi"],
-  #lang-kn:checked ~ .wrap .lang-switch label[for="lang-kn"],
-  #lang-ta:checked ~ .wrap .lang-switch label[for="lang-ta"],
-  #lang-te:checked ~ .wrap .lang-switch label[for="lang-te"] {
-    background:white; border-color:var(--blue); color:var(--blue);
-  }
+.lang-switch{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.lang-switch label{
+  background:#e7efff;
+  padding:8px 12px;
+  border-radius:8px;
+  font-weight:700;
+  cursor:pointer;
+}
+.lang{display:none}
+#en:checked ~ .wrap .show-en,
+#hi:checked ~ .wrap .show-hi,
+#kn:checked ~ .wrap .show-kn,
+#ta:checked ~ .wrap .show-ta,
+#te:checked ~ .wrap .show-te{display:inline}
 
-  /* Show/hide language spans based on radio state */
-  /* default hide all language spans */
-  .lang { display:none; }
-  #lang-en:checked ~ .wrap .show-en { display:inline; }
-  #lang-hi:checked ~ .wrap .show-hi { display:inline; }
-  #lang-kn:checked ~ .wrap .show-kn { display:inline; }
-  #lang-ta:checked ~ .wrap .show-ta { display:inline; }
-  #lang-te:checked ~ .wrap .show-te { display:inline; }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+  margin-top:18px;
+}
+.card{
+  background:#fff;
+  padding:16px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+  transition:.2s ease;
+}
+.card:hover{transform:translateY(-4px)}
+.card h2{margin:0 0 8px;color:var(--blue)}
+.muted{color:var(--muted)}
+.btn{
+  display:block;
+  margin-top:12px;
+  padding:12px;
+  text-align:center;
+  border-radius:10px;
+  background:var(--blue);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+.note{
+  margin-top:22px;
+  background:#fff;
+  padding:14px;
+  border-radius:12px;
+}
 
-  /* grid & cards */
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:16px}
-  .card{background:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-  .card h2{margin:0 0 8px;color:var(--blue);font-size:1.05rem}
-  .incharge{font-weight:700;margin-bottom:8px;color:#222}
-  .muted{color:var(--muted);margin-bottom:8px}
-  .btn{display:inline-block;padding:10px 12px;border-radius:8px;background:var(--blue);color:#fff;border:none;cursor:pointer;font-weight:700;text-align:center}
-  .small{font-size:0.9rem;padding:8px 10px}
-
-  /* CSS modal per card using checkbox hack */
-  .modal-toggle{display:none} /* hidden checkbox */
-  .modal-backdrop{
-    position:fixed; inset:0; display:none; background:rgba(0,0,0,.45); align-items:center; justify-content:center; padding:12px; z-index:999;
-  }
-  .modal-box{background:#fff; width:100%; max-width:560px; border-radius:10px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,.25)}
-  .modal-head{background:var(--blue); color:#fff; padding:12px 14px; font-weight:700}
-  .modal-body{padding:14px; color:var(--text); white-space:pre-line}
-  .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:12px; background:#f6f8fb}
-  .close-label{background:#e9edf5;color:#122; padding:8px 12px;border-radius:8px; cursor:pointer; font-weight:700}
-
-  /* When the modal checkbox is checked, show the modal backdrop sibling */
-  /* We'll place the checkbox directly before card and modal so this selector works:
-     .modal-toggle:checked + .card + .modal-backdrop { display:flex } */
-  .modal-toggle:checked + .card + .modal-backdrop { display:flex; }
-
-  /* small responsive */
-  @media (max-width:520px){
-    .lang-switch label{padding:7px 9px}
-  }
-
-  /* Patient login area */
-  .login-row{margin-top:18px; display:flex; gap:10px; align-items:center; background:#fff;padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-  .login-row input{padding:10px;border-radius:8px;border:1px solid #e0e7f2}
-  .note{font-size:0.88rem;color:var(--muted);margin-top:8px}
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.modal-box{
+  background:#fff;
+  padding:20px;
+  border-radius:14px;
+  max-width:440px;
+  width:92%;
+}
+.modal-box h3{margin-top:0;color:var(--blue)}
 </style>
 </head>
+
 <body>
 
-<!-- Language radios are placed outside wrap so CSS sibling rules can target .wrap -->
-<input type="radio" name="lang" id="lang-en" checked>
-<input type="radio" name="lang" id="lang-hi">
-<input type="radio" name="lang" id="lang-kn">
-<input type="radio" name="lang" id="lang-ta">
-<input type="radio" name="lang" id="lang-te">
+<!-- LANGUAGE RADIOS -->
+<input type="radio" name="lang" id="en" checked hidden>
+<input type="radio" name="lang" id="hi" hidden>
+<input type="radio" name="lang" id="kn" hidden>
+<input type="radio" name="lang" id="ta" hidden>
+<input type="radio" name="lang" id="te" hidden>
 
 <div class="wrap">
 
-  <!-- visible language buttons (labels toggle radios) -->
-  <div class="lang-switch" role="tablist" aria-label="Language switcher">
-    <label for="lang-en" id="btn-en">English</label>
-    <label for="lang-hi" id="btn-hi">हिंदी</label>
-    <label for="lang-kn" id="btn-kn">ಕನ್ನಡ</label>
-    <label for="lang-ta" id="btn-ta">தமிழ்</label>
-    <label for="lang-te" id="btn-te">తెలుగు</label>
+<!-- LANGUAGE SWITCH -->
+<div class="lang-switch">
+  <label for="en">English</label>
+  <label for="hi">हिंदी</label>
+  <label for="kn">ಕನ್ನಡ</label>
+  <label for="ta">தமிழ்</label>
+  <label for="te">తెలుగు</label>
+</div>
+
+<!-- HEADER -->
+<header>
+<h1>
+<span class="lang show-en">Shree Care Multispeciality Hospital</span>
+<span class="lang show-hi">श्री केयर मल्टीस्पेशालिटी हॉस्पिटल</span>
+<span class="lang show-kn">ಶ್ರೀ ಕೇರ್ ಮಲ್ಟಿಸ್ಪೆಷಾಲಿಟಿ ಆಸ್ಪತ್ರೆ</span>
+<span class="lang show-ta">ஸ்ரீ கேர் மல்டிஸ்பெஷாலிட்டி மருத்துவமனை</span>
+<span class="lang show-te">శ్రీ కేర్ మల్టీ స్పెషాలిటీ హాస్పిటల్</span>
+</h1>
+
+<p>
+<span class="lang show-en">Scan once and get clear directions inside the hospital.</span>
+<span class="lang show-hi">एक बार स्कैन करें और अस्पताल के अंदर रास्ता पाएं।</span>
+<span class="lang show-kn">ಒಮ್ಮೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ ಆಸ್ಪತ್ರೆಯೊಳಗಿನ ದಿಕ್ಕುಗಳನ್ನು ಪಡೆಯಿರಿ.</span>
+<span class="lang show-ta">ஒருமுறை ஸ்கேன் செய்து மருத்துவமனை வழிகளை அறியுங்கள்.</span>
+<span class="lang show-te">ఒకసారి స్కాన్ చేసి ఆసుపత్రి దిశలను తెలుసుకోండి.</span>
+</p>
+</header>
+
+<!-- DEPARTMENTS -->
+<div class="grid">
+
+<div class="card">
+<h2>🚑 Emergency</h2>
+<p class="muted">Ground Floor – East Wing</p>
+<div class="btn" onclick="openModal(
+'Emergency',
+'From main entrance → go straight → Ground Floor → East Wing → Emergency Department (24/7)'
+)">Open Directions</div>
+</div>
+
+<div class="card">
+<h2>🩺 OPD</h2>
+<p class="muted">First Floor – Rooms 101 to 110</p>
+<div class="btn" onclick="openModal(
+'OPD',
+'From reception → Take Lift A → First Floor → Turn right → OPD Rooms 101 to 110'
+)">Open Directions</div>
+</div>
+
+<div class="card">
+<h2>💊 Pharmacy</h2>
+<p class="muted">Ground Floor – Near Reception</p>
+<div class="btn" onclick="openModal(
+'Pharmacy',
+'From entrance → Walk straight → Pharmacy is beside the reception counter'
+)">Open Directions</div>
+</div>
+
+<div class="card">
+<h2>🧪 Laboratory</h2>
+<p class="muted">Second Floor – Room 210</p>
+<div class="btn" onclick="openModal(
+'Laboratory',
+'From reception → Take Lift C → Second Floor → Follow blue signs → Lab Room 210'
+)">Open Directions</div>
+</div>
+
+</div>
+
+<!-- DOCTOR CABINS -->
+<h2 style="margin-top:26px">👨‍⚕️ Doctor Cabins</h2>
+
+<div class="grid">
+
+<div class="card">
+<h2>Dr. A. Sharma (Cardiology)</h2>
+<p class="muted">Cabin 205 – Second Floor</p>
+<div class="btn" onclick="openModal(
+'Dr. A. Sharma',
+'From reception → Take Lift B → Second Floor → Cabin 205 (Cardiology)'
+)">Open Directions</div>
+</div>
+
+<div class="card">
+<h2>Dr. R. Khan (Orthopedics)</h2>
+<p class="muted">Cabin 112 – First Floor</p>
+<div class="btn" onclick="openModal(
+'Dr. R. Khan',
+'From entrance → Take Lift A → First Floor → Cabin 112 (Orthopedics)'
+)">Open Directions</div>
+</div>
+
+</div>
+
+<!-- NOTE -->
+<div class="note">
+📌 Scan the hospital QR code placed at the entrance to access this navigation system.
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h3 id="modalTitle"></h3>
+    <p id="modalText"></p>
+    <div class="btn" onclick="closeModal()">Close</div>
   </div>
+</div>
 
-  <header>
-    <h1>
-      <span class="lang show-en" data-lang="en">Hospital Help QR Code Corner</span>
-      <span class="lang show-hi" data-lang="hi">हॉस्पिटल हेल्प QR कोड कॉर्नर</span>
-      <span class="lang show-kn" data-lang="kn">ಹಾಸ್ಪಿಟಲ್ ಸಹಾಯ QR ಕೋಡ್ ಕಾರ್ನರ್</span>
-      <span class="lang show-ta" data-lang="ta">மருத்துவமனை உதவி QR குறியீட்டு பகுதி</span>
-      <span class="lang show-te" data-lang="te">ఆసుపత్రి సహాయం QR కోడ్ కార్నర్</span>
-    </h1>
-    <p>
-      <span class="lang show-en">Scan once. Get directions, doctor info, and multilingual support instantly.</span>
-      <span class="lang show-hi">एक बार स्कैन करें। दिशा-निर्देश, डॉक्टर की जानकारी और बहुभाषी सहायता तुरंत पाएं।</span>
-      <span class="lang show-kn">ಒಮ್ಮೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ. ದಿಕ್ಕುಗಳು, ವೈದ್ಯರ ಮಾಹಿತಿ ಮತ್ತು ಬಹುಭಾಷಾ ಬೆಂಬಲವನ್ನು ತಕ್ಷಣ ಪಡೆಯಿರಿ.</span>
-      <span class="lang show-ta">ஒருமுறை ஸ்கேன் செய்யுங்கள். வழிமுறைகள், மருத்துவர் தகவல் மற்றும் பல்மொழி ஆதரவை உடனே பெறுங்கள்.</span>
-      <span class="lang show-te">ఒకసారి స్కాన్ చేయండి. దిశలు, వైద్య సమాచారం మరియు బహుభాషా మద్దతు వెంటనే పొందండి.</span>
-    </p>
-  </header>
+<script>
+function openModal(title,text){
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalText").innerText = text;
+  document.getElementById("modal").style.display = "flex";
+}
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+</script>
 
-  <!-- MAIN GRID: each card is preceded by a hidden checkbox (modal toggle) -->
-  <div class="grid">
-
-    <!-- Emergency wrapper: checkbox toggles modal for this card -->
-    <input type="checkbox" id="modal-emergency" class="modal-toggle">
-    <div class="card" aria-labelledby="em-title">
-      <h2 id="em-title">🚑 <span class="lang show-en">Emergency</span><span class="lang show-hi">आपातकाल</span><span class="lang show-kn">ತುರ್ತು</span><span class="lang show-ta">அவசரம்</span><span class="lang show-te">ఎమర్జెన్సీ</span></h2>
-      <div class="incharge">
-        <span class="lang show-en">Incharge: Dr. Kavya S</span>
-        <span class="lang show-hi">प्रभारी: डॉ. कविता एस</span>
-        <span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಕಾವ್ಯಾ ಎಸ್</span>
-        <span class="lang show-ta">பிரதிநிதி: டாக்டர் கவ்யா எஸ்</span>
-        <span class="lang show-te">ఇంచార్జి: డా. కావ్యా S</span>
-      </div>
-      <div class="muted">
-        <span class="lang show-en">Ground Floor, East Wing</span>
-        <span class="lang show-hi">भूतल, पूर्व विंग</span>
-        <span class="lang show-kn">ನೆಲಮಹಡಿ, ಪೂರ್ವ ವಿಭಾಗ</span>
-        <span class="lang show-ta">தரையடி, கிழக்கு பிரிவு</span>
-        <span class="lang show-te">భూమి అంతస్తు, తూర్పు విభాగం</span>
-      </div>
-      <!-- label opens modal by toggling checkbox -->
-      <label for="modal-emergency" class="btn" role="button"
-        aria-haspopup="dialog"
-        data-title="Emergency">
-        <span class="lang show-en">Open Directions</span>
-        <span class="lang show-hi">दिशा खोलें</span>
-        <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
-        <span class="lang show-ta">வழிகாட்டியை திற</span>
-        <span class="lang show-te">దిశలను తెరవండి</span>
-      </label>
-    </div>
-    <!-- modal anchored after card -->
-    <div class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-emergency-title">
-      <div class="modal-box">
-        <div class="modal-head" id="modal-emergency-title">
-          <span class="lang show-en">Emergency Directions</span>
-          <span class="lang show-hi">आपातकाल दिशाएँ</span>
-          <span class="lang show-kn">ತುರ್ತು ಮಾರ್ಗներ</span>
-          <span class="lang show-ta">அவசர வழிமுறைகள்</span>
-          <span class="lang show-te">ఎమర్జెన్సీ దిశలు</span>
-        </div>
-        <div class="modal-body">
-          <div class="lang show-en">From entrance → follow red floor arrows → East Wing → Emergency Gate (24/7).</div>
-          <div class="lang show-hi">प्रवेश से → लाल फर्श के तीरों का पालन करें → पूर्व विंग → आपातकालीन कक्ष (24/7)।</div>
-          <div class="lang show-kn">ಪ್ರವೇಶದಿಂದ → ಕೆಂಪು ನೆಲದ ಬಾಣಗಳನ್ನು ಅನುಸರಿಸಿ → ಪೂರ್ವ ವಿಭಾಗ → ತುರ್ತು ವಿಭಾಗ (24/7).</div>
-          <div class="lang show-ta">நுழைவாயிலில் இருந்து → சிவப்பு தரை அம்புகளை பின்பற்றவும் → கிழக்கு பிரிவு → அவசர பிரிவு (24/7).</div>
-          <div class="lang show-te">ప్రవేశం నుండి → ఎరుపు నేల బాణాలను అనుసరించండి → తూర్పు విభాగం → ఎమర్జెన్సీ గేట్ (24/7).</div>
-        </div>
-        <div class="modal-actions">
-          <!-- label toggles checkbox off -->
-          <label for="modal-emergency" class="close-label">
-            <span class="lang show-en">Close</span>
-            <span class="lang show-hi">बंद करें</span>
-            <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-            <span class="lang show-ta">மூடு</span>
-            <span class="lang show-te">మూసివేయి</span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- OPD -->
-    <input type="checkbox" id="modal-opd" class="modal-toggle">
-    <div class="card">
-      <h2>🩺 <span class="lang show-en">OPD</span><span class="lang show-hi">OPD</span><span class="lang show-kn">OPD</span><span class="lang show-ta">OPD</span><span class="lang show-te">OPD</span></h2>
-      <div class="incharge">
-        <span class="lang show-en">Incharge: Dr. Manjunath R</span>
-        <span class="lang show-hi">प्रभारी: डॉ. मंजुनाथ आर</span>
-        <span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಮಂಜುನಾಥ್ R</span>
-        <span class="lang show-ta">பிரதிநிதி: டாக்டர் மஞ்சுநாத் ஆர்</span>
-        <span class="lang show-te">ఇంచార్జి: డా. మంజునాత్ ఆర్</span>
-      </div>
-      <div class="muted">
-        <span class="lang show-en">First Floor, Rooms 101–110</span>
-        <span class="lang show-hi">पहली मंजिल, कक्ष 101–110</span>
-        <span class="lang show-kn">ಮೊದಲ ಮಹಡಿ, ಕೋಣೆಗಳು 101–110</span>
-        <span class="lang show-ta">முதல் மாடி, அறைகள் 101–110</span>
-        <span class="lang show-te">మొదటి అంతస్తు, గదులు 101–110</span>
-      </div>
-      <label for="modal-opd" class="btn">
-        <span class="lang show-en">Open Directions</span>
-        <span class="lang show-hi">दिशा खोलें</span>
-        <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
-        <span class="lang show-ta">வழிகாட்டியை திற</span>
-        <span class="lang show-te">దిశలను తెరవండి</span>
-      </label>
-    </div>
-    <div class="modal-backdrop">
-      <div class="modal-box">
-        <div class="modal-head">
-          <span class="lang show-en">OPD Directions</span>
-          <span class="lang show-hi">OPD दिशाएँ</span>
-          <span class="lang show-kn">OPD ಮಾರ್ಗ</span>
-          <span class="lang show-ta">OPD வழிமுறைகள்</span>
-          <span class="lang show-te">OPD దిశలు</span>
-        </div>
-        <div class="modal-body">
-          <div class="lang show-en">From reception → take Lift A → First Floor → turn right to OPD Rooms 101–110.</div>
-          <div class="lang show-hi">रिसेप्शन से → लिफ्ट A → पहली मंजिल → दाईं ओर OPD कक्ष 101–110।</div>
-          <div class="lang show-kn">ಸ್ವಾಗತದಿಂದ → ಲಿಫ್ಟ್ A → ಮೊದಲ ಮಹಡಿ → ಬಲಕ್ಕೆ ತಿರುಗಿ OPD ಕೋಣೆಗಳು 101–110.</div>
-          <div class="lang show-ta">வரவேற்பு → லிப்ட் A → முதல் மாடி → வலப்புறம் திரும்பி OPD அறைகள் 101–110.</div>
-          <div class="lang show-te">రిసెప్షన్ → లిఫ్ట్ A → మొదటి అంతస్తు → కుడివైపు OPD గదులు 101–110.</div>
-        </div>
-        <div class="modal-actions">
-          <label for="modal-opd" class="close-label">
-            <span class="lang show-en">Close</span>
-            <span class="lang show-hi">बंद करें</span>
-            <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-            <span class="lang show-ta">மூடு</span>
-            <span class="lang show-te">మూసివేయి</span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pharmacy -->
-    <input type="checkbox" id="modal-pharmacy" class="modal-toggle">
-    <div class="card">
-      <h2>💊 <span class="lang show-en">Pharmacy</span><span class="lang show-hi">फार्मेसी</span><span class="lang show-kn">ಫಾರ್ಮಸಿ</span><span class="lang show-ta">மருந்தகம்</span><span class="lang show-te">ఫార్మసీ</span></h2>
-      <div class="incharge">
-        <span class="lang show-en">Incharge: Mr. Prakash M</span>
-        <span class="lang show-hi">प्रभारी: श्री प्रकाश एम</span>
-        <span class="lang show-kn">ಪ್ರಭಾರಿ: ಶ್ರೀ ಪ್ರಕಾಶ್ M</span>
-        <span class="lang show-ta">பிரதிநிதி: திரு. பிரகாஷ் M</span>
-        <span class="lang show-te">ఇంచార్జి: శ్రీ ప్రకాష్ M</span>
-      </div>
-      <div class="muted">
-        <span class="lang show-en">Ground Floor, near Reception</span>
-        <span class="lang show-hi">भूतल, रिसेप्शन के पास</span>
-        <span class="lang show-kn">ನೆಲಮಹಡಿ, ಸ್ವಾಗತದ ಬಳಿಯಲ್ಲಿ</span>
-        <span class="lang show-ta">தరையடி, வரவேற்பு அருகில்</span>
-        <span class="lang show-te">భూమి అంతస్తు, స్వాగతం దగ్గర</span>
-      </div>
-      <label for="modal-pharmacy" class="btn">
-        <span class="lang show-en">Open Directions</span>
-        <span class="lang show-hi">दिशा खोलें</span>
-        <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
-        <span class="lang show-ta">வழிகாட்டியை திற</span>
-        <span class="lang show-te">దిశలను తెరవండి</span>
-      </label>
-    </div>
-    <div class="modal-backdrop">
-      <div class="modal-box">
-        <div class="modal-head">
-          <span class="lang show-en">Pharmacy Directions</span>
-          <span class="lang show-hi">फार्मेसी दिशाएँ</span>
-          <span class="lang show-kn">ಫಾರ್ಮಸಿ ಮಾರ್ಗ</span>
-          <span class="lang show-ta">மருந்தகம் வழிமுறைகள்</span>
-          <span class="lang show-te">ఫార్మసీ దిశలు</span>
-        </div>
-        <div class="modal-body">
-          <div class="lang show-en">From main entrance → walk straight to reception → Pharmacy is immediately left of reception.</div>
-          <div class="lang show-hi">मुख्य प्रवेश से → सीधे रिसेप्शन तक जाएं → फार्मेसी रिसेप्शन के बाईं ओर है।</div>
-          <div class="lang show-kn">ಮುಖ್ಯ ಪ್ರವೇಶದಿಂದ → ನೇರವಾಗಿ ಸ್ವಾಗತದ ಕಡೆ ನಡೆ → ಫಾರ್ಮಸಿ ಸ್ವಾಗತದ ಎಡಬದಿಯಲ್ಲಿ ಇದೆ.</div>
-          <div class="lang show-ta">நுழைவாயில் → நேராக வரவேற்பு வரை செல்லவும் → மருந்தகம் வரவேற்பின் இடப்புறத்தில் உள்ளது.</div>
-          <div class="lang show-te">ప్రధాన ప్రవేశం → నేరుగా రిసెప్షన్‌కు వెళ్లండి → ఫార్మసీ రిసెప్షన్ ఎడమవైపు ఉంటుంది.</div>
-        </div>
-        <div class="modal-actions">
-          <label for="modal-pharmacy" class="close-label">
-            <span class="lang show-en">Close</span><span class="lang show-hi">बंद करें</span><span class="lang show-kn">ಮುಚ್ಚಿ</span><span class="lang show-ta">மூடு</span><span class="lang show-te">మూసివేయి</span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- Lab -->
-    <input type="checkbox" id="modal-lab" class="modal-toggle">
-    <div class="card">
-      <h2>🧪 <span class="lang show-en">Lab</span><span class="lang show-hi">लैब</span><span class="lang show-kn">ಲ್ಯಾಬ್</span><span class="lang show-ta">ஆய்வகம்</span><span class="lang show-te">ల్యాబ్</span></h2>
-      <div class="incharge">
-        <span class="lang show-en">Incharge: Dr. Shalini B</span>
-        <span class="lang show-hi">प्रभारी: डॉ. शालिनी बी</span>
-        <span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಶಲಿನಿ B</span>
-        <span class="lang show-ta">பிரதிநிதி: டாக்டர் சாலினி B</span>
-        <span class="lang show-te">ఇంచార్జి: డా. శాలిని B</span>
-      </div>
-      <div class="muted">
-        <span class="lang show-en">Second Floor, Room 210</span>
-        <span class="lang show-hi">दूसरी मंजिल, कक्ष 210</span>
-        <span class="lang show-kn">ಎರಡನೇ ಮಹಡಿ, ಕೋಣೆ 210</span>
-        <span class="lang show-ta">இரண்டாம் மாடி, அறை 210</span>
-        <span class="lang show-te">రెండవ అంతస్తు, గది 210</span>
-      </div>
-      <label for="modal-lab" class="btn">
-        <span class="lang show-en">Open Directions</span>
-        <span class="lang show-hi">दिशा खोलें</span>
-        <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
-        <span class="lang show-ta">வழிகாட்டியை திற</span>
-        <span class="lang show-te">దిశలను తెరవండి</span>
-      </label>
-    </div>
-    <div class="modal-backdrop">
-      <div class="modal-box">
-        <div class="modal-head">
-          <span class="lang show-en">Lab Directions</span>
-          <span class="lang show-hi">लैब दिशाएँ</span>
-          <span class="lang show-kn">ಲ್ಯಾಬ್ ಮಾರ್ಗ</span>
-          <span class="lang show-ta">ஆய்வகம் வழிமுறைகள்</span>
-          <span class="lang show-te">ల్యాబ్ దిశలు</span>
-        </div>
-        <div class="modal-body">
-          <div class="lang show-en">From reception → take Lift C → Second Floor → follow blue signs to Room 210.</div>
-          <div class="lang show-hi">रिसेप्शन से → लिफ्ट C → दूसरी मंजिल → नीले संकेतों का पालन करें।</div>
-          <div class="lang show-kn">ಸ್ವಾಗತದಿಂದ → ಲಿಫ್ಟ್ C → ಎರಡನೇ ಮಹಡಿ → ನೀಲಿ ಸೂಚನೆಗಳನ್ನು ಅನುಸರಿಸಿ ಕೋಣೆ 210.</div>
-          <div class="lang show-ta">வரவேற்பு → லிப்ட் C → 2வது மாடி → நீல குறியீடுகளை பின்பற்றவும்.</div>
-          <div class="lang show-te">రిసెప్షన్ → లిఫ్ట్ C → 2వ అంతస్తు → నీలం సూచనలను అనుసరించండి.</div>
-        </div>
-        <div class="modal-actions">
-          <label for="modal-lab" class="close-label">
-            <span class="lang show-en">Close</span><span class="lang show-hi">बंद करें</span><span class="lang show-kn">ಮುಚ್ಚಿ</span><span class="lang show-ta">மூடு</span><span class="lang show-te">మూసివేయి</span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-  </div> <!-- end grid -->
-
-  <!-- Doctor Cabins section (same CSS modal pattern) -->
-  <h2 style="margin-top:22px">👨‍⚕️ Doctor Cabins</h2>
-  <div class="grid">
-    <input type="checkbox" id="modal-sharma" class="modal-toggle">
-    <div class="card">
-      <h2>Dr. A. Sharma (Cardiology)</h2>
-      <p class="muted">Cabin 205 – 2nd Floor</p>
-      <label for="modal-sharma" class="btn">
-        <span class="lang show-en">Open Directions</span>
-        <span class="lang show-hi">दिशा खोलें</span>
-        <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
-        <span class="lang show-ta">வழிகாட்டியை திற</span>
-        <span class="lang show-te">దిశలను తెరవండి</span>
-      </label>
-    </div>
-    <div class="modal-backdrop">
-      <div class="modal-box">
-        <div class="modal-head"><span class="lang show-en">Dr. A. Sharma</span><span class="lang show-hi">डॉ. ए. शर्मा</span></div>
-        <div class="modal-body">
-          <div class="lang show-en">From reception → Take Lift B → Second Floor → Cabin 205 (Cardiology).</div>
-          <div class="lang show-hi">रिसेप्शन से → लिफ्ट B → दूसरी मंजिल → कैबिन 205 (कार्डियोलॉजी)।</div>
-          <div class="lang show-kn">ಸ್ವಾಗತದಿಂದ → ಲಿಫ್ಟ್ B → 2ನೇ ಮಹಡಿ → ಕ್ಯಾಬಿನ್ 205.</div>
-          <div class="lang show-ta">வரவேற்பு → லிப்ட் B → 2வது மாடி → கேபின் 205.</div>
-          <div class="lang show-te">రిసెప్షన్ → లిఫ్ట్ B → 2వ అంతస్తు → కెబిన్ 205.</div>
-        </div>
-        <div class="modal-actions"><label for="modal-sharma" class="close-label">Close</label></div>
-      </div>
-    </div>
-
-    <input type="checkbox" id="modal-khan" class="modal-toggle">
-    <div class="card">
-      <h2>Dr. R. Khan (Orthopedics)</h2>
-      <p class="muted">Cabin 112 – 1st Floor</p>
-      <label for="modal-khan" class="btn">Open Directions</label>
-    </div>
-    <div class="modal-backdrop">
-      <div class="modal-box">
-        <div class="modal-head">Dr. R. Khan</div>
-        <div class="modal-body">
-          <div class="lang show-en">From entrance → Take Lift A → First Floor → Cabin 112 (Orthopedics).</div>
-          <div class="lang show-hi">प्रवेश से → लिफ्ट A → पहली मंजिल → कैबिन 112 (ऑर्थोपेडिक्स)।</div>
-          <div class="lang show-kn">ಪ್ರವೇಶದಿಂದ → ಲಿಫ್ಟ್ A → ಮೊದಲ ಮಹಡಿ → ಕ್ಯಾಬಿನ್ 112.</div>
-          <div class="lang show-ta">நுழைவாயில் → ல
+</body>
+</html>
