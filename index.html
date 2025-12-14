@@ -7,17 +7,17 @@
 
 <style>
 :root{
-  --blue:#0a69ff; 
-  --bg:#f4f7fb; 
-  --text:#1a2b3c; 
-  --muted:#556276;
+  --blue:#0a69ff; 
+  --bg:#f4f7fb; 
+  --text:#1a2b3c; 
+  --muted:#556276;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:system-ui,Segoe UI,Roboto;
-  background:var(--bg);
-  color:var(--text)
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto;
+  background:var(--bg);
+  color:var(--text)
 }
 .wrap{max-width:1100px;margin:20px auto;padding:16px}
 
@@ -35,15 +35,15 @@ input[type=radio],input[type=checkbox]{display:none}
 /* language buttons */
 .lang-switch{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .lang-switch label{
-  padding:8px 12px;border-radius:8px;
-  background:#e7efff;font-weight:700;cursor:pointer
+  padding:8px 12px;border-radius:8px;
+  background:#e7efff;font-weight:700;cursor:pointer
 }
 #lang-en:checked ~ .wrap label[for=lang-en],
 #lang-hi:checked ~ .wrap label[for=lang-hi],
 #lang-kn:checked ~ .wrap label[for=lang-kn],
 #lang-ta:checked ~ .wrap label[for=lang-ta],
 #lang-te:checked ~ .wrap label[for=lang-te]{
-  background:#fff;color:var(--blue);border:2px solid var(--blue)
+  background:#fff;color:var(--blue);border:2px solid var(--blue)
 }
 
 /* layout */
@@ -59,8 +59,8 @@ header{background:var(--blue);color:#fff;padding:20px;border-radius:14px}
 
 /* modal */
 .modal-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.45);
-  display:none;align-items:center;justify-content:center;z-index:99
+  position:fixed;inset:0;background:rgba(0,0,0,.45);
+  display:none;align-items:center;justify-content:center;z-index:99
 }
 .modal-toggle:checked + .card + .modal-backdrop{display:flex}
 .modal-box{background:#fff;border-radius:12px;max-width:520px;width:100%}
@@ -72,11 +72,11 @@ header{background:var(--blue);color:#fff;padding:20px;border-radius:14px}
 /* ===== NEW FEATURES CSS (for modal body) ===== */
 .steps{font-weight:600;line-height:1.6;margin-bottom:10px}
 .map-preview{
-  height:110px;border-radius:10px;
-  background:repeating-linear-gradient(45deg,#e7efff,#e7efff 10px,#f9fbff 10px,#f9fbff 20px);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;color:#0a69ff;margin-bottom:10px;
-  box-shadow:inset 0 0 0 2px #0a69ff20;
+  height:110px;border-radius:10px;
+  background:repeating-linear-gradient(45deg,#e7efff,#e7efff 10px,#f9fbff 10px,#f9fbff 20px);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#0a69ff;margin-bottom:10px;
+  box-shadow:inset 0 0 0 2px #0a69ff20;
 }
 .voice{font-weight:700;color:#0a69ff;font-size:.9rem}
 
@@ -86,21 +86,21 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 
 /* Report styling */
 #report {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px dashed var(--blue);
-    border-radius: 8px;
-    line-height: 1.5;
-    background: #f9fbff;
-    font-size: 0.95rem;
-    color: var(--text);
-    font-weight: 500;
-    min-height: 30px; /* To prevent collapse when empty */
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px dashed var(--blue);
+    border-radius: 8px;
+    line-height: 1.5;
+    background: #f9fbff;
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 500;
+    min-height: 30px; /* To prevent collapse when empty */
 }
 #report strong {
-    color: var(--blue);
-    display: block;
-    margin-bottom: 5px;
+    color: var(--blue);
+    display: block;
+    margin-bottom: 5px;
 }
 </style>
 </head>
@@ -115,11 +115,11 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 <div class="wrap">
 
 <div class="lang-switch">
-  <label for="lang-en">English</label>
-  <label for="lang-hi">हिंदी</label>
-  <label for="lang-kn">ಕನ್ನಡ</label>
-  <label for="lang-ta">தமிழ்</label>
-  <label for="lang-te">తెలుగు</label>
+  <label for="lang-en">English</label>
+  <label for="lang-hi">हिंदी</label>
+  <label for="lang-kn">ಕನ್ನಡ</label>
+  <label for="lang-ta">தமிழ்</label>
+  <label for="lang-te">తెలుగు</label>
 </div>
 
 <header>
@@ -133,7 +133,7 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 </header>
 
 <div class="grid">
-  <input type="checkbox" id="emg" class="modal-toggle">
+  <input type="checkbox" id="emg" class="modal-toggle">
 <div class="card emergency">
 <h2>🚑 <span class="lang show-en">Emergency</span><span class="lang show-hi">आपातकाल</span><span class="lang show-kn">ತುರ್ತು</span><span class="lang show-ta">அவசரம்</span><span class="lang show-te">ఎమర్జెన్సీ</span>
 <span class="badge">24×7</span></h2>
@@ -150,57 +150,32 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 <div class="modal-backdrop">
 <div class="modal-box">
 <div class="modal-head">
-  <span class="lang show-en">Emergency – Fastest Route</span>
-  <span class="lang show-hi">आपातकाल – सबसे तेज़ मार्ग</span>
-  <span class="lang show-kn">ತುರ್ತು – ವೇಗದ ಮಾರ್ಗ</span>
-  <span class="lang show-ta">அவசரம் – விரைவான வழி</span>
-  <span class="lang show-te">ఎమర్జెన్సీ – వేగవంతమైన మార్గం</span>
+  <span class="lang show-en">Emergency – Fastest Route</span>
+  <span class="lang show-hi">आपातकाल – सबसे तेज़ मार्ग</span>
+  <span class="lang show-kn">ತುರ್ತು – ವೇಗದ ಮಾರ್ಗ</span>
+  <span class="lang show-ta">அவசரம் – விரைவான வழி</span>
+  <span class="lang show-te">ఎమర్జెన్సీ – వేగవంతమైన మార్గం</span>
 </div>
 <div class="modal-body">
 <span class="badge">⚡ <span class="lang show-en">Fastest Route</span><span class="lang show-hi">सबसे तेज़ मार्ग</span><span class="lang show-kn">ವೇಗದ ಮಾರ್ಗ</span><span class="lang show-ta">விரைவான வழி</span><span class="lang show-te">వేగవంతమైన మార్గం</span></span>
 <div class="steps">
-<span class="lang show-en">
-    1. **Enter via Main Gate.**
-    2. **Turn Right** immediately after the Reception desk.
-    3. **Follow the Red Arrows** painted on the floor (100m straight).
-    4. The **Emergency Room (ER)** is on the left.
-</span>
-<span class="lang show-hi">
-    1. **मुख्य द्वार से प्रवेश करें।**
-    2. रिसेप्शन डेस्क के तुरंत बाद **दाएँ मुड़ें**।
-    3. फर्श पर बने **लाल तीरों का अनुसरण करें** (100 मीटर सीधा)।
-    4. **आपातकाल कक्ष (ER)** बाईं ओर है।
-</span>
-<span class="lang show-kn">
-    1. **ಮುಖ್ಯ ಗೇಟ್ ಮೂಲಕ ಪ್ರವೇಶಿಸಿ.**
-    2. ಸ್ವಾಗತ ಕೌಂಟರ್ ನಂತರ ತಕ್ಷಣವೇ **ಬಲಕ್ಕೆ ತಿರುಗಿ**.
-    3. ನೆಲದ ಮೇಲೆ ಚಿತ್ರಿಸಿದ **ಕೆಂಪು ಬಾಣಗಳನ್ನು ಅನುಸರಿಸಿ** (100 ಮೀಟರ್ ನೇರವಾಗಿ).
-    4. **ತುರ್ತು ಕೊಠಡಿ (ER)** ಎಡಭಾಗದಲ್ಲಿದೆ.
-</span>
-<span class="lang show-ta">
-    1. **பிரதான வாயில் வழியாக நுழையவும்.**
-    2. வரவேற்பு மேசைக்குப் பிறகு உடனடியாக **வலதுபுறம் திரும்பவும்**.
-    3. தரையில் வரையப்பட்ட **சிவப்பு அம்புக்குறிகளைப் பின்பற்றவும்** (100 மீ நேராக).
-    4. **அவசர அறை (ER)** இடதுபுறத்தில் உள்ளது.
-</span>
-<span class="lang show-te">
-    1. **ప్రధాన గేట్ ద్వారా ప్రవేశించండి.**
-    2. రిసెప్షన్ డెస్క్ తర్వాత వెంటనే **కుడికి తిరగండి**.
-    3. నేలపై పెయింట్ చేసిన **ఎరుపు బాణాలను అనుసరించండి** (100 మీ నేరుగా).
-    4. **ఎమర్జెన్సీ గది (ER)** ఎడమ వైపున ఉంది.
-</span>
+<span class="lang show-en">Entrance → Red arrows → Emergency Room</span>
+<span class="lang show-hi">प्रवेश → लाल तीर → आपातकाल कक्ष</span>
+<span class="lang show-kn">ಪ್ರವೇಶ → ಕೆಂಪು ಬಾಣ → ತುರ್ತು ಕೊಠಡಿ</span>
+<span class="lang show-ta">நுழைவு → சிவப்பு அம்புகள் → அவசர அறை</span>
+<span class="lang show-te">ప్రవేశం → ఎరుపు బాణాలు → ఎమర్జెన్సీ గది</span>
 </div>
-<div class="map-preview">Hospital Floor Map - Emergency Route</div>
+<div class="map-preview">Hospital Floor Map</div>
 <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
 </div>
 <div class="modal-actions">
-  <label for="emg" class="close-label">
-    <span class="lang show-en">Close</span>
-    <span class="lang show-hi">बंद करें</span>
-    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-    <span class="lang show-ta">மூடு</span>
-    <span class="lang show-te">మూసివేయి</span>
-  </label>
+  <label for="emg" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూసివేయి</span>
+  </label>
 </div>
 </div>
 </div>
@@ -222,63 +197,38 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 <span class="lang show-hi">दिशा खोलें</span>
 <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
 <span class="lang show-ta">வழிகாட்டியை திற</span>
-<span class="lang show-te">ದಿశలు ತೆರೆಯಿರಿ</span>
+<span class="lang show-te">ದಿశలు తెరవండి</span>
 </label>
 </div>
 
 <div class="modal-backdrop">
 <div class="modal-box">
 <div class="modal-head">
-  <span class="lang show-en">OPD Directions</span>
-  <span class="lang show-hi">ओपीडी दिशा</span>
-  <span class="lang show-kn">ಒಪಿಡಿ ದಿಕ್ಕು</span>
-  <span class="lang show-ta">OPD வழிமுறை</span>
-  <span class="lang show-te">ఓపీడి దిశలు</span>
+  <span class="lang show-en">OPD Directions</span>
+  <span class="lang show-hi">ओपीडी दिशा</span>
+  <span class="lang show-kn">ಒಪಿಡಿ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">OPD வழிமுறை</span>
+  <span class="lang show-te">ఓపీడి దిశలు</span>
 </div>
 <div class="modal-body">
 <div class="steps">
-<span class="lang show-en">
-    1. Go to the **Main Reception** counter.
-    2. Take **Lift A (OPD Lift)** to the **First Floor**.
-    3. Exit the lift, turn **Left**, and follow the **Green Line** on the floor.
-    4. Walk straight down the corridor (approx. 50m) to reach the **OPD Waiting Area**.
-</span>
-<span class="lang show-hi">
-    1. **मुख्य रिसेप्शन** काउंटर पर जाएँ।
-    2. **लिफ्ट A (ओपीडी लिफ्ट)** से **पहली मंजिल** पर जाएँ।
-    3. लिफ्ट से बाहर निकलकर, **बाएँ मुड़ें**, और फर्श पर बनी **हरी रेखा** का अनुसरण करें।
-    4. गलियारे में सीधा चलें (लगभग 50 मीटर) और **ओपीडी प्रतीक्षा क्षेत्र** तक पहुँचें।
-</span>
-<span class="lang show-kn">
-    1. **ಮುಖ್ಯ ಸ್ವಾಗತ** ಕೌಂಟರ್‌ಗೆ ಹೋಗಿ.
-    2. **ಲಿಫ್ಟ್ A (ಒಪಿಡಿ ಲಿಫ್ಟ್)** ಅನ್ನು ಹತ್ತಿ **ಮೊದಲ ಮಹಡಿ**ಗೆ ಹೋಗಿ.
-    3. ಲಿಫ್ಟ್‌ನಿಂದ ಹೊರಬಂದು, **ಎಡಕ್ಕೆ ತಿರುಗಿ**, ಮತ್ತು ನೆಲದ ಮೇಲೆ ಇರುವ **ಹಸಿರು ರೇಖೆ**ಯನ್ನು ಅನುಸರಿಸಿ.
-    4. ನೇರವಾಗಿ ಕಾರಿಡಾರ್‌ನಲ್ಲಿ ನಡೆಯಿರಿ (ಸುಮಾರು 50 ಮೀ) ಮತ್ತು **ಒಪಿಡಿ ಕಾಯುವ ಪ್ರದೇಶ**ವನ್ನು ತಲುಪಿ.
-</span>
-<span class="lang show-ta">
-    1. **பிரதான வரவேற்பு** கவுண்டருக்கு செல்லவும்.
-    2. **லிப்ட் A (OPD லிப்ட்)** மூலம் **முதல் மாடிக்கு** செல்லவும்.
-    3. லிப்டிலிருந்து வெளியே வந்து, **இடதுபுறம் திரும்பி**, தரையில் உள்ள **பச்சை கோட்டைப்** பின்பற்றவும்.
-    4. நடைபாதையில் நேராக நடந்து (தோராயமாக 50 மீ) **OPD காத்திருப்பு பகுதிக்கு** வரவும்.
-</span>
-<span class="lang show-te">
-    1. **ప్రధాన రిసెప్షన్** కౌంటర్‌కు వెళ్లండి.
-    2. **లిఫ్ట్ A (ఓపీడి లిఫ్ట్)** ద్వారా **మొదటి అంతస్తు**కు వెళ్లండి.
-    3. లిఫ్ట్ నుండి బయటకు వచ్చి, **ఎడమకు తిరిగి**, నేలపై ఉన్న **ఆకుపచ్చ గీత**ను అనుసరించండి.
-    4. కారిడార్‌లో నేరుగా నడవండి (సుమారు 50 మీ) మరియు **ఓపీడి వేచి ఉండే ప్రాంతం**కు చేరుకోండి.
-</span>
+<span class="lang show-en">Reception → Lift A → 1st Floor → OPD</span>
+<span class="lang show-hi">रिसेप्शन → लिफ्ट A → पहली मंजिल → ओपीडी</span>
+<span class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ → ಒಪಿಡಿ</span>
+<span class="lang show-ta">வரவேற்பு → லிப்ட் A → 1வது மாடி → OPD</span>
+<span class="lang show-te">ರಿసెಪ್ಷನ್ → లిఫ్ట్ A → 1వ అంతస్తు → ఓపీడి</span>
 </div>
-<div class="map-preview">Hospital Floor Map - 1st Floor OPD</div>
+<div class="map-preview">Hospital Floor Map - 1st Floor</div>
 <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
 </div>
 <div class="modal-actions">
-  <label for="opd" class="close-label">
-    <span class="lang show-en">Close</span>
-    <span class="lang show-hi">बंद करें</span>
-    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-    <span class="lang show-ta">மூடு</span>
-    <span class="lang show-te">మూసివేయి</span>
-  </label>
+  <label for="opd" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూసివేయి</span>
+  </label>
 </div>
 </div>
 </div>
@@ -293,61 +243,36 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 <span class="lang show-ta">பொறுப்பு: திரு. பிரகாஷ் M</span>
 <span class="lang show-te">ఇంచార్జ్: శ్రీ ప్రకాష్ M</span>
 </div>
-<label for="ph" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">దిశలు తెరవండి</span></label>
+<label for="ph" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿశలు తెరవండి</span></label>
 </div>
 <div class="modal-backdrop">
 <div class="modal-box">
 <div class="modal-head">
-  <span class="lang show-en">Pharmacy Directions</span>
-  <span class="lang show-hi">फार्मेसी दिशा</span>
-  <span class="lang show-kn">ಫಾರ್ಮಸಿ ದಿಕ್ಕು</span>
-  <span class="lang show-ta">மருந்தகம் வழிமுறை</span>
-  <span class="lang show-te">ఫార్మసీ దిశలు</span>
+  <span class="lang show-en">Pharmacy Directions</span>
+  <span class="lang show-hi">फार्मेसी दिशा</span>
+  <span class="lang show-kn">ಫಾರ್ಮಸಿ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">மருந்தகம் வழிமுறை</span>
+  <span class="lang show-te">ఫార్మసీ దిశలు</span>
 </div>
 <div class="modal-body">
 <div class="steps">
-<span class="lang show-en">
-    1. From the main entrance, walk straight past the Reception.
-    2. The **Left Corridor** will lead you to the Pharmacy.
-    3. The **Pharmacy Counter** is the first service window on your left, marked with a **large 'P' sign**.
-    4. **Note:** This is on the Ground Floor.
-</span>
-<span class="lang show-hi">
-    1. मुख्य प्रवेश द्वार से, रिसेप्शन को पार करते हुए सीधा चलें।
-    2. **बायां गलियारा** आपको फार्मेसी तक ले जाएगा।
-    3. **फार्मेसी काउंटर** आपके बाईं ओर पहली सेवा खिड़की है, जिस पर **बड़ा 'P' चिह्न** लगा है।
-    4. **ध्यान दें:** यह भूतल पर है।
-</span>
-<span class="lang show-kn">
-    1. ಮುಖ್ಯ ದ್ವಾರದಿಂದ, ಸ್ವಾಗತವನ್ನು ದಾಟಿ ನೇರವಾಗಿ ನಡೆಯಿರಿ.
-    2. **ಎಡ ದಾರಿ** ನಿಮ್ಮನ್ನು ಫಾರ್ಮಸಿಗೆ ಕರೆದೊಯ್ಯುತ್ತದೆ.
-    3. **ಫಾರ್ಮಸಿ ಕೌಂಟರ್** ನಿಮ್ಮ ಎಡಭಾಗದಲ್ಲಿರುವ ಮೊದಲ ಸೇವಾ ವಿಂಡೋ ಆಗಿದೆ, ಅದರ ಮೇಲೆ **ದೊಡ್ಡ 'P' ಚಿಹ್ನೆ** ಇದೆ.
-    4. **ಗಮನಿಸಿ:** ಇದು ನೆಲ ಮಹಡಿಯಲ್ಲಿದೆ.
-</span>
-<span class="lang show-ta">
-    1. பிரதான நுழைவாயிலில் இருந்து, வரவேற்பைக் கடந்து நேராக நடக்கவும்.
-    2. **இடது நடைபாதை** உங்களை மருந்தகத்திற்கு அழைத்துச் செல்லும்.
-    3. **மருந்தக கவுண்டர்** உங்கள் இடதுபுறத்தில் உள்ள முதல் சேவை சாளரம் ஆகும், அதில் **பெரிய 'P' குறி** உள்ளது.
-    4. **குறிப்பு:** இது தரை தளத்தில் உள்ளது.
-</span>
-<span class="lang show-te">
-    1. ప్రధాన ప్రవేశం నుండి, రిసెప్షన్‌ను దాటి నేరుగా నడవండి.
-    2. **ఎడమ దారి** మిమ్మల్ని ఫార్మసీకి తీసుకువెళుతుంది.
-    3. **ఫార్మసీ కౌంటర్** మీ ఎడమ వైపున ఉన్న మొదటి సేవా విండో, దానిపై **పెద్ద 'P' గుర్తు** ఉంది.
-    4. **గమనిక:** ఇది గ్రౌండ్ ఫ్లోర్‌లో ఉంది.
-</span>
+<span class="lang show-en">Reception → Left Corridor → Pharmacy Counter</span>
+<span class="lang show-hi">रिसेप्शन → बायां गलियारा → फार्मेसी काउंटर</span>
+<span class="lang show-kn">ಸ್ವಾಗತ → ಎಡ ದಾರಿ → ಫಾರ್ಮಸಿ ಕೌಂಟರ್</span>
+<span class="lang show-ta">வரவேற்பு → இடது வழி → மருந்தக கவுண்டர்</span>
+<span class="lang show-te">రిసెప్షన్ → ఎడమ దారి → ఫార్మసీ కౌంటర్</span>
 </div>
-<div class="map-preview">Hospital Floor Map - Ground Floor Pharmacy</div>
+<div class="map-preview">Hospital Floor Map - Ground Floor</div>
 <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
 </div>
 <div class="modal-actions">
-  <label for="ph" class="close-label">
-    <span class="lang show-en">Close</span>
-    <span class="lang show-hi">बंद करें</span>
-    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-    <span class="lang show-ta">மூடு</span>
-    <span class="lang show-te">మూసివేయి</span>
-  </label>
+  <label for="ph" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూಸಿವೇయి</span>
+  </label>
 </div>
 </div>
 </div>
@@ -362,61 +287,36 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 <span class="lang show-ta">பொறுப்பு: டாக்டர் ஷாலினி B</span>
 <span class="lang show-te">ఇంచార్జ్: డా. శాలిని B</span>
 </div>
-<label for="lab" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿಶలు ತೆರೆಯಿರಿ</span></label>
+<label for="lab" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿశలు తెరవండి</span></label>
 </div>
 <div class="modal-backdrop">
 <div class="modal-box">
 <div class="modal-head">
-  <span class="lang show-en">Lab Directions</span>
-  <span class="lang show-hi">लैब दिशा</span>
-  <span class="lang show-kn">ಲ್ಯಾಬ್ ದಿಕ್ಕು</span>
-  <span class="lang show-ta">ஆய்வகம் வழிமுறை</span>
-  <span class="lang show-te">ల్యాబ్ దిశలు</span>
+  <span class="lang show-en">Lab Directions</span>
+  <span class="lang show-hi">लैब दिशा</span>
+  <span class="lang show-kn">ಲ್ಯಾಬ್ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">ஆய்வகம் வழிமுறை</span>
+  <span class="lang show-te">ల్యాబ్ దిశలు</span>
 </div>
 <div class="modal-body">
 <div class="steps">
-<span class="lang show-en">
-    1. Go to the **Lift Lobby**.
-    2. Take **Lift C (Lab/Surgery Lift)** to the **2nd Floor**.
-    3. Exit the lift, turn **Right**, and walk past the Nurses' Station.
-    4. **Lab Room 210 (Blood Sample Collection)** is the second door on the left, next to the water cooler.
-</span>
-<span class="lang show-hi">
-    1. **लिफ्ट लॉबी** में जाएँ।
-    2. **लिफ्ट C (लैब/सर्जरी लिफ्ट)** से **दूसरी मंजिल** पर जाएँ।
-    3. लिफ्ट से बाहर निकलकर, **दाएँ मुड़ें**, और नर्स स्टेशन से आगे चलें।
-    4. **लैब कक्ष 210 (रक्त नमूना संग्रह)** पानी कूलर के बगल में, बाईं ओर का दूसरा दरवाजा है।
-</span>
-<span class="lang show-kn">
-    1. **ಲಿಫ್ಟ್ ಲಾಬಿ**ಗೆ ಹೋಗಿ.
-    2. **ಲಿಫ್ಟ್ C (ಲ್ಯಾಬ್/ಶಸ್ತ್ರಚಿಕಿತ್ಸಾ ಲಿಫ್ಟ್)** ಅನ್ನು ಹತ್ತಿ **2ನೇ ಮಹಡಿ**ಗೆ ಹೋಗಿ.
-    3. ಲಿಫ್ಟ್‌ನಿಂದ ಹೊರಬಂದು, **ಬಲಕ್ಕೆ ತಿರುಗಿ**, ಮತ್ತು ನರ್ಸ್ ಸ್ಟೇಷನ್ ದಾಟಿ ನಡೆಯಿರಿ.
-    4. **ಲ್ಯಾಬ್ ಕೊಠಡಿ 210 (ರಕ್ತ ಮಾದರಿ ಸಂಗ್ರಹ)** ನೀರು ಕೂಲರ್ ಪಕ್ಕದಲ್ಲಿ, ಎಡಭಾಗದ ಎರಡನೇ ಬಾಗಿಲು ಆಗಿದೆ.
-</span>
-<span class="lang show-ta">
-    1. **லிப்ட் லாபிக்கு** செல்லவும்.
-    2. **லிப்ட் C (ஆய்வகம்/அறுவை சிகிச்சை லிப்ட்)** மூலம் **2வது மாடிக்கு** செல்லவும்.
-    3. லிப்டிலிருந்து வெளியே வந்து, **வலதுபுறம் திரும்பி**, செவிலியர் நிலையத்தைக் கடந்து செல்லவும்.
-    4. **ஆய்வக அறை 210 (இரத்த மாதிரி சேகரிப்பு)** தண்ணீர் கூலருக்கு அடுத்ததாக, இடதுபுறத்தில் உள்ள இரண்டாவது கதவு ஆகும்.
-</span>
-<span class="lang show-te">
-    1. **లిఫ్ట్ లాబీ**కి వెళ్లండి.
-    2. **లిఫ్ట్ C (ల్యాబ్/సర్జరీ లిఫ్ట్)** ద్వారా **2వ అంతస్తు**కు వెళ్లండి.
-    3. లిఫ్ట్ నుండి బయటకు వచ్చి, **కుడికి తిరిగి**, నర్సు స్టేషన్ దాటి నడవండి.
-    4. **ల్యాబ్ గది 210 (రక్త నమూనా సేకరణ)** వాటర్ కూలర్ పక్కన, ఎడమ వైపున ఉన్న రెండవ తలుపు.
-</span>
+<span class="lang show-en">Lift C → 2nd Floor → Lab Room 210 (Blood Sample Collection)</span>
+<span class="lang show-hi">लिफ्ट C → दूसरी मंजिल → लैब कक्ष 210 (रक्त नमूना संग्रह)</span>
+<span class="lang show-kn">ಲಿಫ್ಟ್ C → 2ನೇ ಮಹಡಿ → ಲ್ಯಾಬ್ ಕೊಠಡಿ 210 (ರಕ್ತ ಮಾದರಿ ಸಂಗ್ರಹ)</span>
+<span class="lang show-ta">லிப்ட் C → 2வது மாடி → ஆய்வக அறை 210 (இரத்த மாதிரி சேகரிப்பு)</span>
+<span class="lang show-te">లిఫ్ట్ C → 2వ అంతస్తు → ల్యాబ్ గది 210 (రక్త నమూనా సేకరణ)</span>
 </div>
-<div class="map-preview">Hospital Floor Map - 2nd Floor Lab</div>
+<div class="map-preview">Hospital Floor Map - 2nd Floor</div>
 <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
 </div>
 <div class="modal-actions">
-  <label for="lab" class="close-label">
-    <span class="lang show-en">Close</span>
-    <span class="lang show-hi">बंद करें</span>
-    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-    <span class="lang show-ta">மூடு</span>
-    <span class="lang show-te">మూసివేయి</span>
-  </label>
+  <label for="lab" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూಸಿవేయి</span>
+  </label>
 </div>
 </div>
 </div>
@@ -431,61 +331,36 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 <span class="lang show-ta">பொறுப்பு: திரு. ரோஹித் D</span>
 <span class="lang show-te">ఇంచార్జ్: శ్రీ రోహిత్ D</span>
 </div>
-<label for="radio" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿಶలు ತೆರೆಯಿರಿ</span></label>
+<label for="radio" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿಶలు తెరవండి</span></label>
 </div>
 <div class="modal-backdrop">
 <div class="modal-box">
 <div class="modal-head">
-  <span class="lang show-en">Radiology Directions</span>
-  <span class="lang show-hi">रेडियोलॉजी दिशा</span>
-  <span class="lang show-kn">ರೇಡಿಯಾಲಜಿ ದಿಕ್ಕು</span>
-  <span class="lang show-ta">கதிரியக்கவியல் வழிமுறை</span>
-  <span class="lang show-te">రేడియాలజీ దిశలు</span>
+  <span class="lang show-en">Radiology Directions</span>
+  <span class="lang show-hi">रेडियोलॉजी दिशा</span>
+  <span class="lang show-kn">ರೇಡಿಯಾಲಜಿ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">கதிரியக்கவியல் வழிமுறை</span>
+  <span class="lang show-te">రేడియాలజీ దిశలు</span>
 </div>
 <div class="modal-body">
 <div class="steps">
-<span class="lang show-en">
-    1. From Reception, take the **Stairs/Lift** down to **Basement 1 (B1)**.
-    2. Follow the **Yellow Line** painted on the floor throughout B1.
-    3. Walk past the Cafeteria. The **Radiology Department** entrance will be on the right.
-    4. **Check-in** at the Radiology Desk inside.
-</span>
-<span class="lang show-hi">
-    1. रिसेप्शन से, **सीढ़ियों/लिफ्ट** से **बेसमेंट 1 (B1)** में नीचे जाएँ।
-    2. B1 में फर्श पर बनी **पीली रेखा** का अनुसरण करें।
-    3. कैफेटेरिया से आगे चलें। **रेडियोलॉजी विभाग** का प्रवेश द्वार दाईं ओर होगा।
-    4. अंदर **रेडियोलॉजी डेस्क** पर **चेक-इन** करें।
-</span>
-<span class="lang show-kn">
-    1. ಸ್ವಾಗತದಿಂದ, **ಮೆಟ್ಟಿಲುಗಳು/ಲಿಫ್ಟ್** ಮೂಲಕ **ನೆಲಮಾಳಿಗೆ 1 (B1)** ಗೆ ಕೆಳಗೆ ಹೋಗಿ.
-    2. B1 ನಾದ್ಯಂತ ನೆಲದ ಮೇಲೆ ಚಿತ್ರಿಸಿದ **ಹಳದಿ ರೇಖೆ**ಯನ್ನು ಅನುಸರಿಸಿ.
-    3. ಕೆಫೆಟೇರಿಯಾ ದಾಟಿ ನಡೆಯಿರಿ. **ರೇಡಿಯಾಲಜಿ ವಿಭಾಗದ** ಪ್ರವೇಶದ್ವಾರವು ಬಲಭಾಗದಲ್ಲಿರುತ್ತದೆ.
-    4. ಒಳಗೆ **ರೇಡಿಯಾಲಜಿ ಡೆಸ್ಕ್** ನಲ್ಲಿ **ಚೆಕ್-ಇನ್** ಮಾಡಿ.
-</span>
-<span class="lang show-ta">
-    1. வரவேற்பறையில் இருந்து, **மாடிப்படிகள்/லிப்ட்** மூலம் **பேஸ்மென்ட் 1 (B1)**க்கு கீழே செல்லவும்.
-    2. B1 முழுவதும் தரையில் வரையப்பட்ட **மஞ்சள் கோட்டைப்** பின்பற்றவும்.
-    3. சிற்றுண்டிச்சாலையைக் கடந்து செல்லவும். **கதிரியக்கவியல் துறை** நுழைவாயில் வலதுபுறத்தில் இருக்கும்.
-    4. உள்ளே **கதிரியக்கவியல் மேசையில்** **செக்-இன்** செய்யவும்.
-</span>
-<span class="lang show-te">
-    1. రిసెప్షన్ నుండి, **మెట్లు/లిఫ్ట్** ద్వారా **బేస్‌మెంట్ 1 (B1)**కి క్రిందకు వెళ్లండి.
-    2. B1 అంతటా నేలపై పెయింట్ చేసిన **పసుపు గీత**ను అనుసరించండి.
-    3. కేఫ్టేరియా దాటి నడవండి. **రేడియాలజీ విభాగం** ప్రవేశ ద్వారం కుడి వైపున ఉంటుంది.
-    4. లోపల **రేడియాలజీ డెస్క్** వద్ద **చెక్-ఇన్** చేయండి.
-</span>
+<span class="lang show-en">Reception → Downstairs to Basement 1 → Follow Yellow Line → Radiology</span>
+<span class="lang show-hi">रिसेप्शन → बेसमेंट 1 में नीचे → पीली रेखा का अनुसरण करें → रेडियोलॉजी</span>
+<span class="lang show-kn">ಸ್ವಾಗತ → ನೆಲಮಾಳಿಗೆ 1 ಗೆ ಕೆಳಗೆ → ಹಳದಿ ರೇಖೆಯನ್ನು ಅನುಸರಿಸಿ → ರೇಡಿಯಾಲಜಿ</span>
+<span class="lang show-ta">வரவேற்பு → பேஸ்மென்ட் 1க்கு கீழே → மஞ்சள் கோட்டைப் பின்பற்றவும் → கதிரியக்கவியல்</span>
+<span class="lang show-te">రిసెప్షన్ → బేస్‌మెంట్ 1కి క్రింద → పసుపు గీతను అనుసరించండి → రేడియాలజీ</span>
 </div>
-<div class="map-preview">Hospital Floor Map - Basement 1 Radiology</div>
-<div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
+<div class="map-preview">Hospital Floor Map - Basement 1</div>
+<div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దತು</span></div>
 </div>
 <div class="modal-actions">
-  <label for="radio" class="close-label">
-    <span class="lang show-en">Close</span>
-    <span class="lang show-hi">बंद करें</span>
-    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-    <span class="lang show-ta">மூடு</span>
-    <span class="lang show-te">మూసివేయి</span>
-  </label>
+  <label for="radio" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూಸಿವೇయి</span>
+  </label>
 </div>
 </div>
 </div>
@@ -500,61 +375,36 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 <span class="lang show-ta">பொறுப்பு: திருமதி. சுமா P</span>
 <span class="lang show-te">ఇంచార్జ్: శ్రీమతి సుమా P</span>
 </div>
-<label for="bill" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿಶలు ತೆರೆಯಿರಿ</span></label>
+<label for="bill" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿಶలు తెరవండి</span></label>
 </div>
 <div class="modal-backdrop">
 <div class="modal-box">
 <div class="modal-head">
-  <span class="lang show-en">Billing & Insurance Directions</span>
-  <span class="lang show-hi">बिलिंग और बीमा दिशा</span>
-  <span class="lang show-kn">ಬಿಲ್ಲಿಂಗ್ ಮತ್ತು ವಿಮೆ ದಿಕ್ಕು</span>
-  <span class="lang show-ta">பில்லிங் மற்றும் காப்பீடு வழிமுறை</span>
-  <span class="lang show-te">బిల్లింగ్ & బీమా దిశలు</span>
+  <span class="lang show-en">Billing & Insurance Directions</span>
+  <span class="lang show-hi">बिलिंग और बीमा दिशा</span>
+  <span class="lang show-kn">ಬಿಲ್ಲಿಂಗ್ ಮತ್ತು ವಿಮೆ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">பில்லிங் மற்றும் காப்பீடு வழிமுறை</span>
+  <span class="lang show-te">బిల్లింగ్ & బీమా దిశలు</span>
 </div>
 <div class="modal-body">
 <div class="steps">
-<span class="lang show-en">
-    1. Enter the hospital through the main entrance.
-    2. Turn **Left** at the Reception.
-    3. Walk straight past the Pharmacy (on your left).
-    4. The **Billing & Insurance Counter 3** is the last window on this Ground Floor hallway.
-</span>
-<span class="lang show-hi">
-    1. मुख्य प्रवेश द्वार से अस्पताल में प्रवेश करें।
-    2. रिसेप्शन पर **बाएँ मुड़ें**।
-    3. फार्मेसी (आपकी बाईं ओर) से सीधा चलें।
-    4. **बिलिंग और बीमा काउंटर 3** इस भूतल गलियारे में अंतिम खिड़की है।
-</span>
-<span class="lang show-kn">
-    1. ಮುಖ್ಯ ದ್ವಾರದ ಮೂಲಕ ಆಸ್ಪತ್ರೆಗೆ ಪ್ರವೇಶಿಸಿ.
-    2. ಸ್ವಾಗತದಲ್ಲಿ **ಎಡಕ್ಕೆ ತಿರುಗಿ**.
-    3. ಫಾರ್ಮಸಿಯನ್ನು (ನಿಮ್ಮ ಎಡಭಾಗದಲ್ಲಿ) ದಾಟಿ ನೇರವಾಗಿ ನಡೆಯಿರಿ.
-    4. **ಬಿಲ್ಲಿಂಗ್ ಮತ್ತು ವಿಮೆ ಕೌಂಟರ್ 3** ಈ ನೆಲ ಮಹಡಿಯ ಹಜಾರದಲ್ಲಿ ಕೊನೆಯ ವಿಂಡೋ ಆಗಿದೆ.
-</span>
-<span class="lang show-ta">
-    1. பிரதான நுழைவாயில் வழியாக மருத்துவமனைக்குள் நுழையவும்.
-    2. வரவேற்பறையில் **இடதுபுறம் திரும்பவும்**.
-    3. மருந்தகத்தைக் (உங்கள் இடதுபுறம்) கடந்து நேராக நடக்கவும்.
-    4. **பில்லிங் மற்றும் காப்பீட்டு கவுண்டர் 3** இந்த தரை தள நடைபாதையில் உள்ள கடைசி சாளரம் ஆகும்.
-</span>
-<span class="lang show-te">
-    1. ప్రధాన ప్రవేశం ద్వారా ఆసుపత్రిలోకి ప్రవేశించండి.
-    2. రిసెప్షన్ వద్ద **ఎడమకు తిరగండి**.
-    3. ఫార్మసీ (మీ ఎడమ వైపున) దాటి నేరుగా నడవండి.
-    4. **బిల్లింగ్ & బీమా కౌంటర్ 3** ఈ గ్రౌండ్ ఫ్లోర్ హాలులో చివరి విండో.
-</span>
+<span class="lang show-en">Entrance → Walk past Pharmacy → Billing Counter 3 (Window for Insurance)</span>
+<span class="lang show-hi">प्रवेश → फार्मेसी से आगे चलें → बिलिंग काउंटर 3 (बीमा के लिए खिड़की)</span>
+<span class="lang show-kn">ಪ್ರವೇಶ → ಫಾರ್ಮಸಿ ದಾಟಿ ನಡೆಯಿರಿ → ಬಿಲ್ಲಿಂಗ್ ಕೌಂಟರ್ 3 (ವಿಮೆಗಾಗಿ ವಿಂಡೋ)</span>
+<span class="lang show-ta">நுழைவு → மருந்தகத்தைக் கடந்து செல்லவும் → பில்லிங் கவுண்டர் 3 (காப்பீட்டிற்கான சாளரம்)</span>
+<span class="lang show-te">ప్రవేశం → ఫార్మసీ దాటి నడవండి → బిల్లింగ్ కౌంటర్ 3 (బీమా కోసం విండో)</span>
 </div>
-<div class="map-preview">Hospital Floor Map - Ground Floor Billing</div>
-<div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குರல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
+<div class="map-preview">Hospital Floor Map - Ground Floor</div>
+<div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
 </div>
 <div class="modal-actions">
-  <label for="bill" class="close-label">
-    <span class="lang show-en">Close</span>
-    <span class="lang show-hi">बंद करें</span>
-    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-    <span class="lang show-ta">மூடு</span>
-    <span class="lang show-te">మూసివేయి</span>
-  </label>
+  <label for="bill" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూసివేయి</span>
+  </label>
 </div>
 </div>
 </div>
@@ -562,195 +412,145 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 
 <input type="checkbox" id="doc1" class="modal-toggle">
 <div class="card">
-  <h2>
-    👨‍⚕️ <span class="lang show-en">Dr. A. Sharma (Cardiology)</span>
-    <span class="lang show-hi">डॉ. ए. शर्मा (हृदय रोग)</span>
-    <span class="lang show-kn">ಡಾ. ಎ. ಶರ್ಮಾ (ಹೃದಯ ವಿಜ್ಞಾನ)</span>
-    <span class="lang show-ta">டாக்டர் ஏ. சர்மா (இதய மருத்துவம்)</span>
-    <span class="lang show-te">డా. ఏ. శర్మ (హృదయ వైద్యం)</span>
-  </h2>
+  <h2>
+    👨‍⚕️ <span class="lang show-en">Dr. A. Sharma (Cardiology)</span>
+    <span class="lang show-hi">डॉ. ए. शर्मा (हृदय रोग)</span>
+    <span class="lang show-kn">ಡಾ. ಎ. ಶರ್ಮಾ (ಹೃದಯ ವಿಜ್ಞಾನ)</span>
+    <span class="lang show-ta">டாக்டர் ஏ. சர்மா (இதய மருத்துவம்)</span>
+    <span class="lang show-te">డా. ఏ. శర్మ (హృదయ వైద్యం)</span>
+  </h2>
 
-  <p class="muted">
-    <span class="lang show-en">Cabin 205 – 2nd Floor</span>
-    <span class="lang show-hi">कक्ष 205 – दूसरी मंजिल</span>
-    <span class="lang show-kn">ಕೊಠಡಿ 205 – 2ನೇ ಮಹಡಿ</span>
-    <span class="lang show-ta">அறை 205 – 2வது மாடி</span>
-    <span class="lang show-te">గది 205 – 2వ అంతస్తు</span>
-  </p>
+  <p class="muted">
+    <span class="lang show-en">Cabin 205 – 2nd Floor</span>
+    <span class="lang show-hi">कक्ष 205 – दूसरी मंजिल</span>
+    <span class="lang show-kn">ಕೊಠಡಿ 205 – 2ನೇ ಮಹಡಿ</span>
+    <span class="lang show-ta">அறை 205 – 2வது மாடி</span>
+    <span class="lang show-te">గది 205 – 2వ అంతస్తు</span>
+  </p>
 
-  <span class="badge">
-    <span class="lang show-en">Available</span>
-    <span class="lang show-hi">उपलब्ध</span>
-    <span class="lang show-kn">ಲಭ್ಯ</span>
-    <span class="lang show-ta">கிடைக்கிறார்</span>
-    <span class="lang show-te">అందుబాటులో</span>
-  </span>
+  <span class="badge">
+    <span class="lang show-en">Available</span>
+    <span class="lang show-hi">उपलब्ध</span>
+    <span class="lang show-kn">ಲಭ್ಯ</span>
+    <span class="lang show-ta">கிடைக்கிறார்</span>
+    <span class="lang show-te">అందుబాటులో</span>
+  </span>
 
-  <br>
+  <br>
 
-  <label for="doc1" class="btn">
-    <span class="lang show-en">Open Directions</span>
-    <span class="lang show-hi">दिशा खोलें</span>
-    <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
-    <span class="lang show-ta">வழிகாட்டியை திற</span>
-    <span class="lang show-te">ದಿశలు ತೆರೆಯಿರಿ</span>
-  </label>
+  <label for="doc1" class="btn">
+    <span class="lang show-en">Open Directions</span>
+    <span class="lang show-hi">दिशा खोलें</span>
+    <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
+    <span class="lang show-ta">வழிகாட்டியை திற</span>
+    <span class="lang show-te">ದಿశలు తెరవండి</span>
+  </label>
 </div>
 
 <div class="modal-backdrop">
-  <div class="modal-box">
-    <div class="modal-head">
-      <span class="lang show-en">Dr. A. Sharma (Cardiology) Directions</span>
-      <span class="lang show-hi">डॉ. ए. शर्मा (हृदय रोग) दिशा</span>
-      <span class="lang show-kn">ಡಾ. ಎ. ಶರ್ಮಾ (ಹೃದಯ ವಿಜ್ಞಾನ) ದಿಕ್ಕು</span>
-      <span class="lang show-ta">டாக்டர் ஏ. சர்மா (இதய மருத்துவம்) வழிமுறை</span>
-      <span class="lang show-te">డా. ఏ. శర్మ (హృదయ వైద్యం) దిశలు</span>
-    </div>
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="lang show-en">Doctor Cabin Directions</span>
+      <span class="lang show-hi">डॉक्टर कक्ष दिशा</span>
+      <span class="lang show-kn">ವೈದ್ಯರ ಕೊಠಡಿ ದಿಕ್ಕು</span>
+      <span class="lang show-ta">மருத்துவர் அறை வழிமுறை</span>
+      <span class="lang show-te">డాక్టర్ గది దిశలు</span>
+    </div>
 
-    <div class="modal-body">
-      <div class="steps">
-        <span class="lang show-en">
-            1. Go to the **Main Reception** and take **Lift B (Doctor Cabin Lift)**.
-            2. Go up to the **2nd Floor**.
-            3. Exit the lift, turn **Left** and walk towards the end of the corridor.
-            4. **Cabin 205 (Cardiology)** is the last cabin before the fire exit.
-        </span>
-        <span class="lang show-hi">
-            1. **मुख्य रिसेप्शन** पर जाएँ और **लिफ्ट B (डॉक्टर कक्ष लिफ्ट)** लें।
-            2. **दूसरी मंजिल** तक ऊपर जाएँ।
-            3. लिफ्ट से बाहर निकलकर, **बाएँ मुड़ें** और गलियारे के अंत की ओर चलें।
-            4. **कक्ष 205 (हृदय रोग)** आग से बाहर निकलने से पहले आखिरी कक्ष है।
-        </span>
-        <span class="lang show-kn">
-            1. **ಮುಖ್ಯ ಸ್ವಾಗತ**ಕ್ಕೆ ಹೋಗಿ ಮತ್ತು **ಲಿಫ್ಟ್ B (ವೈದ್ಯರ ಕೊಠಡಿ ಲಿಫ್ಟ್)** ಅನ್ನು ಹತ್ತಿ.
-            2. **2ನೇ ಮಹಡಿ**ಗೆ ಮೇಲೆ ಹೋಗಿ.
-            3. ಲಿಫ್ಟ್‌ನಿಂದ ಹೊರಬಂದು, **ಎಡಕ್ಕೆ ತಿರುಗಿ** ಮತ್ತು ಕಾರಿಡಾರ್‌ನ ಅಂತ್ಯದ ಕಡೆಗೆ ನಡೆಯಿರಿ.
-            4. **ಕೊಠಡಿ 205 (ಹೃದಯ ವಿಭಾಗ)** ಬೆಂಕಿಯ ನಿರ್ಗಮನದ ಮೊದಲು ಕೊನೆಯ ಕೊಠಡಿ ಆಗಿದೆ.
-        </span>
-        <span class="lang show-ta">
-            1. **பிரதான வரவேற்பு**க்குச் சென்று **லிப்ட் B (மருத்துவர் அறை லிப்ட்)** ஐ எடுக்கவும்.
-            2. **2வது மாடிக்கு** மேலே செல்லவும்.
-            3. லிப்டிலிருந்து வெளியே வந்து, **இடதுபுறம் திரும்பி** நடைபாதையின் இறுதி நோக்கி நடக்கவும்.
-            4. **அறை 205 (இதய மருத்துவம்)** தீயணைப்பு வெளியேறுவதற்கு முன் உள்ள கடைசி அறை ஆகும்.
-        </span>
-        <span class="lang show-te">
-            1. **ప్రధాన రిసెప్షన్** వద్దకు వెళ్లి **లిఫ్ట్ B (డాక్టర్ గది లిఫ్ట్)** ను తీసుకోండి.
-            2. **2వ అంతస్తు** వరకు పైకి వెళ్లండి.
-            3. లిఫ్ట్ నుండి బయటకు వచ్చి, **ఎడమకు తిరిగి** కారిడార్ చివరి వైపు నడవండి.
-            4. **గది 205 (హృదయ వైద్యం)** అగ్నిమాపక నిష్క్రమణకు ముందు ఉన్న చివరి గది.
-        </span>
-      </div>
-      <div class="map-preview">Hospital Floor Map - 2nd Floor Cabins</div>
-      <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
-    </div>
+    <div class="modal-body">
+      <div class="steps">
+        <span class="lang show-en">Reception → Lift B → 2nd Floor → Cabin 205 (Cardiology)</span>
+        <span class="lang show-hi">रिसेप्शन → लिफ्ट B → दूसरी मंजिल → कक्ष 205 (हृदय रोग)</span>
+        <span class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ B → 2ನೇ ಮಹಡಿ → ಕೊಠಡಿ 205 (ಹೃದಯ ವಿಭಾಗ)</span>
+        <span class="lang show-ta">வரவேற்பு → லிப்ட் B → 2வது மாடி → அறை 205 (இதய மருத்துவம்)</span>
+        <span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ B → 2వ అంతస్తు → గది 205 (హృదయ వైద్యం)</span>
+      </div>
+      <div class="map-preview">Hospital Floor Map - 2nd Floor</div>
+      <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
+    </div>
 
-    <div class="modal-actions">
-      <label for="doc1" class="close-label">
-        <span class="lang show-en">Close</span>
-        <span class="lang show-hi">बंद करें</span>
-        <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-        <span class="lang show-ta">மூடு</span>
-        <span class="lang show-te">మూసివేయి</span>
-      </label>
-    </div>
-  </div>
+    <div class="modal-actions">
+      <label for="doc1" class="close-label">
+        <span class="lang show-en">Close</span>
+        <span class="lang show-hi">बंद करें</span>
+        <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+        <span class="lang show-ta">மூடு</span>
+        <span class="lang show-te">మూసిವೇయి</span>
+      </label>
+    </div>
+  </div>
 </div>
 
 <input type="checkbox" id="doc2" class="modal-toggle">
 
 <div class="card">
-  <h2>
-    👨‍⚕️ <span class="lang show-en">Dr. R. Khan (Orthopedics)</span>
-    <span class="lang show-hi">डॉ. आर. खान (अस्थि रोग)</span>
-    <span class="lang show-kn">ಡಾ. ಆರ್. ಖಾನ್ (ಅಸ್ಥಿ ವಿಜ್ಞಾನ)</span>
-    <span class="lang show-ta">டாக்டர் ஆர். கான் (எலும்பியல்)</span>
-    <span class="lang show-te">డా. ఆర్. ఖాన్ (అస్థి వైద్యం)</span>
-  </h2>
+  <h2>
+    👨‍⚕️ <span class="lang show-en">Dr. R. Khan (Orthopedics)</span>
+    <span class="lang show-hi">डॉ. आर. खान (अस्थि रोग)</span>
+    <span class="lang show-kn">ಡಾ. ಆರ್. ಖಾನ್ (ಅಸ್ಥಿ ವಿಜ್ಞಾನ)</span>
+    <span class="lang show-ta">டாக்டர் ஆர். கான் (எலும்பியல்)</span>
+    <span class="lang show-te">డా. ఆర్. ఖాన్ (అస్థి వైద్యం)</span>
+  </h2>
 
-  <p class="muted">
-    <span class="lang show-en">Cabin 112 – 1st Floor</span>
-    <span class="lang show-hi">कक्ष 112 – पहली मंजिल</span>
-    <span class="lang show-kn">ಕೊಠಡಿ 112 – 1ನೇ ಮಹಡಿ</span>
-    <span class="lang show-ta">அறை 112 – 1வது மாடி</span>
-    <span class="lang show-te">గది 112 – 1వ అంతస్తు</span>
-  </p>
+  <p class="muted">
+    <span class="lang show-en">Cabin 112 – 1st Floor</span>
+    <span class="lang show-hi">कक्ष 112 – पहली मंजिल</span>
+    <span class="lang show-kn">ಕೊಠಡಿ 112 – 1ನೇ ಮಹಡಿ</span>
+    <span class="lang show-ta">அறை 112 – 1வது மாடி</span>
+    <span class="lang show-te">గది 112 – 1వ అంతస్తు</span>
+  </p>
 
-  <span class="badge">
-    <span class="lang show-en">Not Available</span>
-    <span class="lang show-hi">उपलब्ध नहीं</span>
-    <span class="lang show-kn">ಲಭ್ಯವಿಲ್ಲ</span>
-    <span class="lang show-ta">கிடைக்கவில்லை</span>
-    <span class="lang show-te">అందుబాటులో లేదు</span>
-  </span>
+  <span class="badge">
+    <span class="lang show-en">Not Available</span>
+    <span class="lang show-hi">उपलब्ध नहीं</span>
+    <span class="lang show-kn">ಲಭ್ಯವಿಲ್ಲ</span>
+    <span class="lang show-ta">கிடைக்கவில்லை</span>
+    <span class="lang show-te">అందుబాటులో లేదు</span>
+  </span>
 
-  <br>
+  <br>
 
-  <label for="doc2" class="btn">
-    <span class="lang show-en">Open Directions</span>
-    <span class="lang show-hi">दिशा खोलें</span>
-    <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
-    <span class="lang show-ta">வழிகாட்டியை திற</span>
-    <span class="lang show-te">ದಿಶలు ತೆರೆಯಿರಿ</span>
-  </label>
+  <label for="doc2" class="btn">
+    <span class="lang show-en">Open Directions</span>
+    <span class="lang show-hi">दिशा खोलें</span>
+    <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
+    <span class="lang show-ta">வழிகாட்டியை திற</span>
+    <span class="lang show-te">దిశలు తెరవండి</span>
+  </label>
 </div>
 
 <div class="modal-backdrop">
-  <div class="modal-box">
-    <div class="modal-head">
-      <span class="lang show-en">Dr. R. Khan (Orthopedics) Directions</span>
-      <span class="lang show-hi">डॉ. आर. खान (अस्थि रोग) दिशा</span>
-      <span class="lang show-kn">ಡಾ. ಆರ್. ಖಾನ್ (ಅಸ್ಥಿ ವಿಜ್ಞಾನ) ದಿಕ್ಕು</span>
-      <span class="lang show-ta">டாக்டர் ஆர். கான் (எலும்பியல்) வழிமுறை</span>
-      <span class="lang show-te">డా. ఆర్. ఖాన్ (అస్థి వైద్యం) దిశలు</span>
-    </div>
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="lang show-en">Doctor Cabin Directions</span>
+      <span class="lang show-hi">डॉक्टर कक्ष दिशा</span>
+      <span class="lang show-kn">ವೈದ್ಯರ ಕೊಠಡಿ ದಿಕ್ಕು</span>
+      <span class="lang show-ta">மருத்துவர் அறை வழிமுறை</span>
+      <span class="lang show-te">డాక్టర్ గది దిశలు</span>
+    </div>
 
-    <div class="modal-body">
-      <div class="steps">
-        <span class="lang show-en">
-            1. Enter the hospital and take **Lift A (OPD Lift)** to the **1st Floor**.
-            2. Exit the lift and walk down the main **OPD corridor**.
-            3. **Cabin 112 (Orthopedics)** is the third door on your right, past the public restroom.
-            4. Please note the Doctor is currently **Not Available**.
-        </span>
-        <span class="lang show-hi">
-            1. अस्पताल में प्रवेश करें और **लिफ्ट A (ओपीडी लिफ्ट)** से **पहली मंजिल** पर जाएँ।
-            2. लिफ्ट से बाहर निकलकर मुख्य **ओपीडी गलियारे** में चलें।
-            3. **कक्ष 112 (अस्थि रोग)** सार्वजनिक शौचालय को पार करते हुए, आपके दाईं ओर तीसरा दरवाजा है।
-            4. कृपया ध्यान दें कि डॉक्टर वर्तमान में **उपलब्ध नहीं** हैं।
-        </span>
-        <span class="lang show-kn">
-            1. ಆಸ್ಪತ್ರೆಗೆ ಪ್ರವೇಶಿಸಿ ಮತ್ತು **ಲಿಫ್ಟ್ A (ಒಪಿಡಿ ಲಿಫ್ಟ್)** ಅನ್ನು ಹತ್ತಿ **1ನೇ ಮಹಡಿ**ಗೆ ಹೋಗಿ.
-            2. ಲಿಫ್ಟ್‌ನಿಂದ ಹೊರಬಂದು ಮುಖ್ಯ **ಒಪಿಡಿ ಕಾರಿಡಾರ್‌ನಲ್ಲಿ** ನಡೆಯಿರಿ.
-            3. **ಕೊಠಡಿ 112 (ಅಸ್ಥಿ ವಿಭಾಗ)** ಸಾರ್ವಜನಿಕ ಶೌಚಾಲಯದ ನಂತರ, ನಿಮ್ಮ ಬಲಭಾಗದಲ್ಲಿರುವ ಮೂರನೇ ಬಾಗಿಲು.
-            4. ದಯವಿಟ್ಟು ವೈದ್ಯರು ಪ್ರಸ್ತುತ **ಲಭ್ಯವಿಲ್ಲ** ಎಂದು ಗಮನಿಸಿ.
-        </span>
-        <span class="lang show-ta">
-            1. மருத்துவமனைக்குள் நுழைந்து **லிப்ட் A (OPD லிப்ட்)** மூலம் **1வது மாடிக்கு** செல்லவும்.
-            2. லிப்டிலிருந்து வெளியே வந்து பிரதான **OPD நடைபாதையில்** நடக்கவும்.
-            3. **அறை 112 (எலும்பியல்)** பொது கழிவறையைக் கடந்து, உங்கள் வலதுபுறத்தில் உள்ள மூன்றாவது கதவு ஆகும்.
-            4. மருத்துவர் தற்போது **கிடைக்கவில்லை** என்பதை நினைவில் கொள்ளவும்.
-        </span>
-        <span class="lang show-te">
-            1. ఆసుపత్రిలోకి ప్రవేశించి **లిఫ్ట్ A (ఓపీడి లిఫ్ట్)** ద్వారా **1వ అంతస్తు**కు వెళ్లండి.
-            2. లిఫ్ట్ నుండి బయటకు వచ్చి ప్రధాన **ఓపీడి కారిడార్‌లో** నడవండి.
-            3. **గది 112 (అస్థి వైద్యం)** పబ్లిక్ రెస్ట్‌రూమ్ దాటి, మీ కుడి వైపున ఉన్న మూడవ తలుపు.
-            4. దయచేసి డాక్టర్ ప్రస్తుతం **అందుబాటులో లేరు** అని గమనించండి.
-        </span>
-      </div>
-      <div class="map-preview">Hospital Floor Map - 1st Floor Cabins</div>
-      <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
-    </div>
+    <div class="modal-body">
+      <div class="steps">
+        <span class="lang show-en">Entrance → Lift A → 1st Floor → Cabin 112 (Orthopedics)</span>
+        <span class="lang show-hi">प्रवेश द्वार → लिफ्ट A → पहली मंजिल → कक्ष 112 (अस्थि रोग)</span>
+        <span class="lang show-kn">ಪ್ರವೇಶ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ → ಕೊಠಡಿ 112 (ಅಸ್ಥಿ ವಿಭಾಗ)</span>
+        <span class="lang show-ta">நுழைவாயில் → லிப்ட் A → 1வது மாடி → அறை 112 (எலும்பியல்)</span>
+        <span class="lang show-te">ప్రవేశం → లిఫ్ట్ A → 1వ అంతస్తు → గది 112 (అస్థి వైద్యం)</span>
+      </div>
+      <div class="map-preview">Hospital Floor Map - 1st Floor</div>
+      <div class="voice">🔊 <span class="lang show-en">Voice guidance supported</span><span class="lang show-hi">वॉइस मार्गदर्शन समर्थित</span><span class="lang show-kn">ಧ್ವನಿ ಮಾರ್ಗದರ್ಶನ ಬೆಂಬಲಿತ</span><span class="lang show-ta">குரல் வழிகாட்டி ஆதரவு</span><span class="lang show-te">వాయిస్ మార్గదర్శకత్వం మద్దతు</span></div>
+    </div>
 
-    <div class="modal-actions">
-      <label for="doc2" class="close-label">
-        <span class="lang show-en">Close</span>
-        <span class="lang show-hi">बंद करें</span>
-        <span class="lang show-kn">ಮುಚ್ಚಿ</span>
-        <span class="lang show-ta">மூடு</span>
-        <span class="lang show-te">మూసివేయి</span>
-      </label>
-    </div>
-  </div>
+    <div class="modal-actions">
+      <label for="doc2" class="close-label">
+        <span class="lang show-en">Close</span>
+        <span class="lang show-hi">बंद करें</span>
+        <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+        <span class="lang show-ta">மூடு</span>
+        <span class="lang show-te">మూಸಿವೇయి</span>
+      </label>
+    </div>
+  </div>
 </div>
 
 </div> <h2 style="margin-top:23px">
@@ -783,63 +583,63 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bot
 
 <script>
 function getReport(){
-  const reportElement = document.getElementById("report");
-  const pid = document.getElementById("pid").value;
-  
-  if (pid.trim() === "") {
-    // Show a prompt if ID is empty
-    alert(document.getElementById("lang-en").checked ? "Please enter a Patient ID." : document.getElementById("lang-hi").checked ? "कृपया रोगी आईडी दर्ज करें।" : document.getElementById("lang-kn").checked ? "ದಯವಿಟ್ಟು ರೋಗಿ ID ನಮೂದಿಸಿ." : document.getElementById("lang-ta").checked ? "தயவுசெய்து நோயாளர் ஐடியை உள்ளிடவும்." : "దయచేసి రోగి ID ని నమోదు చేయండి.");
-    return;
-  }
+  const reportElement = document.getElementById("report");
+  const pid = document.getElementById("pid").value;
+  
+  if (pid.trim() === "") {
+    // Show a prompt if ID is empty
+    alert(document.getElementById("lang-en").checked ? "Please enter a Patient ID." : document.getElementById("lang-hi").checked ? "कृपया रोगी आईडी दर्ज करें।" : document.getElementById("lang-kn").checked ? "ದಯವಿಟ್ಟು ರೋಗಿ ID ನಮೂದಿಸಿ." : document.getElementById("lang-ta").checked ? "தயவுசெய்து நோயாளர் ஐடியை உள்ளிடவும்." : "దయచేసి రోగి ID ని నమోదు చేయండి.");
+    return;
+  }
 
-  const reports = {
-    'en': `<strong>Patient ID: ${pid} - Report (Normal)</strong>
-           Blood Test: 14.5 g/dL (Normal)
-           BP: 120/80 mmHg (Normal)
-           Sugar (Fasting): 95 mg/dL (Normal)`,
-    'hi': `<strong>रोगी आईडी: ${pid} - रिपोर्ट (सामान्य)</strong>
-           रक्त परीक्षण: 14.5 g/dL (सामान्य)
-           बीपी: 120/80 mmHg (सामान्य)
-           शुगर (खाली पेट): 95 mg/dL (सामान्य)`,
-    'kn': `<strong>ರೋಗಿ ID: ${pid} - ವರದಿ (ಸಾಮಾನ್ಯ)</strong>
-           ರಕ್ತ ಪರೀಕ್ಷೆ: 14.5 g/dL (ಸಾಮಾನ್ಯ)
-           ಬಿಪಿ: 120/80 mmHg (ಸಾಮಾನ್ಯ)
-           ಸಕ್ಕರೆ (ಉಪವಾಸ): 95 mg/dL (ಸಾಮಾನ್ಯ)`,
-    'ta': `<strong>நோயாளர் ஐடி: ${pid} - அறிக்கை (சாதாரணமானது)</strong>
-           இரத்த பரிசோதனை: 14.5 g/dL (சாதாரணமானது)
-           BP: 120/80 mmHg (சாதாரணமானது)
-           சர்க்கரை (உண்ணாநிலை): 95 mg/dL (சாதாரணமானது)`,
-    'te': `<strong>రోగి ID: ${pid} - నివేదిక (సాధారణం)</strong>
-           రక్త పరీక్ష: 14.5 g/dL (సాధారణం)
-           బిపి: 120/80 mmHg (సాధారణం)
-           షుగర్ (ఉపవాసం): 95 mg/dL (సాధారణం)`
-  };
+  const reports = {
+    'en': `<strong>Patient ID: ${pid} - Report (Normal)</strong>
+           Blood Test: 14.5 g/dL (Normal)
+           BP: 120/80 mmHg (Normal)
+           Sugar (Fasting): 95 mg/dL (Normal)`,
+    'hi': `<strong>रोगी आईडी: ${pid} - रिपोर्ट (सामान्य)</strong>
+           रक्त परीक्षण: 14.5 g/dL (सामान्य)
+           बीपी: 120/80 mmHg (सामान्य)
+           शुगर (खाली पेट): 95 mg/dL (सामान्य)`,
+    'kn': `<strong>ರೋಗಿ ID: ${pid} - ವರದಿ (ಸಾಮಾನ್ಯ)</strong>
+           ರಕ್ತ ಪರೀಕ್ಷೆ: 14.5 g/dL (ಸಾಮಾನ್ಯ)
+           ಬಿಪಿ: 120/80 mmHg (ಸಾಮಾನ್ಯ)
+           ಸಕ್ಕರೆ (ಉಪವಾಸ): 95 mg/dL (ಸಾಮಾನ್ಯ)`,
+    'ta': `<strong>நோயாளர் ஐடி: ${pid} - அறிக்கை (சாதாரணமானது)</strong>
+           இரத்த பரிசோதனை: 14.5 g/dL (சாதாரணமானது)
+           BP: 120/80 mmHg (சாதாரணமானது)
+           சர்க்கரை (உண்ணாநிலை): 95 mg/dL (சாதாரணமானது)`,
+    'te': `<strong>రోగి ID: ${pid} - నివేదిక (సాధారణం)</strong>
+           రక్త పరీక్ష: 14.5 g/dL (సాధారణం)
+           బిపి: 120/80 mmHg (సాధారణం)
+           షుగర్ (ఉపవాసం): 95 mg/dL (సాధారణం)`
+  };
 
-  let lang = 'en';
-  if(document.getElementById("lang-hi").checked) lang = 'hi';
-  else if(document.getElementById("lang-kn").checked) lang = 'kn';
-  else if(document.getElementById("lang-ta").checked) lang = 'ta';
-  else if(document.getElementById("lang-te").checked) lang = 'te';
+  let lang = 'en';
+  if(document.getElementById("lang-hi").checked) lang = 'hi';
+  else if(document.getElementById("lang-kn").checked) lang = 'kn';
+  else if(document.getElementById("lang-ta").checked) lang = 'ta';
+  else if(document.getElementById("lang-te").checked) lang = 'te';
 
-  reportElement.innerHTML = reports[lang];
+  reportElement.innerHTML = reports[lang];
 }
 
-// Function to reset the report text when language changes 
+// Function to reset the report text when language changes 
 function resetReportText() {
-    const reportElement = document.getElementById("report");
-    reportElement.innerHTML = `
-      <span class="lang show-en">• Lab reports • OPD token • Doctor timings (Enter ID and click Get Report)</span>
-      <span class="lang show-hi">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय (आईडी दर्ज करें और रिपोर्ट देखें पर क्लिक करें)</span>
-      <span class="lang show-kn">• ಲ್ಯಾಬ್ ವರದಿ • ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ (ಐಡಿ ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ)</span>
-      <span class="lang show-ta">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம் (ஐடி உள்ளிட்டு அறிக்கையைக் காண்க)</span>
-      <span class="lang show-te">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం (ఐడి ఎంటర్ చేసి నివేదిక పొందండి క్లిక్ చేయండి)</span>
-    `;
-    document.getElementById("pid").value = ""; // Clear the ID as well
+    const reportElement = document.getElementById("report");
+    reportElement.innerHTML = `
+      <span class="lang show-en">• Lab reports • OPD token • Doctor timings (Enter ID and click Get Report)</span>
+      <span class="lang show-hi">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय (आईडी दर्ज करें और रिपोर्ट देखें पर क्लिक करें)</span>
+      <span class="lang show-kn">• ಲ್ಯಾಬ್ ವರದಿ • ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ (ಐಡಿ ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ)</span>
+      <span class="lang show-ta">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம் (ஐடி உள்ளிட்டு அறிக்கையைக் காண்க)</span>
+      <span class="lang show-te">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం (ఐడి ఎంటర్ చేసి నివేదిక పొందండి క్లిక్ చేయండి)</span>
+    `;
+    document.getElementById("pid").value = ""; // Clear the ID as well
 }
 
 // Attach reset function to language radio buttons
 document.querySelectorAll('input[name="lang"]').forEach(radio => {
-    radio.addEventListener('change', resetReportText);
+    radio.addEventListener('change', resetReportText);
 });
 </script>
 
