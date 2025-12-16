@@ -179,14 +179,27 @@ header{background:var(--header-bg);color:var(--header-text);padding:20px;border-
 
 /* FLOOR MAP PLACEHOLDER Visual Fix */
 .map-preview{
-  height:150px;border-radius:10px;
-  background:var(--report-bg); /* Use report background for better dark mode compatibility */
-  border: 2px var(--report-border) var(--blue); /* Use report border style */
-  display:flex;flex-direction: column;align-items:center;justify-content:center;
-  font-weight:700;color:var(--blue);margin-bottom:10px;
+  height:150px;
+  border-radius:10px;
+  background:var(--report-bg);
+  border: 2px var(--report-border) var(--blue);
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:var(--blue);
+  margin-bottom:10px;
   text-align: center;
-  transition: background 0.3s;
 }
+  .direction-img{
+  width:100%;
+  max-width:480px;
+  margin:10px auto;
+  display:block;
+  border-radius:10px;
+}
+
 .map-preview small {font-weight: 400; color: #718096; margin-top: 5px;}
 
 /* VOICE NAVIGATION */
@@ -256,7 +269,7 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 
 
 /* Map Modal Styling */
-..map-visual { 
+.map-visual { 
   background: var(--report-bg); 
   border: 1px var(--report-border) var(--blue); 
   max-height: 70vh;
@@ -558,8 +571,7 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 </div>
 <div class="map-preview">
   
-  <small>Hospital Floor Map - Ground Floor</small>
-</div><div class="map-preview">
+ <div class="map-preview">
   <img src="pharmacy-ground-floor.png" alt="Pharmacy Directions" class="direction-img">
 </div>
 
@@ -1062,6 +1074,7 @@ function toggleDarkMode() {
 
 </body>
 </html>
+
 
 
 
