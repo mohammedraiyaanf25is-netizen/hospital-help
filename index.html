@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -257,22 +258,21 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 .map-visual { 
   background: var(--report-bg); 
   border: 1px var(--report-border) var(--blue); 
-  height: 50vh; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
+  height: auto;               /* 🔥 KEY FIX */
+  max-height: 70vh;           /* Prevent overflow */
+  overflow: auto;             /* Allow scroll if needed */
   border-radius: 8px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-align: center;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
 }
-.map-visual img {
-  max-width: 100%; 
-  height: auto; 
-  border-radius: 8px; 
-  border: 1px solid #ccc;
-}
+<div class="map-visual">
+  <img src="hospital-map.png" alt="Hospital Floor Map">
 
+  <p class="muted" style="text-align:center;margin-top:8px;">
+    Ground Floor • 1st Floor • 2nd Floor Navigation Map
+  </p>
+</div>
 
 /* QR Placement Strategy */
 .qr-placement {
@@ -355,17 +355,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
       <span class="lang show-te">హాస్పిటల్ ఫ్లోర్ మ్యాಪ್ (ఇంటరాక్టివ్ వీಕ್ಷಣ)</span>
     </div>
     <div class="modal-body">
-      <div class="map-visual">
-        
-        <small class="muted">
-          <span class="lang show-en">**Highlights:** OPD (Yellow), Lab (Blue), Emergency (Red), Your Current Location (Green Dot)</span>
-          <span class="lang show-hi">**हाइलाइट्स:** ओपीडी (पीला), लैब (नीला), आपातकाल (लाल), आपका वर्तमान स्थान (हरा बिंदु)</span>
-          <span class="lang show-kn">**ಮುಖ್ಯಾಂಶಗಳು:** ಒಪಿಡಿ (ಹಳದಿ), ಲ್ಯಾಬ್ (ನೀಲಿ), ತುರ್ತು (ಕೆಂಪು), ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಸ್ಥಳ (ಹಸಿರು ಚುಕ್ಕೆ)</span>
-          <span class="lang show-ta">**சிறப்பம்சங்கள்:** OPD (மஞ்சள்), ஆய்வகம் (நீலம்), அவசரம் (சிவப்பு), உங்கள் தற்போதைய இடம் (பச்சை புள்ளி)</span>
-          <span class="lang show-te">**ముఖ్యాంశాలు:** ఓపీడి (పసుపు), ల్యాబ్ (నీలం), ఎమర్జెన్సీ (ఎరుపు), మీ ప్రస్తుత స్థానం (ఆకుపచ్చ చుక్క)</span>
-        </small>
-      </div>
-    </div>
+  <div class="map-visual">
+
+    <!-- Hospital Floor Map Image -->
+    <img src="images/hospital-map.png" alt="Hospital Floor Map">
+
+  </div>
+</div>
+
     <div class="modal-actions">
       <label for="floor-map-toggle" class="close-label">
         <span class="lang show-en">Close Map</span>
