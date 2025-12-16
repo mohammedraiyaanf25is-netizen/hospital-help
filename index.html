@@ -254,25 +254,33 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 
 
 /* Map Modal Styling */
-.map-modal .modal-box { max-width: 90%; }
-.map-visual { 
+..map-visual { 
   background: var(--report-bg); 
   border: 1px var(--report-border) var(--blue); 
-  height: auto;               /* 🔥 KEY FIX */
-  max-height: 70vh;           /* Prevent overflow */
-  overflow: auto;             /* Allow scroll if needed */
+  max-height: 70vh;
+  overflow: auto;
   border-radius: 8px;
   padding: 10px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
-<div class="map-visual">
-  <img src="hospital-map.png" alt="Hospital Floor Map">
 
-  <p class="muted" style="text-align:center;margin-top:8px;">
-    Ground Floor • 1st Floor • 2nd Floor Navigation Map
-  </p>
+.map-visual img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+<div class="modal-body">
+  <div class="map-visual">
+    <img src="hospital-map.png" alt="Hospital Floor Map">
+
+    <p class="muted" style="text-align:center;margin-top:8px;">
+      Ground Floor • 1st Floor • 2nd Floor Navigation Map
+    </p>
+  </div>
 </div>
+
 
 /* QR Placement Strategy */
 .qr-placement {
@@ -1027,4 +1035,5 @@ function toggleDarkMode() {
 
 </body>
 </html>
+
 
