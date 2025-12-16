@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sri Rama Hospital – Smart Hospital Navigation System using QR Code</title>
+  
+
 
 <style>
 /* 1. Global Variables (Light Mode Default) */
@@ -271,6 +273,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
   height: auto;
   border-radius: 6px;
 }
+
+.direction-img{
+  width:100%;
+  max-width:480px;
+  display:block;
+  margin:10px auto;
+  border-radius:10px;
+}
 <div class="modal-body">
   <div class="map-visual">
     <img 
@@ -308,6 +318,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
   /* Use the list-item display style for language toggling fix */
   display: none; 
 }
+  .direction-img{
+  width:100%;
+  max-width:480px;
+  display:block;
+  margin:10px auto;
+  border-radius:10px;
+}
+
 </style>
 </head>
 <body id="body">
@@ -423,9 +441,12 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 <span class="lang show-te">ప్రవేశం → ఎరుపు బాణాలు → ఎమర్జెన్సీ గది (గ్రౌండ్ ఫ్లోర్)</span>
 </div>
 <div class="map-preview">
-  
-  <small>(Real-time navigation visual)</small>
+  <img 
+    src="emergency-ground-floor.png"
+    alt="Emergency Directions"
+    class="direction-img">
 </div>
+
 <div class="voice-control-group">
   <button class="voice-tag" onclick="speakDirections('Emergency')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
   <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
@@ -488,9 +509,9 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 <span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ A → 1వ అంతస్తు → ఓపీడి</span>
 </div>
 <div class="map-preview">
-  
-  <small>Hospital Floor Map - 1st Floor</small>
+  <img src="opd-1st-floor.png" alt="OPD Directions" class="direction-img">
 </div>
+
 <div class="voice-control-group">
   <button class="voice-tag" onclick="speakDirections('OPD')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
   <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
@@ -540,7 +561,10 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 <div class="map-preview">
   
   <small>Hospital Floor Map - Ground Floor</small>
+</div><div class="map-preview">
+  <img src="pharmacy-ground-floor.png" alt="Pharmacy Directions" class="direction-img">
 </div>
+
 <div class="voice-control-group">
   <button class="voice-tag" onclick="speakDirections('Pharmacy')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
   <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
@@ -596,8 +620,7 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 <span class="lang show-te">లిఫ్ట్ C → 2వ అంతస్తు → ల్యాబ్ గది 210 (రక్త నమూనా సేకరణ)</span>
 </div>
 <div class="map-preview">
-  
-  <small>Hospital Floor Map - 2nd Floor</small>
+  <img src="lab-2nd-floor.png" alt="Lab Directions Room 210" class="direction-img">
 </div>
 <div class="voice-control-group">
   <button class="voice-tag" onclick="speakDirections('Lab')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
@@ -666,9 +689,9 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
         <span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ B → 2వ అంతస్తు → గది 205 (హృదయ వైద్యం)</span>
       </div>
       <div class="map-preview">
-        
-        <small>Hospital Floor Map - 2nd Floor</small>
-      </div>
+  <img src="cardiology-2nd-floor.png" alt="Cardiology Directions – Dr. A. Sharma" class="direction-img">
+</div>
+
       <div class="voice-control-group">
         <button class="voice-tag" onclick="speakDirections('Cardiology Cabin')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
         <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
@@ -737,9 +760,9 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
         <span class="lang show-te">ప్రవేశం → లిఫ్ట్ A → 1వ అంతస్తు → గది 112 (అస్థి వైద్యం)</span>
       </div>
       <div class="map-preview">
-        
-        <small>Hospital Floor Map - 1st Floor</small>
-      </div>
+  <img src="orthopedics-1st-floor.png" alt="Orthopedics Directions" class="direction-img">
+</div>
+
       <div class="voice-control-group">
         <button class="voice-tag" onclick="speakDirections('Orthopedics Cabin')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
         <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
@@ -1041,6 +1064,7 @@ function toggleDarkMode() {
 
 </body>
 </html>
+
 
 
 
