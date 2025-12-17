@@ -1,927 +1,1081 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sri Rama Hospital – Smart Hospital Navigation System using QR Code</title>
-    <style>
-        /* 1. Global Variables (Light Mode Default) */
-        :root {
-            --blue: #0a69ff;
-            --bg: #f4f7fb;
-            --text: #1a2b3c;
-            --muted: #556276;
-            --emergency-red: #ff3b3b;
-            /* Accessibility: Dark Mode variables */
-            --card-bg: #fff;
-            --header-bg: var(--blue);
-            --header-text: #fff;
-            --input-bg: #fff;
-            /* Added for proper input contrast */
-            --input-border: #ccc;
-            --report-bg: #f9fbff;
-            --report-border: dashed;
-        }
-
-        /* 2. Accessibility: Dark Mode CSS Fixes */
-        .dark-mode {
-            --bg: #1a2b3c;
-            --text: #f4f7fb;
-            --muted: #aab5c3;
-            --card-bg: #2b3a4a;
-            --header-bg: #1a2b3c;
-            --header-text: var(--blue);
-            --input-bg: #3a4a5a;
-            /* Fix: ensures input has dark background */
-            --input-border: #556276;
-            --report-bg: #3a4a5a;
-            /* Fix: ensures report background changes */
-            --report-border: solid;
-            /* Make borders solid in dark mode for contrast */
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        .dark-mode .top-instruction,
-        .dark-mode .card {
-            background: var(--card-bg);
-            border-color: #4a5c70;
-        }
-
-        .dark-mode .lang-switch label {
-            background: #3a4a5a;
-            color: #fff;
-        }
-
-        .dark-mode .map-preview {
-            background: #3a4a5a;
-            border-color: #556276;
-        }
-
-        .dark-mode .voice-tag,
-        .dark-mode .badge {
-            background: #3a4a5a;
-            color: var(--blue);
-        }
-
-        .dark-mode #report {
-            background: var(--report-bg);
-            border-color: var(--blue);
-            border-style: var(--report-border);
-            /* Apply variable border style */
-        }
-
-        .dark-mode .modal-actions {
-            background: #2b3a4a;
-        }
-
-        .dark-mode .close-label {
-            background: #3a4a5a;
-            color: #fff;
-        }
-
-        .dark-mode input {
-            /* Apply input styles directly */
-            background: var(--input-bg);
-            color: var(--text);
-            border-color: var(--input-border);
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        body {
-            margin: 0;
-            font-family: system-ui, Segoe UI, Roboto;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-            transition: background 0.3s, color 0.3s;
-            /* Smooth transition for dark mode */
-        }
-
-        .wrap {
-            max-width: 1100px;
-            margin: 10px auto;
-            padding: 16px
-        }
-
-        /* hide radios & toggles */
-        input[type=radio],
-        input[type=checkbox] {
-            display: none
-        }
-
-        /* 3. Language System Fix: Show only active language content */
-        .lang {
-            display: none
-        }
-
-        #lang-en:checked~.wrap .show-en,
-        #lang-hi:checked~.wrap .show-hi,
-        #lang-kn:checked~.wrap .show-kn,
-        #lang-ta:checked~.wrap .show-ta,
-        #lang-te:checked~.wrap .show-te {
-            display: inline
-        }
-
-        /* Ensure block elements still work with the lang system */
-        #lang-en:checked~.wrap .show-en.block,
-        #lang-hi:checked~.wrap .show-hi.block,
-        #lang-kn:checked~.wrap .show-kn.block,
-        #lang-ta:checked~.wrap .show-ta.block,
-        #lang-te:checked~.wrap .show-te.block {
-            display: block;
-        }
-
-        /* Fix for list items in QR strategy */
-        #lang-en:checked~.wrap .show-en.list-item,
-        #lang-hi:checked~.wrap .show-hi.list-item,
-        #lang-kn:checked~.wrap .show-kn.list-item,
-        #lang-ta:checked~.wrap .show-ta.list-item,
-        #lang-te:checked~.wrap .show-te.list-item {
-            display: list-item;
-        }
-
-        /* language buttons */
-        .lang-switch {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-            justify-content: center;
-        }
-
-        .lang-switch label {
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: #e7efff;
-            font-weight: 700;
-            cursor: pointer
-        }
-
-        #lang-en:checked~.wrap label[for=lang-en],
-        #lang-hi:checked~.wrap label[for=lang-hi],
-        #lang-kn:checked~.wrap label[for=lang-kn],
-        #lang-ta:checked~.wrap label[for=lang-ta],
-        #lang-te:checked~.wrap label[for=lang-te] {
-            background: var(--blue);
-            color: #fff;
-            border: 2px solid var(--blue);
-        }
-
-        /* layout */
-        header {
-            background: var(--header-bg);
-            color: var(--header-text);
-            padding: 20px;
-            border-radius: 14px;
-            text-align: center;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px
-        }
-
-        .card {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
-            position: relative;
-            transition: background 0.3s;
-        }
-
-        .card h2 {
-            margin: 0 0 6px;
-            color: var(--blue)
-        }
-
-        /* EMERGENCY HIGHLIGHT & PULSE ANIMATION */
-        @keyframes pulse-red {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 59, 59, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(255, 59, 59, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 59, 59, 0);
-            }
-        }
-
-        .card.emergency {
-            border: 2px solid var(--emergency-red);
-            animation: pulse-red 2s infinite;
-        }
-
-        .card.emergency h2 {
-            color: var(--emergency-red);
-        }
-
-        .incharge {
-            font-weight: 700;
-            margin: 10px 0
-        }
-
-        .muted {
-            color: var(--muted)
-        }
-
-        .btn {
-            margin-top: 14px;
-            background: var(--blue);
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-
-        .emergency .btn {
-            background: var(--emergency-red);
-        }
-
-        /* Badges for status */
-        .badge {
-            background: #e7efff;
-            color: var(--blue);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: .75rem;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .badge.red {
-            background: #ffebeb;
-            color: var(--emergency-red);
-        }
-
-        .badge.green {
-            background: #ebffed;
-            color: #1e8449;
-        }
-
-        /* modal */
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 99;
-            padding: 10px;
-        }
-
-        .modal-toggle:checked+.card+.modal-backdrop,
-        #floor-map-toggle:checked~.modal-backdrop.map-modal {
-            display: flex;
-        }
-
-        .modal-box {
-            background: var(--card-bg);
-            border-radius: 12px;
-            max-width: 520px;
-            width: 100%;
-            overflow: hidden;
-            transition: background 0.3s;
-        }
-
-        .modal-head {
-            background: var(--blue);
-            color: #fff;
-            padding: 15px;
-            font-weight: 700;
-        }
-
-        .modal-body {
-            padding: 20px
-        }
-
-        .modal-actions {
-            padding: 15px;
-            text-align: right;
-            background: #f8f9fa;
-            transition: background 0.3s;
-        }
-
-        .close-label {
-            background: #e9edf5;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .dark-mode .modal-actions {
-            background: #2b3a4a;
-        }
-
-        .dark-mode .close-label {
-            background: #3a4a5a;
-        }
-
-        /* Direction/Modal content */
-        .steps {
-            font-weight: 600;
-            line-height: 1.6;
-            margin-bottom: 15px
-        }
-
-        /* FLOOR MAP PLACEHOLDER Visual Fix */
-        .map-preview {
-            height: 150px;
-            border-radius: 10px;
-            background: var(--report-bg);
-            /* Use report background for better dark mode compatibility */
-            border: 2px var(--report-border) var(--blue);
-            /* Use report border style */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: var(--blue);
-            margin-bottom: 10px;
-            text-align: center;
-            transition: background 0.3s;
-        }
-
-        .map-preview small {
-            font-weight: 400;
-            color: #718096;
-            margin-top: 5px;
-        }
-
-        /* VOICE NAVIGATION */
-        .voice-control-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .voice-tag {
-            font-weight: 700;
-            color: var(--blue);
-            font-size: .9rem;
-            background: #e7efff;
-            padding: 8px;
-            border-radius: 6px;
-            display: inline-block;
-            cursor: pointer;
-            border: none;
-        }
-
-        .dark-mode .voice-tag {
-            background: #3a4a5a;
-            color: var(--blue);
-        }
-
-        .voice-stop-btn {
-            background: var(--emergency-red);
-            color: #fff;
-            font-weight: 700;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: none;
-            font-size: .9rem;
-        }
-
-        /* Patient Login */
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--input-border);
-            margin-bottom: 10px;
-            font-size: 1rem;
-            background: var(--input-bg);
-            color: var(--text);
-            transition: background 0.3s, color 0.3s, border-color 0.3s;
-        }
-
-        .card.login-card .btn {
-            width: auto;
-            display: inline-block;
-            padding: 12px 25px;
-        }
-
-        /* Report styling Fix */
-        #report {
-            margin-top: 10px;
-            padding: 15px;
-            border: 1px var(--report-border) var(--blue);
-            border-radius: 8px;
-            line-height: 1.6;
-            background: var(--report-bg);
-            font-size: 0.95rem;
-            color: var(--text);
-            font-weight: 500;
-            min-height: 30px;
-            transition: background 0.3s, border-style 0.3s;
-            /* Smooth transition */
-        }
-
-        #report strong {
-            color: var(--blue);
-            display: block;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-            border-bottom: 2px solid var(--blue);
-            padding-bottom: 5px;
-        }
-
-        #report .report-section {
-            margin-top: 10px;
-            padding-top: 5px;
-        }
-
-        #report p {
-            margin: 5px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        #report .label {
-            font-weight: 700;
-            color: var(--muted);
-            display: inline-block;
-        }
-
-        #report .value {
-            font-weight: 600;
-            color: var(--text);
-            text-align: right;
-        }
-
-        #report .result-value {
-            font-weight: 600;
-            color: var(--emergency-red);
-            text-align: right;
-        }
-
-        .normal-range {
-            color: #1e8449 !important;
-            font-weight: 600;
-        }
-
-        /* Map Modal Styling */
-        ..map-visual {
-            background: var(--report-bg);
-            border: 1px var(--report-border) var(--blue);
-            max-height: 70vh;
-            overflow: auto;
-            border-radius: 8px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .map-visual img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 6px;
-        }
-
-        <div class="modal-body"><div class="map-visual"><img src="hospital-help-map.png" alt="Hospital Floor Map" style="max-width:100%;height:auto;display:block;margin:auto;"><p class="muted" style="text-align:center;margin-top:8px;">Ground Floor • 1st Floor • 2nd Floor Navigation Map </p></div></div>
-
-        /* QR Placement Strategy */
-        .qr-placement {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-
-        .qr-placement h3 {
-            color: var(--blue);
-            margin-top: 0;
-        }
-
-        .dark-placement-list {
-            list-style-type: disc;
-            margin-left: 20px;
-            padding-left: 0;
-        }
-
-        .dark-placement-list li {
-            margin-bottom: 8px;
-            /* Use the list-item display style for language toggling fix */
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sri Rama Hospital – Smart Hospital Navigation System using QR Code</title>
+
+<style>
+/* 1. Global Variables (Light Mode Default) */
+:root{
+  --blue:#0a69ff; 
+  --bg:#f4f7fb; 
+  --text:#1a2b3c; 
+  --muted:#556276;
+  --emergency-red: #ff3b3b;
+  /* Accessibility: Dark Mode variables */
+  --card-bg: #fff;
+  --header-bg: var(--blue);
+  --header-text: #fff;
+  --input-bg: #fff; /* Added for proper input contrast */
+  --input-border: #ccc;
+  --report-bg: #f9fbff;
+  --report-border: dashed;
+}
+
+/* 2. Accessibility: Dark Mode CSS Fixes */
+.dark-mode {
+  --bg: #1a2b3c;
+  --text: #f4f7fb;
+  --muted: #aab5c3;
+  --card-bg: #2b3a4a;
+  --header-bg: #1a2b3c;
+  --header-text: var(--blue);
+  --input-bg: #3a4a5a; /* Fix: ensures input has dark background */
+  --input-border: #556276;
+  --report-bg: #3a4a5a; /* Fix: ensures report background changes */
+  --report-border: solid; /* Make borders solid in dark mode for contrast */
+  background: var(--bg);
+  color: var(--text);
+}
+.dark-mode .top-instruction, .dark-mode .card {
+  background: var(--card-bg);
+  border-color: #4a5c70;
+}
+.dark-mode .lang-switch label {
+  background: #3a4a5a;
+  color: #fff;
+}
+.dark-mode .map-preview {
+  background: #3a4a5a;
+  border-color: #556276;
+}
+.dark-mode .voice-tag, .dark-mode .badge {
+  background: #3a4a5a;
+  color: var(--blue);
+}
+.dark-mode #report {
+    background: var(--report-bg);
+    border-color: var(--blue);
+    border-style: var(--report-border); /* Apply variable border style */
+}
+.dark-mode .modal-actions {
+  background: #2b3a4a;
+}
+.dark-mode .close-label {
+  background: #3a4a5a;
+  color: #fff;
+}
+.dark-mode input{ /* Apply input styles directly */
+    background: var(--input-bg);
+    color: var(--text);
+    border-color: var(--input-border);
+}
+
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto;
+  background:var(--bg);
+  color:var(--text);
+  line-height: 1.5;
+  transition: background 0.3s, color 0.3s; /* Smooth transition for dark mode */
+}
+.wrap{max-width:1100px;margin:10px auto;padding:16px}
+
+/* hide radios & toggles */
+input[type=radio],input[type=checkbox]{display:none}
+
+/* 3. Language System Fix: Show only active language content */
+.lang{display:none}
+#lang-en:checked ~ .wrap .show-en,
+#lang-hi:checked ~ .wrap .show-hi,
+#lang-kn:checked ~ .wrap .show-kn,
+#lang-ta:checked ~ .wrap .show-ta,
+#lang-te:checked ~ .wrap .show-te{display:inline}
+/* Ensure block elements still work with the lang system */
+#lang-en:checked ~ .wrap .show-en.block,
+#lang-hi:checked ~ .wrap .show-hi.block,
+#lang-kn:checked ~ .wrap .show-kn.block,
+#lang-ta:checked ~ .wrap .show-ta.block,
+#lang-te:checked ~ .wrap .show-te.block {
+  display: block;
+}
+/* Fix for list items in QR strategy */
+#lang-en:checked ~ .wrap .show-en.list-item,
+#lang-hi:checked ~ .wrap .show-hi.list-item,
+#lang-kn:checked ~ .wrap .show-kn.list-item,
+#lang-ta:checked ~ .wrap .show-ta.list-item,
+#lang-te:checked ~ .wrap .show-te.list-item {
+  display: list-item;
+}
+
+/* language buttons */
+.lang-switch{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content: center;}
+.lang-switch label{
+  padding:8px 12px;border-radius:8px;
+  background:#e7efff;font-weight:700;cursor:pointer
+}
+#lang-en:checked ~ .wrap label[for=lang-en],
+#lang-hi:checked ~ .wrap label[for=lang-hi],
+#lang-kn:checked ~ .wrap label[for=lang-kn],
+#lang-ta:checked ~ .wrap label[for=lang-ta],
+#lang-te:checked ~ .wrap label[for=lang-te]{
+  background:var(--blue);color:#fff;
+  border:2px solid var(--blue);
+}
+
+/* layout */
+header{background:var(--header-bg);color:var(--header-text);padding:20px;border-radius:14px;text-align: center; transition: background 0.3s, color 0.3s;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:20px}
+.card{background:var(--card-bg);padding:16px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.08);position: relative; transition: background 0.3s;}
+.card h2{margin:0 0 6px;color:var(--blue)}
+
+/* EMERGENCY HIGHLIGHT & PULSE ANIMATION */
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(255, 59, 59, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 59, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 59, 59, 0); }
+}
+.card.emergency{
+  border:2px solid var(--emergency-red);
+  animation: pulse-red 2s infinite;
+}
+.card.emergency h2 {color: var(--emergency-red);}
+
+.incharge{font-weight:700;margin:10px 0}
+.muted{color:var(--muted)}
+.btn{margin-top:14px;background:var(--blue);color:#fff;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;border:none;display:block;width:100%;text-align:center;}
+.emergency .btn {background: var(--emergency-red);}
+
+/* Badges for status */
+.badge{background:#e7efff;color:var(--blue);padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:700;display: inline-block;}
+.badge.red {background: #ffebeb; color: var(--emergency-red);}
+.badge.green {background: #ebffed; color: #1e8449;}
+
+/* modal */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  display:none;align-items:center;justify-content:center;z-index:99;padding: 10px;
+}
+.modal-toggle:checked + .card + .modal-backdrop,
+#floor-map-toggle:checked ~ .modal-backdrop.map-modal {
+  display:flex;
+}
+.modal-box{background:var(--card-bg);border-radius:12px;max-width:520px;width:100%;overflow: hidden; transition: background 0.3s;}
+.modal-head{background:var(--blue);color:#fff;padding:15px;font-weight:700;}
+.modal-body{padding:20px}
+.modal-actions{padding:15px;text-align:right;background: #f8f9fa; transition: background 0.3s;}
+.close-label{background:#e9edf5;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight: bold;}
+.dark-mode .modal-actions{background: #2b3a4a;}
+.dark-mode .close-label{background: #3a4a5a;}
+
+/* Direction/Modal content */
+.steps{font-weight:600;line-height:1.6;margin-bottom:15px}
+
+/* FLOOR MAP PLACEHOLDER Visual Fix */
+.map-preview{
+  height:150px;border-radius:10px;
+  background:var(--report-bg); /* Use report background for better dark mode compatibility */
+  border: 2px var(--report-border) var(--blue); /* Use report border style */
+  display:flex;flex-direction: column;align-items:center;justify-content:center;
+  font-weight:700;color:var(--blue);margin-bottom:10px;
+  text-align: center;
+  transition: background 0.3s;
+}
+.map-preview small {font-weight: 400; color: #718096; margin-top: 5px;}
+
+/* VOICE NAVIGATION */
+.voice-control-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+.voice-tag{
+  font-weight:700;color:var(--blue);font-size:.9rem;
+  background: #e7efff; padding: 8px; border-radius: 6px; 
+  display: inline-block; cursor: pointer; border: none;
+}
+.dark-mode .voice-tag{background: #3a4a5a; color: var(--blue);}
+
+.voice-stop-btn {
+    background: var(--emergency-red);
+    color: #fff;
+    font-weight: 700;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: .9rem;
+}
+
+
+/* Patient Login */
+input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-border);margin-bottom:10px;font-size: 1rem; background: var(--input-bg); color: var(--text); transition: background 0.3s, color 0.3s, border-color 0.3s;}
+.card.login-card .btn{width:auto;display:inline-block; padding: 12px 25px;}
+
+/* Report styling Fix */
+#report {
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px var(--report-border) var(--blue);
+    border-radius: 8px;
+    line-height: 1.6;
+    background: var(--report-bg);
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 500;
+    min-height: 30px; 
+    transition: background 0.3s, border-style 0.3s; /* Smooth transition */
+}
+#report strong {
+    color: var(--blue);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 5px;
+}
+#report .report-section {
+    margin-top: 10px;
+    padding-top: 5px;
+}
+#report p { margin: 5px 0; display: flex; justify-content: space-between; }
+#report .label { font-weight: 700; color: var(--muted); display: inline-block; }
+#report .value { font-weight: 600; color: var(--text); text-align: right; }
+#report .result-value {
+    font-weight: 600;
+    color: var(--emergency-red);
+    text-align: right;
+}
+.normal-range { 
+  color: #1e8449 !important; 
+  font-weight: 600;
+}
+
+/* ================================
+   MAP MODAL STYLING (90% WIDTH)
+   ================================ */
+.map-modal .modal-box {
+  max-width: 90%;
+  width: 90%;
+}
+
+/* ================================
+   MAP VISUAL (IMAGE + SCROLL)
+   ================================ */
+.map-visual {
+  background: var(--report-bg);
+  border: 1px var(--report-border) var(--blue);
+  height: 60vh;
+  overflow: auto;          /* scroll enabled */
+  padding: 10px;
+  margin-top: 12px;        /* comes BELOW normal-range text */
+}
+
+.map-visual img {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: auto;
+}
+
+/* QR Placement Strategy */
+.qr-placement {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+.qr-placement h3 {
+    color: var(--blue);
+    margin-top: 0;
+}
+.dark-placement-list {
+  list-style-type: disc;
+  margin-left: 20px;
+  padding-left: 0;
+}
+.dark-placement-list li {
+  margin-bottom: 8px;
+  /* Use the list-item display style for language toggling fix */
+  display: none; 
+}
+</style>
 </head>
+<body id="body">
 
-<body id="body"> <input type="radio" name="lang" id="lang-en" checked> <input type="radio" name="lang" id="lang-hi">
-    <input type="radio" name="lang" id="lang-kn"> <input type="radio" name="lang" id="lang-ta"> <input type="radio"
-        name="lang" id="lang-te">
-    <div class="wrap">
-        <div class="lang-switch"> <label for="lang-en">English</label> <label for="lang-hi">हिंदी</label> <label
-                for="lang-kn">ಕನ್ನಡ</label> <label for="lang-ta">தமிழ்</label> <label for="lang-te">తెలుగు</label>
-        </div>
-        <header>
-            <h1> <span class="lang show-en">Sri Rama Hospital – Smart Hospital Navigation System using QR Code</span>
-                <span class="lang show-hi">श्री राम अस्पताल – QR कोड का उपयोग करके स्मार्ट अस्पताल नेविगेशन
-                    सिस्टम</span> <span class="lang show-kn">ಶ್ರೀ ರಾಮ ಆಸ್ಪತ್ರೆ – QR ಕೋಡ್ ಬಳಸಿ ಸ್ಮಾರ್ಟ್ ಆಸ್ಪತ್ರೆ
-                    ನ್ಯಾವಿಗೇಷನ್ ಸಿಸ್ಟಮ್</span> <span class="lang show-ta">ஸ்ரீ ராமா மருத்துவமனை – QR குறியீட்டைப்
-                    பயன்படுத்தி ஸ்மார்ட் மருத்துவமனை வழிசெலுத்தல் அமைப்பு</span> <span class="lang show-te">శ్రీ రామా
-                    హాస్పిటల్ – QR కోడ్ ఉపయోగించి స్మార్ట్ హాస్పిటల్ నావిగేషన్ సిస్టమ్</span> </h1>
-        </header>
-        <div style="margin: 15px 0;"> <button class="btn" style="width: auto; padding: 10px 20px;"
-                onclick="toggleDarkMode()"> 🌙 <span class="lang show-en">Dark Mode</span> <span
-                    class="lang show-hi">डार्क मोड</span> <span class="lang show-kn">ಡಾರ್ಕ್ ಮೋಡ್</span> <span
-                    class="lang show-ta">டார்க் மோட்</span> <span class="lang show-te">డార్క్ మోడ్</span> </button>
-            <label for="floor-map-toggle" class="btn"
-                style="width: auto; padding: 10px 20px; margin-left: 10px; background: #1e8449;"> 🗺 <span
-                    class="lang show-en">View Hospital Map</span> <span class="lang show-hi">अस्पताल का नक्शा
-                    देखें</span> <span class="lang show-kn">ಆಸ್ಪತ್ರೆ ನಕ್ಷೆ ವೀಕ್ಷಿಸಿ</span> <span
-                    class="lang show-ta">மருத்துவமனை வரைபடத்தைக் காண்க</span> <span class="lang show-te">హాస్పిటల్
-                    మ్యాప్ చూడండి</span> </label> </div> <input type="checkbox" id="floor-map-toggle"
-            style="display: none;">
-        <div class="modal-backdrop map-modal">
-            <div class="modal-box">
-                <div class="modal-head"> <span class="lang show-en">Hospital Floor Map (Interactive View)</span> <span
-                        class="lang show-hi">अस्पताल का फर्श नक्शा (इंटरैक्टिव दृश्य)</span> <span
-                        class="lang show-kn">ಆಸ್ಪತ್ರೆ ಮಹಡಿ ನಕ್ಷೆ (ಸಂವಾದಾತ್ಮಕ ನೋಟ)</span> <span
-                        class="lang show-ta">மருத்துவமனை தள வரைபடம் (ஊடாடும் காட்சி)</span> <span
-                        class="lang show-te">హాస్పిటల్ ఫ్లోర్ మ్యాಪ್ (ఇంటరాక్టివ్ వీಕ್ಷಣ)</span> </div>
-                <div class="modal-body">
-                    <div class="map-visual"> <!-- Hospital Floor Map Image --> <img src="Hospital-map.png"
-                            alt="Hospital Floor Map" style="max-width:100%;height:auto;display:block;margin:auto;">
-                    </div>
-                </div>
-                <div class="modal-actions"> <label for="floor-map-toggle" class="close-label"> <span
-                            class="lang show-en">Close Map</span> <span class="lang show-hi">नक्शा बंद करें</span> <span
-                            class="lang show-kn">ನಕ್ಷೆ ಮುಚ್ಚಿ</span> <span class="lang show-ta">வரைபடத்தை மூடு</span>
-                        <span class="lang show-te">మ్యాప్‌ను మూసివేయి</span> </label> </div>
-            </div>
-        </div>
-        <div class="grid"> <input type="checkbox" id="emg" class="modal-toggle">
-            <div class="card emergency" id="emergency-card">
-                <h2>🚑 <span class="lang show-en">Emergency</span><span class="lang show-hi">आपातकाल</span><span
-                        class="lang show-kn">ತುರ್ತು</span><span class="lang show-ta">அவசரம்</span><span
-                        class="lang show-te">ఎమర్జెన్సీ</span> <span class="badge red">24×7</span></h2>
-                <div class="incharge"> <span class="lang show-en">Incharge: Dr. Kavya S</span> <span
-                        class="lang show-hi">प्रभारी: डॉ. काव्या S</span> <span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಕಾವ್ಯಾ
-                        S</span> <span class="lang show-ta">பொறுப்பு: டாக்டர் கவ்யா S</span> <span
-                        class="lang show-te">ఇంచార్జ్: డా. కావ్యా S</span> </div> <label for="emg" class="btn"><span
-                        class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span
-                        class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span
-                        class="lang show-te">దిశలు తెರವండి</span></label>
-            </div>
-            <div class="modal-backdrop" id="emergency-modal">
-                <div class="modal-box">
-                    <div class="modal-head"> <span class="lang show-en">Emergency – Fastest Route</span> <span
-                            class="lang show-hi">आपातकाल – सबसे तेज़ मार्ग</span> <span class="lang show-kn">ತುರ್ತು –
-                            ವೇಗದ ಮಾರ್ಗ</span> <span class="lang show-ta">அவசரம் – விரைவான வழி</span> <span
-                            class="lang show-te">ఎమర్జెన్సీ – వేగవంతమైన మార్గం</span> </div>
-                    <div class="modal-body"> <span class="badge red">⚡ <span class="lang show-en">Fastest
-                                Route</span><span class="lang show-hi">सबसे तेज़ मार्ग</span><span
-                                class="lang show-kn">ವೇಗದ ಮಾರ್ಗ</span><span class="lang show-ta">விரைவான வழி</span><span
-                                class="lang show-te">వేగవంతమైన మార్గం</span></span>
-                        <div class="steps"> <span class="lang show-en">Entrance → Follow Red arrows → Emergency Room
-                                (Ground Floor)</span> <span class="lang show-hi">प्रवेश → लाल तीर → आपातकाल कक्ष
-                                (भू-तल)</span> <span class="lang show-kn">ಪ್ರವೇಶ → ಕೆಂಪು ಬಾಣ → ತುರ್ತು ಕೊಠಡಿ (ನೆಲ
-                                ಮಹಡಿ)</span> <span class="lang show-ta">நுழைவு → சிவப்பு அம்புகள் → அவசர அறை (தரை
-                                தளம்)</span> <span class="lang show-te">ప్రవేశం → ఎరుపు బాణాలు → ఎమర్జెన్సీ గది (గ్రౌండ్
-                                ఫ్లోర్)</span> </div>
-                        <div class="map-preview"> <small>(Real-time navigation visual)</small> </div>
-                        <div class="voice-control-group"> <button class="voice-tag"
-                                onclick="speakDirections('Emergency')">🔊 <span class="lang show-en">Speak
-                                    Directions</span><span class="lang show-hi">दिशा बोलें</span><span
-                                    class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை
-                                    பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button> <button
-                                class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop
-                                    Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span
-                                    class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை
-                                    நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button> </div>
-                    </div>
-                    <div class="modal-actions"> <label for="emg" class="close-label"> <span
-                                class="lang show-en">Close</span> <span class="lang show-hi">बंद करें</span> <span
-                                class="lang show-kn">ಮುಚ್ಚಿ</span> <span class="lang show-ta">மூடு</span> <span
-                                class="lang show-te">మూసివేయి</span> </label> </div>
-                </div>
-            </div> <input type="checkbox" id="opd" class="modal-toggle">
-            <div class="card">
-                <h2>🩺 <span class="lang show-en">OPD</span><span class="lang show-hi">ओपीडी</span><span
-                        class="lang show-kn">ಒಪಿಡಿ</span><span class="lang show-ta">OPD</span><span
-                        class="lang show-te">ఓపీడి</span></h2>
-                <div class="incharge"> <span class="lang show-en">Incharge: Dr. Manjunath R</span> <span
-                        class="lang show-hi">प्रभारी: डॉ. मंजुनाथ R</span> <span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ.
-                        ಮಂಜುನಾಥ R</span> <span class="lang show-ta">பொறுப்பு: டாக்டர் மஞ்சுநாத் R</span> <span
-                        class="lang show-te">ఇంచార్జ్: డా. మంజునాథ్ R</span> </div> <span class="badge green"> <span
-                        class="lang show-en">Available Till 4:00 PM</span> <span class="lang show-hi">शाम 4:00 बजे तक
-                        उपलब्ध</span> <span class="lang show-kn">ಸಂಜೆ 4:00 ರವರೆಗೆ ಲಭ್ಯವಿದೆ</span> <span
-                        class="lang show-ta">மாலை 4:00 மணி வரை கிடைக்கும்</span> <span class="lang show-te">సాయంత్రం
-                        4:00 వరకు అందుబాటులో</span> </span> <label for="opd" class="btn"> <span
-                        class="lang show-en">Open Directions</span> <span class="lang show-hi">दिशा खोलें</span> <span
-                        class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span> <span class="lang show-ta">வழிகாட்டியை திற</span> <span
-                        class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span> </label>
-            </div>
-            <div class="modal-backdrop">
-                <div class="modal-box">
-                    <div class="modal-head"> <span class="lang show-en">OPD Directions</span> <span
-                            class="lang show-hi">ओपीडी दिशा</span> <span class="lang show-kn">ಒಪಿಡಿ ದಿಕ್ಕು</span> <span
-                            class="lang show-ta">OPD வழிமுறை</span> <span class="lang show-te">ఓపీడి దిశలు</span> </div>
-                    <div class="modal-body">
-                        <div class="steps"> <span class="lang show-en">Reception → Lift A → 1st Floor → OPD</span> <span
-                                class="lang show-hi">रिसेप्शन → लिफ्ट A → पहली मंजिल → ओपीडी</span> <span
-                                class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ → ಒಪಿಡಿ</span> <span
-                                class="lang show-ta">வரவேற்பு → லிப்ட் A → 1வது மாடி → OPD</span> <span
-                                class="lang show-te">రిసెప్షన్ → లిఫ్ట్ A → 1వ అంతస్తు → ఓపీడి</span> </div>
-                        <div class="map-preview"> <small>Hospital Floor Map - 1st Floor</small> </div>
-                        <div class="voice-control-group"> <button class="voice-tag" onclick="speakDirections('OPD')">🔊
-                                <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा
-                                    बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span
-                                    class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు
-                                    చెప్పండి</span></button> <button class="voice-stop-btn" onclick="stopSpeaking()">🛑
-                                <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद
-                                    करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span
-                                    class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్
-                                    ఆపండి</span></button> </div>
-                    </div>
-                    <div class="modal-actions"> <label for="opd" class="close-label"> <span
-                                class="lang show-en">Close</span> <span class="lang show-hi">बंद करें</span> <span
-                                class="lang show-kn">ಮುಚ್ಚಿ</span> <span class="lang show-ta">மூடு</span> <span
-                                class="lang show-te">మూసివేయి</span> </label> </div>
-                </div>
-            </div> <input type="checkbox" id="ph" class="modal-toggle">
-            <div class="card">
-                <h2>💊 <span class="lang show-en">Pharmacy</span><span class="lang show-hi">फार्मेसी</span><span
-                        class="lang show-kn">ಫಾರ್ಮಸಿ</span><span class="lang show-ta">மருந்தகம்</span><span
-                        class="lang show-te">ఫార్మసీ</span></h2>
-                <div class="incharge"> <span class="lang show-en">Incharge: Mr. Prakash M</span> <span
-                        class="lang show-hi">प्रभारी: श्री प्रकाश M</span> <span class="lang show-kn">ಪ್ರಭಾರಿ: ಶ್ರೀ
-                        ಪ್ರಕಾಶ M</span> <span class="lang show-ta">பொறுப்பு: திரு. பிரகாஷ் M</span> <span
-                        class="lang show-te">ఇంచార్జ్: శ్రీ ప్రకాష్ M</span> </div> <label for="ph" class="btn"><span
-                        class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span
-                        class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span
-                        class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span></label>
-            </div>
-            <div class="modal-backdrop">
-                <div class="modal-box">
-                    <div class="modal-head"> <span class="lang show-en">Pharmacy Directions</span> <span
-                            class="lang show-hi">फार्मेसी दिशा</span> <span class="lang show-kn">ಫಾರ್ಮಸಿ ದಿಕ್ಕು</span>
-                        <span class="lang show-ta">மருந்தகம் வழிமுறை</span> <span class="lang show-te">ఫార్మసీ
-                            దిశలు</span> </div>
-                    <div class="modal-body">
-                        <div class="steps"> <span class="lang show-en">Reception → Left Corridor → Pharmacy Counter
-                                (Ground Floor)</span> <span class="lang show-hi">रिसेप्शन → बायां गलियारा → फार्मेसी
-                                काउंटर (भू-तल)</span> <span class="lang show-kn">ಸ್ವಾಗತ → ಎಡ ದಾರಿ → ಫಾರ್ಮಸಿ ಕೌಂಟರ್ (ನೆಲ
-                                ಮಹಡಿ)</span> <span class="lang show-ta">வரவேற்பு → இடது வழி → மருந்தக கவுண்டர் (தரை
-                                தளம்)</span> <span class="lang show-te">రిసెప్షన్ → ఎడమ దారి → ఫార్మసీ కౌంటర్ (గ్రౌండ్
-                                ఫ్లోర్)</span> </div>
-                        <div class="map-preview"> <small>Hospital Floor Map - Ground Floor</small> </div>
-                        <div class="voice-control-group"> <button class="voice-tag"
-                                onclick="speakDirections('Pharmacy')">🔊 <span class="lang show-en">Speak
-                                    Directions</span><span class="lang show-hi">दिशा बोलें</span><span
-                                    class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை
-                                    பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button> <button
-                                class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop
-                                    Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span
-                                    class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை
-                                    நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button> </div>
-                    </div>
-                    <div class="modal-actions"> <label for="ph" class="close-label"> <span
-                                class="lang show-en">Close</span> <span class="lang show-hi">बंद करें</span> <span
-                                class="lang show-kn">ಮುಚ್ಚಿ</span> <span class="lang show-ta">மூடு</span> <span
-                                class="lang show-te">మూసివేయి</span> </label> </div>
-                </div>
-            </div> <input type="checkbox" id="lab" class="modal-toggle">
-            <div class="card">
-                <h2>🧪 <span class="lang show-en">Lab (Blood Tests)</span><span class="lang show-hi">लैब (रक्त
-                        परीक्षण)</span><span class="lang show-kn">ಲ್ಯಾಬ್ (ರಕ್ತ ಪರೀಕ್ಷೆ)</span><span
-                        class="lang show-ta">ஆய்வகம் (இரத்த பரிசோதனை)</span><span class="lang show-te">ల్యాబ్ (రక్త
-                        పరీక్షలు)</span></h2>
-                <div class="incharge"> <span class="lang show-en">Incharge: Dr. Shalini B</span> <span
-                        class="lang show-hi">प्रभारी: डॉ. शालिनी B</span> <span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಶಾಲಿನಿ
-                        B</span> <span class="lang show-ta">பொறுப்பு: டாக்டர் ஷாலினி B</span> <span
-                        class="lang show-te">ఇంచార్జ్: డా. శాలಿನಿ B</span> </div> <span class="badge green"> <span
-                        class="lang show-en">Available Till 5:30 PM</span> <span class="lang show-hi">शाम 5:30 बजे तक
-                        उपलब्ध</span> <span class="lang show-kn">ಸಂಜೆ 5:30 ರವರೆಗೆ ಲಭ್ಯವಿದೆ</span> <span
-                        class="lang show-ta">மாலை 5:30 மணி வரை கிடைக்கும்</span> <span class="lang show-te">సాయంత్రం
-                        5:30 వరకు అందుబాటులో</span> </span> <br> <label for="lab" class="btn"><span
-                        class="lang show-en">Open Directions</span><span class="lang show-hi"> दिशा खोलें</span><span
-                        class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span
-                        class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span></label>
-            </div>
-            <div class="modal-backdrop">
-                <div class="modal-box">
-                    <div class="modal-head"> <span class="lang show-en">Lab Directions</span> <span
-                            class="lang show-hi">लैब दिशा</span> <span class="lang show-kn">ಲ್ಯಾಬ್ ದಿಕ್ಕು</span> <span
-                            class="lang show-ta">ஆய்ವகம் வழிமுறை</span> <span class="lang show-te">ల్యాబ్ దిశలు</span>
-                    </div>
-                    <div class="modal-body">
-                        <div class="steps"> <span class="lang show-en">Lift C → 2nd Floor → Lab Room 210 (Blood Sample
-                                Collection)</span> <span class="lang show-hi">लिफ्ट C → दूसरी मंजिल → लैब कक्ष 210 (रक्त
-                                नमूना संग्रह)</span> <span class="lang show-kn">ಲಿಫ್ಟ್ C → 2ನೇ ಮಹಡಿ → ಲ್ಯಾಬ್ ಕೊಠಡಿ 210
-                                (ರಕ್ತ ಮಾದರಿ ಸಂಗ್ರಹ)</span> <span class="lang show-ta">லிப்ட் C → 2வது மாடி → ஆய்வக அறை
-                                210 (இரத்த மாதிரி சேகரிப்பு)</span> <span class="lang show-te">లిఫ్ట్ C → 2వ అంతస్తు →
-                                ల్యాబ్ గది 210 (రక్త నమూనా సేకరణ)</span> </div>
-                        <div class="map-preview"> <small>Hospital Floor Map - 2nd Floor</small> </div>
-                        <div class="voice-control-group"> <button class="voice-tag" onclick="speakDirections('Lab')">🔊
-                                <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा
-                                    बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span
-                                    class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు
-                                    చెప్పండి</span></button> <button class="voice-stop-btn" onclick="stopSpeaking()">🛑
-                                <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद
-                                    करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span
-                                    class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్
-                                    ఆపండి</span></button> </div>
-                    </div>
-                    <div class="modal-actions"> <label for="lab" class="close-label"> <span
-                                class="lang show-en">Close</span> <span class="lang show-hi">बंद करें</span> <span
-                                class="lang show-kn">ಮುಚ್ಚಿ</span> <span class="lang show-ta">மூடு</span> <span
-                                class="lang show-te">మూಸಿవేయి</span> </label> </div>
-                </div>
-            </div> <input type="checkbox" id="doc1" class="modal-toggle">
-            <div class="card">
-                <h2> 👨‍⚕️ <span class="lang show-en">Dr. A. Sharma (Cardiology)</span> <span class="lang show-hi">डॉ.
-                        ए. शर्मा (हृदय रोग)</span> <span class="lang show-kn">ಡಾ. ಎ. ಶರ್ಮಾ (ಹೃದಯ ವಿಜ್ಞಾನ)</span> <span
-                        class="lang show-ta">டாக்டர் ஏ. சர்மா (இதய மருத்துவம்)</span> <span class="lang show-te">డా. ఏ.
-                        శర్మ (హృదయ వైద్యం)</span> </h2>
-                <p class="muted"> <span class="lang show-en">Cabin 205 – 2nd Floor</span> <span
-                        class="lang show-hi">कक्ष 205 – दूसरी मंजिल</span> <span class="lang show-kn">ಕೊಠಡಿ 205 – 2ನೇ
-                        ಮಹಡಿ</span> <span class="lang show-ta">அறை 205 – 2வது மாடி</span> <span class="lang show-te">గది
-                        205 – 2వ అంతస్తు</span> </p> <span class="badge green"> <span class="lang show-en">Available
-                        till 1:00 PM</span> <span class="lang show-hi">दोपहर 1:00 बजे तक उपलब्ध</span> <span
-                        class="lang show-kn">ಮಧ್ಯಾಹ್ನ 1:00 ರವರೆಗೆ ಲಭ್ಯವಿದೆ</span> <span class="lang show-ta">பிற்பகல்
-                        1:00 மணி வரை கிடைக்கும்</span> <span class="lang show-te">మధ్యాహ్నం 1:00 వరకు అందుబాటులో</span>
-                </span> <br> <label for="doc1" class="btn"> <span class="lang show-en">Open Directions</span> <span
-                        class="lang show-hi">दिशा खोलें</span> <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span> <span
-                        class="lang show-ta">வழிகாட்டியை திற</span> <span class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span>
-                </label>
-            </div>
-            <div class="modal-backdrop">
-                <div class="modal-box">
-                    <div class="modal-head"> <span class="lang show-en">Doctor Cabin Directions</span> <span
-                            class="lang show-hi">डॉक्टर कक्ष दिशा</span> <span class="lang show-kn">ವೈದ್ಯರ ಕೊಠಡಿ
-                            ದಿಕ್ಕು</span> <span class="lang show-ta">மருத்துவர் அறை வழிமுறை</span> <span
-                            class="lang show-te">డాక్టర్ గది దిశలు</span> </div>
-                    <div class="modal-body">
-                        <div class="steps"> <span class="lang show-en">Reception → Lift B → 2nd Floor → Cabin 205
-                                (Cardiology)</span> <span class="lang show-hi">रिसेप्शन → लिफ्ट B → दूसरी मंजिल → कक्ष
-                                205 (हृदय रोग)</span> <span class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ B → 2ನೇ ಮಹಡಿ → ಕೊಠಡಿ
-                                205 (ಹೃದಯ ವಿಭಾಗ)</span> <span class="lang show-ta">வரவேற்பு → லிப்ட் B → 2வது மாடி → அறை
-                                205 (இதய மருத்துவம்)</span> <span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ B → 2వ అంతస్తు
-                                → గది 205 (హృదయ వైద్యం)</span> </div>
-                        <div class="map-preview"> <small>Hospital Floor Map - 2nd Floor</small> </div>
-                        <div class="voice-control-group"> <button class="voice-tag"
-                                onclick="speakDirections('Cardiology Cabin')">🔊 <span class="lang show-en">Speak
-                                    Directions</span><span class="lang show-hi">दिशा बोलें</span><span
-                                    class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை
-                                    பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button> <button
-                                class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop
-                                    Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span
-                                    class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை
-                                    நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button> </div>
-                    </div>
-                    <div class="modal-actions"> <label for="doc1" class="close-label"> <span
-                                class="lang show-en">Close</span> <span class="lang show-hi">बंद करें</span> <span
-                                class="lang show-kn">ಮುಚ್ಚಿ</span> <span class="lang show-ta">மூடு</span> <span
-                                class="lang show-te">మూసివేయి</span> </label> </div>
-                </div>
-            </div> <input type="checkbox" id="doc2" class="modal-toggle">
-            <div class="card">
-                <h2> 👨‍⚕️ <span class="lang show-en">Dr. R. Khan (Orthopedics)</span> <span class="lang show-hi">डॉ.
-                        आर. खान (अस्थि रोग)</span> <span class="lang show-kn">ಡಾ. ಆರ್. ಖಾನ್ (ಅಸ್ಥಿ ವಿಜ್ಞಾನ)</span> <span
-                        class="lang show-ta">டாக்டர் ஆர். கான் (எலும்பியல்)</span> <span class="lang show-te">డా. ఆర్.
-                        ఖాన్ (అస్థి వైద్యం)</span> </h2>
-                <p class="muted"> <span class="lang show-en">Cabin 112 – 1st Floor</span> <span
-                        class="lang show-hi">कक्ष 112 – पहली मंजिल</span> <span class="lang show-kn">ಕೊಠಡಿ 112 – 1ನೇ
-                        ಮಹಡಿ</span> <span class="lang show-ta">அறை 112 – 1வது மாடி</span> <span class="lang show-te">గది
-                        112 – 1వ అంతస్తు</span> </p> <span clzass="badge red"> <span class="lang show-en">Next available:
-                        Tomorrow 10:00 AM</span> <span class="lang show-hi">अगला उपलब्ध: कल सुबह 10:00 बजे</span> <span
-                        class="lang show-kn">ಮುಂದಿನ ಲಭ್ಯತೆ: ನಾಳೆ ಬೆಳಿಗ್ಗೆ 10:00 ಗಂಟೆಗೆ</span> <span
-                        class="lang show-ta">அடுத்து கிடைக்கும்: நாளை காலை 10:00 மணி</span> <span
-                        class="lang show-te">తరువాత అందుబాటులో: రేపు ఉదయం 10:00 గంటలకు</span> </span> <br> <label
-                    for="doc2" class="btn"> <span class="lang show-en">Open Directions</span> <span
-                        class="lang show-hi">दिशा खोलें</span> <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span> <span
-                        class="lang show-ta">வழிகாட்டியை திற</span> <span class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span>
-                </label>
-            </div>
-            <div class="modal-backdrop">
-                <div class="modal-box">
-                    <div class="modal-head"> <span class="lang show-en">Doctor Cabin Directions</span> <span
-                            class="lang show-hi">डॉक्टर कक्ष दिशा</span> <span class="lang show-kn">ವೈದ್ಯರ ಕೊಠಡಿ
-                            ದಿಕ್ಕು</span> <span class="lang show-ta">மருத்துவர் அறை வழிமுறை</span> <span
-                            class="lang show-te">డాక్టర్ గది దిశలు</span> </div>
-                    <div class="modal-body">
-                        <div class="steps"> <span class="lang show-en">Entrance → Lift A → 1st Floor → Cabin 112
-                                (Orthopedics)</span> <span class="lang show-hi">प्रवेश द्वार → लिफ्ट A → पहली मंजिल →
-                                कक्ष 112 (अस्थि रोग)</span> <span class="lang show-kn">ಪ್ರವೇಶ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ →
-                                ಕೊಠಡಿ 112 (ಅಸ್ಥಿ ವಿಭಾಗ)</span> <span class="lang show-ta">நுழைவாயில் → லிப்ட் A → 1வது
-                                மாடி → அறை 112 (எலும்பியல்)</span> <span class="lang show-te">ప్రవేశం → లిఫ్ట్ A → 1వ
-                                అంతస్తు → గది 112 (అస్థి వైద్యం)</span> </div>
-                        <div class="map-preview"> <small>Hospital Floor Map - 1st Floor</small> </div>
-                        <div class="voice-control-group"> <button class="voice-tag"
-                                onclick="speakDirections('Orthopedics Cabin')">🔊 <span class="lang show-en">Speak
-                                    Directions</span><span class="lang show-hi">दिशा बोलें</span><span
-                                    class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை
-                                    பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button> <button
-                                class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop
-                                    Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span
-                                    class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை
-                                    நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button> </div>
-                    </div>
-                    <div class="modal-actions"> <label for="doc2" class="close-label"> <span
-                                class="lang show-en">Close</span> <span class="lang show-hi">बंद करें</span> <span
-                                class="lang show-kn">ಮುಚ್ಚಿ</span> <span class="lang show-ta">மூடு</span> <span
-                                class="lang show-te">మూసివేయి</span> </label> </div>
-                </div>
-            </div>
-        </div>
-        <h2 style="margin-top:23px"> <span class="lang show-en">Patient Login</span> <span class="lang show-hi">मरीज
-                लॉगिन</span> <span class="lang show-kn">ರೋಗಿ ಲಾಗಿನ್</span> <span class="lang show-ta">நோயாளர்
-                உள்நுழைவு</span> <span class="lang show-te">రోగి లాగిన్</span> </h2>
-        <div class="card login-card"> <input id="pid" placeholder="Patient ID (e.g. 101)"> <button class="btn"
-                onclick="getReport()"> <span class="lang show-en">Get Report / Info</span> <span
-                    class="lang show-hi">रिपोर्ट / जानकारी देखें</span> <span class="lang show-kn">ವರದಿ / ಮಾಹಿತಿ
-                    ಪಡೆಯಿರಿ</span> <span class="lang show-ta">அறிக்கை / தகவல் காண்க</span> <span
-                    class="lang show-te">నివేదిక / సమాచారం పొందండి</span> </button>
-            <div id="report" class="muted"> <span class="lang show-en block">• Lab reports • OPD token • Doctor timings.
-                    Enter ID (101-105) and click Get Report.</span> <span class="lang show-hi block"
-                    style="display:none">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय। आईडी (101-105) दर्ज करें और रिपोर्ट
-                    देखें पर क्लिक करें।</span> <span class="lang show-kn block" style="display:none">• ಲ್ಯಾಬ್ ವರದಿ •
-                    ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ. ಐಡಿ (101-105) ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</span> <span
-                    class="lang show-ta block" style="display:none">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம்.
-                    ஐடி (101-105) உள்ளிட்டு அறிக்கையைக் காண்க.</span> <span class="lang show-te block"
-                    style="display:none">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం. ఐడి (101-105) ఎంటర్ చేసి
-                    నివేదిక పొందండి క్లిక్ చేయండి.</span> </div>
-        </div>
-        <div class="qr-placement">
-            <h3>📍 <span class="lang show-en">QR Code Placement Strategy</span> <span class="lang show-hi">QR कोड
-                    प्लेसमेंट रणनीति</span> <span class="lang show-kn">QR ಕೋಡ್ ನಿಯೋಜನೆ ತಂತ್ರ</span> <span
-                    class="lang show-ta">QR குறியீடு வைக்கும் உத்தி</span> <span class="lang show-te">QR కోడ్
-                    ప్లేస్‌మెంట్ వ్యూహం</span> </h3>
-            <ul class="dark-placement-list">
-                <li class="lang show-en list-item">**Main Gate/Entrance:** For first-time visitors to get overall map
-                    and directions.</li>
-                <li class="lang show-hi list-item">**मुख्य द्वार/प्रवेश:** पहली बार आने वालों के लिए समग्र नक्शा और
-                    दिशा-निर्देश प्राप्त करने हेतु।</li>
-                <li class="lang show-kn list-item">**ಮುಖ್ಯ ಗೇಟ್/ಪ್ರವೇಶ:** ಮೊದಲ ಬಾರಿಗೆ ಭೇಟಿ ನೀಡುವವರಿಗೆ ಒಟ್ಟಾರೆ ನಕ್ಷೆ
-                    ಮತ್ತು ದಿಕ್ಕುಗಳನ್ನು ಪಡೆಯಲು.</li>
-                <li class="lang show-ta list-item">**பிரதான வாயில்/நுழைவு:** முதல் முறை வருபவர்கள் ஒட்டுமொத்த வரைபடம்
-                    மற்றும் வழிகாட்டியைப் பெற.</li>
-                <li class="lang show-te list-item">**ప్రధాన గేట్/ప్రవేశం:** మొదటిసారి వచ్చే సందర్శకులు మొత్తం మ్యాప్
-                    మరియు దిశలను పొందడానికి.</li>
-                <li class="lang show-en list-item">**Lift/Staircase Area:** For inter-floor navigation (e.g., from 1st
-                    floor to 2nd floor lab).</li>
-                <li class="lang show-hi list-item">**लिफ्ट/सीढ़ी क्षेत्र:** अंतर-मंजिल नेविगेशन के लिए (जैसे, पहली मंजिल
-                    से दूसरी मंजिल लैब तक)।</li>
-                <li class="lang show-kn list-item">**ಲಿಫ್ಟ್/ಮೆಟ್ಟಿಲು ಪ್ರದೇಶ:** ಅಂತರ್-ಮಹಡಿ ನ್ಯಾವಿಗೇಷನ್‌ಗಾಗಿ (ಉದಾ, 1ನೇ
-                    ಮಹಡಿಯಿಂದ 2ನೇ ಮಹಡಿಯ ಲ್ಯಾಬ್‌ಗೆ).</li>
-                <li class="lang show-ta list-item">**லிப்ட்/மாடிப்படி பகுதி:** மாடிகளுக்கு இடையிலான வழிசெலுத்தலுக்காக
-                    (எ.கா., 1வது மாடியிலிருந்து 2வது மாடி ஆய்வகத்திற்கு).</li>
-                <li class="lang show-te list-item">**లిఫ్ట్/మెట్ల ప్రాంతం:** అంతస్తుల మధ్య నావిగేషన్ కోసం (ఉదా. 1వ
-                    అంతస్తు నుండి 2వ అంతస్తు ల్యాబ్‌కు).</li>
-                <li class="lang show-en list-item">**OPD Waiting Hall:** Quick access to token status and doctor
-                    availability.</li>
-                <li class="lang show-hi list-item">**ओपीडी प्रतीक्षालय:** टोकन स्थिति और डॉक्टर की उपलब्धता तक त्वरित
-                    पहुंच के लिए।</li>
-                <li class="lang show-kn list-item">**ಒಪಿಡಿ ಕಾಯುವ ಹಾಲ್:** ಟೋಕನ್ ಸ್ಥಿತಿ ಮತ್ತು ವೈದ್ಯರ ಲಭ್ಯತೆಗೆ ತ್ವರಿತ
-                    ಪ್ರವೇಶಕ್ಕಾಗಿ.</li>
-                <li class="lang show-ta list-item">**OPD காத்திருப்பு கூடம்:** டோக்கன் நிலை மற்றும் மருத்துவர்
-                    கிடைக்கும் நேரத்தை விரைவாக அணுக.</li>
-                <li class="lang show-te list-item">**ఓపీడి వెయిటింగ్ హాల్:** టోకెన్ స్థితి మరియు డాక్టర్ లభ్యతకు త్వరిత
-                    ప్రాప్యత కోసం.</li>
-                <li class="lang show-en list-item">**Pharmacy/Lab Counter:** For easy report collection and
-                    post-consultation directions.</li>
-                <li class="lang show-hi list-item">**फार्मेसी/लैब काउंटर:** आसान रिपोर्ट संग्रह और परामर्श के बाद की
-                    दिशाओं के लिए।</li>
-                <li class="lang show-kn list-item">**ಫಾರ್ಮಸಿ/ಲ್ಯಾಬ್ ಕೌಂಟರ್:** ಸುಲಭ ವರದಿ ಸಂಗ್ರಹಣೆ ಮತ್ತು ಸಮಾಲೋಚನೆಯ ನಂತರದ
-                    ದಿಕ್ಕುಗಳಿಗಾಗಿ.</li>
-                <li class="lang show-ta list-item">**மருந்தகம்/ஆய்வக கவுண்டர்:** எளிதான அறிக்கை சேகரிப்பு மற்றும்
-                    ஆலோசனைக்கு பிந்தைய வழிகாட்டலுக்காக.</li>
-                <li class="lang show-te list-item">**ఫార్మసీ/ల్యాబ్ కౌంటర్:** సులభ నివేదిక సేకరణ మరియు సంప్రదింపుల
-                    తర్వాత దిశల కోసం.</li>
-            </ul> <small class="muted"> <span class="lang show-en">Ensures continuous navigation support throughout the
-                    patient journey.</span> <span class="lang show-hi">रोगी की पूरी यात्रा के दौरान निरंतर नेविगेशन
-                    समर्थन सुनिश्चित करता है।</span> <span class="lang show-kn">ರೋಗಿಯ ಪ್ರಯಾಣದ ಉದ್ದಕ್ಕೂ ನಿರಂತರ
-                    ನ್ಯಾವಿಗೇಷನ್ ಬೆಂಬಲವನ್ನು ಖಚಿತಪಡಿಸುತ್ತದೆ.</span> <span class="lang show-ta">நோயாளியின் பயணத்தில்
-                    தொடர்ச்சியான வழிசெலுத்தல் ஆதரவை உறுதி செய்கிறது.</span> <span class="lang show-te">రోగి ప్రయాణంలో
-                    నిరంతర నావిగేషన్ మద్దతును నిర్ధారిస్తుంది.</span> </small>
-        </div>
+<input type="radio" name="lang" id="lang-en" checked>
+<input type="radio" name="lang" id="lang-hi">
+<input type="radio" name="lang" id="lang-kn">
+<input type="radio" name="lang" id="lang-ta">
+<input type="radio" name="lang" id="lang-te">
+
+<div class="wrap">
+
+<div class="lang-switch">
+  <label for="lang-en">English</label>
+  <label for="lang-hi">हिंदी</label>
+  <label for="lang-kn">ಕನ್ನಡ</label>
+  <label for="lang-ta">தமிழ்</label>
+  <label for="lang-te">తెలుగు</label>
+</div>
+
+<header>
+<h1>
+<span class="lang show-en">Sri Rama Hospital – Smart Hospital Navigation System using QR Code</span>
+<span class="lang show-hi">श्री राम अस्पताल – QR कोड का उपयोग करके स्मार्ट अस्पताल नेविगेशन सिस्टम</span>
+<span class="lang show-kn">ಶ್ರೀ ರಾಮ ಆಸ್ಪತ್ರೆ – QR ಕೋಡ್ ಬಳಸಿ ಸ್ಮಾರ್ಟ್ ಆಸ್ಪತ್ರೆ ನ್ಯಾವಿಗೇಷನ್ ಸಿಸ್ಟಮ್</span>
+<span class="lang show-ta">ஸ்ரீ ராமா மருத்துவமனை – QR குறியீட்டைப் பயன்படுத்தி ஸ்மார்ட் மருத்துவமனை வழிசெலுத்தல் அமைப்பு</span>
+<span class="lang show-te">శ్రీ రామా హాస్పిటల్ – QR కోడ్ ఉపయోగించి స్మార్ట్ హాస్పిటల్ నావిగేషన్ సిస్టమ్</span>
+</h1>
+</header>
+
+<div style="margin: 15px 0;">
+  <button class="btn" style="width: auto; padding: 10px 20px;" onclick="toggleDarkMode()">
+    🌙 <span class="lang show-en">Dark Mode</span>
+    <span class="lang show-hi">डार्क मोड</span>
+    <span class="lang show-kn">ಡಾರ್ಕ್ ಮೋಡ್</span>
+    <span class="lang show-ta">டார்க் மோட்</span>
+    <span class="lang show-te">డార్క్ మోడ్</span>
+  </button>
+  <label for="floor-map-toggle" class="btn" style="width: auto; padding: 10px 20px; margin-left: 10px; background: #1e8449;">
+    🗺 <span class="lang show-en">View Hospital Map</span>
+    <span class="lang show-hi">अस्पताल का नक्शा देखें</span>
+    <span class="lang show-kn">ಆಸ್ಪತ್ರೆ ನಕ್ಷೆ ವೀಕ್ಷಿಸಿ</span>
+    <span class="lang show-ta">மருத்துவமனை வரைபடத்தைக் காண்க</span>
+    <span class="lang show-te">హాస్పిటల్ మ్యాప్ చూడండి</span>
+  </label>
+</div>
+
+<input type="checkbox" id="floor-map-toggle" style="display: none;">
+<div class="modal-backdrop map-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="lang show-en">Hospital Floor Map (Interactive View)</span>
+      <span class="lang show-hi">अस्पताल का फर्श नक्शा (इंटरैक्टिव दृश्य)</span>
+      <span class="lang show-kn">ಆಸ್ಪತ್ರೆ ಮಹಡಿ ನಕ್ಷೆ (ಸಂವಾದಾತ್ಮಕ ನೋಟ)</span>
+      <span class="lang show-ta">மருத்துவமனை தள வரைபடம் (ஊடாடும் காட்சி)</span>
+      <span class="lang show-te">హాస్పిటల్ ఫ్లోర్ మ్యాಪ್ (ఇంటరాక్టివ్ వీಕ್ಷಣ)</span>
     </div>
-    <script> // Multi-language Patient Database for realistic reports (101-105 only) const patientDatabase = { '101': { en: {name: 'Ravi Kumar', age: 45, date: '15 Dec 2025', doctor: 'Dr. A. Sharma (Cardiology)', token: 'A-23', status: 'Available at 11:30 AM', tests: [{ name: 'ECG Report', result: 'Abnormal', range: 'Normal', note: 'Requires immediate review.', isAbnormal: true }, { name: 'Total Cholesterol', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'Glucose (Fasting)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]}, hi: {name: 'रवि कुमार', age: 45, date: '15 दिसं 2025', doctor: 'डॉ. ए. शर्मा (हृदय रोग)', token: 'ए-23', status: '11:30 बजे उपलब्ध', tests: [{ name: 'ईसीजी रिपोर्ट', result: 'असामान्य', range: 'सामान्य', note: 'तत्काल समीक्षा की आवश्यकता है।', isAbnormal: true }, { name: 'कुल कोलेस्ट्रॉल', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'ग्लूकोज (उपवास)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]}, kn: {name: 'ರವಿ ಕುಮಾರ್', age: 45, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಎ. ಶರ್ಮಾ (ಹೃದಯ ವಿಜ್ಞಾನ)', token: 'ಎ-23', status: '11:30 ಗಂಟೆಗೆ ಲಭ್ಯವಿದೆ', tests: [{ name: 'ಇಸಿಜಿ ವರದಿ', result: 'ಅಸಹಜ', range: 'ಸಾಮಾನ್ಯ', note: 'ತಕ್ಷಣದ ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ.', isAbnormal: true }, { name: 'ಒಟ್ಟು ಕೊಲೆಸ್ಟ್ರಾಲ್', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'ಗ್ಲುಕೋಸ್ (ಉಪವಾಸ)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]}, ta: {name: 'ரவி குமார்', age: 45, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் ஏ. சர்மா (இதய மருத்துவம்)', token: 'A-23', status: '11:30 AM வரை கிடைக்கும்', tests: [{ name: 'ECG அறிக்கை', result: 'சாதாரணமற்றது', range: 'சாதாரணம்', note: 'உடனடி மறுஆய்வு தேவை.', isAbnormal: true }, { name: 'மொத்த கொலஸ்ட்ரால்', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'குளுக்கோஸ் (உண்ணாவிரதம்)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]}, te: {name: 'దీపక్ రావు', age: 55, date: '15 డిసెంబర్ 2025', doctor: 'డా. మంజునాథ్ R (సాధారణ వైద్యం)', token: 'B-11', status: '11:00 AM వరకు అందుబాటులో', tests: [{ name: 'క్రియేటినిన్', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'సోడియం', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]} }, '102': { en: {name: 'Priya Sharma', age: 28, date: '15 Dec 2025', doctor: 'Dr. R. Khan (Orthopedics)', token: 'C-05', status: 'Not Available Today', tests: [{ name: 'X-Ray (Hand)', result: 'Small fracture detected', range: 'No fracture', note: 'Requires cast and follow-up with Dr. Khan.', isAbnormal: true }, { name: 'Vitamin D', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]}, hi: {name: 'प्रिया शर्मा', age: 28, date: '15 दिसं 2025', doctor: 'डॉ. आर. खान (अस्थि रोग)', token: 'सी-05', status: 'आज उपलब्ध नहीं', tests: [{ name: 'एक्स-रे (हाथ)', result: 'छोटा फ्रैक्चर पाया गया', range: 'कोई फ्रैक्चर नहीं', note: 'डॉ. खान के साथ प्लास्टर और फॉलो-अप की आवश्यकता है।', isAbnormal: true }, { name: 'विटामिन डी', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]}, kn: {name: 'ಪ್ರಿಯಾ ಶರ್ಮಾ', age: 28, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಆರ್. ಖಾನ್ (ಅಸ್ಥಿ ವಿಜ್ಞಾನ)', token: 'ಸಿ-05', status: 'ಇಂದು ಲಭ್ಯವಿಲ್ಲ', tests: [{ name: 'ಎಕ್ಸ್-ರೇ (ಕೈ)', result: 'ಸಣ್ಣ ಬಿರುಕು ಕಂಡುಬಂದಿದೆ', range: 'ಬಿರುಕು ಇಲ್ಲ', note: 'ಡಾ. ಖಾನ್ ಜೊತೆ ಪ್ಲಾಸ್ಟರ್ ಮತ್ತು ಫಾಲೋ-ಅಪ್ ಅಗತ್ಯವಿದೆ.', isAbnormal: true }, { name: 'ವಿಟಮಿನ್ ಡಿ', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]}, ta: {name: 'பிரியா சர்மா', age: 28, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் ஆர். கான் (எலும்பியல்)', token: 'C-05', status: 'இன்று கிடைக்கவில்லை', tests: [{ name: 'எக்ஸ்-ரே (கை)', result: 'சிறு முறிவு கண்டறியப்பட்டது', range: 'முறிவு இல்லை', note: 'பிளாஸ்டர் மற்றும் டாக்டர் கானுடன் தொடர் ஆலோசனை தேவை.', isAbnormal: true }, { name: 'வைட்டமின் டி', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]}, te: {name: 'ప్రియా శర్మ', age: 28, date: '15 డిసెంబర్ 2025', doctor: 'డా. ఆర్. ఖాన్ (అస్థి వైద్యం)', token: 'C-05', status: 'ఈరోజు అందుబాటులో లేదు', tests: [{ name: 'ఎక్స్-రే (చేయి)', result: 'చిన్న పగులు గుర్తించబడింది', range: 'పగులు లేదు', note: 'డా. ఖాన్‌తో కాస్ట్ మరియు ఫాలో-అప్ అవసరం.', isAbnormal: true }, { name: 'విటమిన్ డి', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]} }, '103': { en: {name: 'Arjun Reddy', age: 60, date: '15 Dec 2025', doctor: 'Dr. Manjunath R (General Medicine)', token: 'B-10', status: 'Available at 10:45 AM', tests: [{ name: 'Hemoglobin', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ESR', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'WBC Count', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]}, hi: {name: 'अर्जुन रेड्डी', age: 60, date: '15 दिसं 2025', doctor: 'डॉ. मंजुनाथ R (सामान्य चिकित्सा)', token: 'बी-10', status: '10:45 बजे उपलब्ध', tests: [{ name: 'हीमोग्लोबिन', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ईएसआर', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'डब्ल्यूबीसी गणना', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]}, kn: {name: 'ಅರ್ಜುನ್ ರೆಡ್ಡಿ', age: 60, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಮಂಜುನಾಥ R (ಸಾಮಾನ್ಯ ಔಷಧ)', token: 'ಬಿ-10', status: '10:45 ಗಂಟೆಗೆ ಲಭ್ಯವಿದೆ', tests: [{ name: 'ಹಿಮೋಗ್ಲೋಬಿನ್', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ಇಎಸ್ಆರ್', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'ಡಬ್ಲ್ಯೂಬಿಸಿ ಕೌಂಟ್', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]}, ta: {name: 'அர்ஜுன் ரெட்டி', age: 60, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் மஞ்சுநாத் R (பொது மருத்துவம்)', token: 'B-10', status: '10:45 AM வரை கிடைக்கும்', tests: [{ name: 'ஹீமோகுளோபின்', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ESR', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'WBC எண்ணிக்கை', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]}, te: {name: 'అర్జున్ రెడ్డి', age: 60, date: '15 డిసెంబర్ 2025', doctor: 'డా. మంజునాథ్ R (సాధారణ వైద్యం)', token: 'B-10', status: '10:45 AM వరకు అందుబాటులో', tests: [{ name: 'హెమోగ్లోబిన్', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ESR', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'WBC సంఖ్య', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]} }, '104': { en: {name: 'Shreya Varma', age: 32, date: '15 Dec 2025', doctor: 'Dr. Shalini B (Lab Consultation)', token: 'D-01', status: 'Report Ready', tests: [{ name: 'Thyroid Stimulating Hormone (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'Total Blood Count', result: 'All parameters normal', range: 'Normal', isAbnormal: false }]}, hi: {name: 'श्रेया वर्मा', age: 32, date: '15 दिसं 2025', doctor: 'डॉ. शालिनी B (लैब परामर्श)', token: 'डी-01', status: 'रिपोर्ट तैयार', tests: [{ name: 'थायराइड उत्तेजक हार्मोन (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'कुल रक्त गणना', result: 'सभी पैरामीटर सामान्य', range: 'सामान्य', isAbnormal: false }]}, kn: {name: 'ಶ್ರೇಯಾ ವರ್ಮಾ', age: 32, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಶಾಲಿನಿ B (ಲ್ಯಾಬ್ ಸಮಾಲೋಚನೆ)', token: 'ಡಿ-01', status: 'ವರದಿ ಸಿದ್ಧವಾಗಿದೆ', tests: [{ name: 'ಥೈರಾಯ್ಡ್ ಉತ್ತೇಜಕ ಹಾರ್ಮೋನ್ (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'कुल रक्त गणना', result: 'सभी पैरामीटर सामान्य', range: 'सामान्य', isAbnormal: false }]}, kn: {name: 'ಶ್ರೇಯಾ ವರ್ಮಾ', age: 32, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಶಾಲಿನಿ B (ಲ್ಯಾಬ್ ಸಮಾಲೋಚನೆ)', token: 'ಡಿ-01', status: 'ವರದಿ ಸಿದ್ಧವಾಗಿದೆ', tests: [{ name: 'ಥೈರಾಯ್ಡ್ ಉತ್ತೇಜಕ ಹಾರ್ಮೋನ್ (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'ಒಟ್ಟು ರಕ್ತ ಕೌಂಟ್', result: 'ಎಲ್ಲಾ ನಿಯತಾಂಕಗಳು ಸಾಮಾನ್ಯ', range: 'ಸಾಮಾನ್ಯ', isAbnormal: false }]}, ta: {name: 'ஸ்ரேயா வர்மா', age: 32, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் ஷாலினி B (ஆய்வக ஆலோசனை)', token: 'D-01', status: 'அறிக்கை தயார்', tests: [{ name: 'தைராய்டு தூண்டும் ஹார்மோன் (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'மொத்த இரத்த எண்ணிக்கை', result: 'அனைத்து அளவுருக்கள் சாதாரணம்', range: 'சாதாரணம்', isAbnormal: false }]}, te: {name: 'శ్రేయ వర్మ', age: 32, date: '15 డిసెంబర్ 2025', doctor: 'డా. శాలిని B (ల్యాబ్ సంప్రదింపులు)', token: 'D-01', status: 'నివేదిక సిద్ధంగా ఉంది', tests: [{ name: 'థైరాయిడ్ స్టిమ్యులేటింగ్ హార్మోన్ (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'మొత్తం రక్త గణన', result: 'అన్ని పారామీటర్లు సాధారణం', range: 'సాధారణం', isAbnormal: false }]} }, '105': { en: {name: 'Deepak Rao', age: 55, date: '15 Dec 2025', doctor: 'Dr. Manjunath R (General Medicine)', token: 'B-11', status: 'Available at 11:00 AM', tests: [{ name: 'Creatinine', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'Sodium', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]}, hi: {name: 'दीपक राव', age: 55, date: '15 दिसं 2025', doctor: 'डॉ. मंजुनाथ R (सामान्य चिकित्सा)', token: 'बी-11', status: '11:00 बजे उपलब्ध', tests: [{ name: 'क्रिएटिनिन', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'सोडियम', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]}, kn: {name: 'ದೀಪಕ್ ರಾವ್', age: 55, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಮಂಜುನಾಥ R (ಸಾಮಾನ್ಯ ಔಷಧ)', token: 'ಬಿ-11', status: '11:00 ಗಂಟೆಗೆ ಲಭ್ಯವಿದೆ', tests: [{ name: 'ಕ್ರಿಯೇಟಿನೈನ್', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'ಸೋಡಿಯಂ', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]}, ta: {name: 'தீபக் ராவ்', age: 55, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் மஞ்சுநாத் R (பொது மருத்துவம்)', token: 'B-11', status: '11:00 AM வரை கிடைக்கும்', tests: [{ name: 'கிரியேட்டினின்', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'சோடியம்', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]}, te: {name: 'దీపక్ రావు', age: 55, date: '15 డిసెంబర్ 2025', doctor: 'డా. మంజునాథ్ R (సాధారణ వైద్యం)', token: 'B-11', status: '11:00 AM వరకు అందుబాటులో', tests: [{ name: 'క్రియేటినిన్', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'సోడియం', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]} } }; // Language specific labels for the report const reportLabels = { 'en': {title: 'Diagnostic Report & OPD Status', patient: 'Patient:', age: 'Age:', date: 'Date:', doctor: 'Doctor:', token: 'OPD Token:', status: 'OPD Status:', test: 'Test Name', result: 'Result', range: 'Reference Range'}, 'hi': {title: 'नैदानिक रिपोर्ट और ओपीडी स्थिति', patient: 'रोगी:', age: 'आयु:', date: 'दिनांक:', doctor: 'डॉक्टर:', token: 'ओपीडी टोकन:', status: 'ओपीडी स्थिति:', test: 'परीक्षण का नाम', result: 'परिणाम', range: 'संदर्भ सीमा'}, 'kn': {title: 'ರೋಗನಿರ್ಣಯ ವರದಿ ಮತ್ತು OPD ಸ್ಥಿತಿ', patient: 'ರೋಗಿ:', age: 'ವಯಸ್ಸು:', date: 'ದಿನಾಂಕ:', doctor: 'ವೈದ್ಯರು:', token: 'ಒಪಿಡಿ ಟೋಕನ್:', status: 'ಒಪಿಡಿ ಸ್ಥಿತಿ:', test: 'ಪರೀಕ್ಷೆಯ ಹೆಸರು', result: 'ಫಲಿತಾಂಶ', range: 'ಉಲ್ಲೇಖ ಶ್ರೇಣಿ'}, 'ta': {title: 'நோயறிதல் அறிக்கை மற்றும் OPD நிலை', patient: 'நோயாளர்:', age: 'வயது:', date: 'தேதி:', doctor: 'மருத்துவர்:', token: 'OPD டோக்கன்:', status: 'OPD நிலை:', test: 'பரிசோதனை பெயர்', result: 'விளைவு', range: 'குறிப்பு வரம்பு'}, 'te': {title: 'డయాగ్నస్టిక్ నివేదిక & OPD స్థితి', patient: 'రోగి:', age: 'వయస్సు:', date: 'తేదీ:', doctor: 'డాక్టర్:', token: 'ఓపీడి టోకెన్:', status: 'ఓపీడి స్థితి:', test: 'పరీక్ష పేరు', result: 'ఫలితం', range: 'సూచన పరిధి'} }; // Multi-language Spoken Directions const spokenDirections = { 'Emergency': {'en': "From the entrance, follow the red arrows directly to the Emergency Room on the Ground Floor.", 'hi': "प्रवेश द्वार से, लाल तीरों का अनुसरण करें और सीधे भूतल पर आपातकाल कक्ष में पहुंचें।", 'kn': "ಪ್ರವೇಶ ದ್ವಾರದಿಂದ, ಕೆಂಪು ಬಾಣಗಳನ್ನು ಅನುಸರಿಸಿ ಮತ್ತು ನೆಲ ಮಹಡಿಯಲ್ಲಿರುವ ತುರ್ತು ಕೊಠಡಿಗೆ ನೇರವಾಗಿ ತಲುಪಿ.", 'ta': "நுழைவாயிலில் இருந்து, சிவப்பு அம்புக்குறிகளைப் பின்பற்றி, தரை தளத்தில் உள்ள அவசர அறைக்கு நேராகச் செல்லவும்.", 'te': "ప్రవేశం నుండి, ఎరుపు బాణాలను అనుసరించండి మరియు నేరుగా గ్రౌండ్ ఫ్లోర్‌లోని ఎమర్జెన్సీ గదికి చేరుకోండి।"}, 'OPD': {'en': "Go to the reception, take Lift A to the First Floor, and the Outpatient Department will be right there.", 'hi': "रिसेप्शन पर जाएं, लिफ्ट ए से पहली मंजिल पर जाएं, और ओपीडी आपको वहीं मिल जाएगी।", 'kn': "ಸ್ವಾಗತಕ್ಕೆ ಹೋಗಿ, ಲಿಫ್ಟ್ A ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಹೊರರೋಗಿ ವಿಭಾಗವು ಅಲ್ಲೇ ಇರುತ್ತದೆ。", 'ta': "வரவேற்புக்குச் சென்று, லிப்ட் A மூலம் முதல் மாடிக்குச் செல்லவும், வெளி நோயாளித் துறை அங்கேயே இருக்கும்。", 'te': "రిసెప్షన్‌కు వెళ్లి, లిఫ్ట్ A ద్వారా మొదటి అంతస్తుకు వెళ్లండి, అవుట్‌పేషెంట్ డిపార్ట్‌మెంట్ అక్కడే ఉంటుంది।"}, 'Pharmacy': {'en': "From the reception, take the left corridor. The Pharmacy Counter is straight ahead on the Ground Floor.", 'hi': "रिसेप्शन से, बाएं गलियारे में जाएं। फार्मेसी काउंटर भूतल पर सीधा आगे है।", 'kn': "ಸ್ವಾಗತದಿಂದ, ಎಡ ಹಜಾರವನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ. ಫಾರ್ಮಸಿ ಕೌಂಟರ್ ನೆಲ ಮಹಡಿಯಲ್ಲಿ ನೇರವಾಗಿ ಮುಂದೆ ಇದೆ。", 'ta': "வரவேற்பில் இருந்து, இடதுபுறக் காரிடாரை எடுத்துக் கொள்ளுங்கள். மருந்தக கவுண்டர் தரை தளத்தில் நேராக உள்ளது。", 'te': "రిసెప్షన్ నుండి, ఎడమ కారిడార్ తీసుకోండి. ఫార్మసీ కౌంటర్ గ్రౌండ్ ఫ్లోర్‌లో నేరుగా ఉంది।"}, 'Lab': {'en': "Take Lift C to the Second Floor. The Lab, room 210 for blood collection, is down the main hallway.", 'hi': "लिफ्ट सी से दूसरी मंजिल पर जाएं। लैब, रक्त संग्रह के लिए कमरा 210, मुख्य गलियारे के नीचे है।", 'kn': "ಲಿಫ್ಟ್ C ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ. ರಕ್ತ ಸಂಗ್ರಹಕ್ಕಾಗಿ ಲ್ಯಾಬ್, ಕೊಠಡಿ 210, ಮುಖ್ಯ ಹಜಾರದ ಕೆಳಗೆ ಇದೆ。", 'ta': "லிப்ட் C ஐப் பயன்படுத்தி இரண்டாவது மாடிக்குச் செல்லவும். இரத்தப் பரிசோதனைக்கான ஆய்வகம், அறை 210, பிரதான கூடத்தின் கீழே உள்ளது。", 'te': "లిఫ్ట్ C ద్వారా రెండవ అంతస్తుకు వెళ్లండి. బ్లడ్ కలెక్షన్ కోసం ల్యాబ్, గది 210, ప్రధాన హాలులో ఉంది।"}, 'Cardiology Cabin': {'en': "Go to the reception, take Lift B to the Second Floor, and the Cardiology Cabin, number 205, is nearby.", 'hi': "रिसेप्शन पर जाएं, लिफ्ट बी से दूसरी मंजिल पर जाएं, और कार्डियोलॉजी कक्ष, संख्या 205, पास ही है।", 'kn': "ಸ್ವಾಗತಕ್ಕೆ ಹೋಗಿ, ಲಿಫ್ಟ್ B ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಹೃದಯ ವಿಜ್ಞಾನದ ಕ್ಯಾಬಿನ್, ಸಂಖ್ಯೆ 205, ಹತ್ತಿರದಲ್ಲಿದೆ。", 'ta': "வரவேற்புக்குச் சென்று, லிப்ட் B மூலம் இரண்டாவது மாடிக்குச் செல்லவும், இருதயவியல் அறை, எண் 205, அருகிலேயே உள்ளது。", 'te': "రిసెప్షన్‌కు వెళ్లి, లిఫ్ట్ B ద్వారా రెండవ అంతస్తుకు వెళ్లండి, కార్డియాలజీ క్యాబిన్, నంబర్ 205, దగ్గరగా ఉంది।"}, 'Orthopedics Cabin': {'en': "From the entrance, take Lift A to the First Floor, and the Orthopedics Cabin, number 112, is in the main wing.", 'hi': "प्रवेश द्वार से, लिफ्ट ए से पहली मंजिल पर जाएं, और अस्थि रोग कक्ष, संख्या 112, मुख्य विंग में है।", 'kn': "ಪ್ರವೇಶದಿಂದ, ಲಿಫ್ಟ್ A ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಅಸ್ಥಿ ರೋಗ कक्ष, ಸಂಖ್ಯೆ 112, ಮುಖ್ಯ ವಿಭಾಗದಲ್ಲಿದೆ。", 'ta': "நுழைவாயிலில் இருந்து, லிப்ட் A மூலம் முதல் மாடிக்குச் செல்லவும், எலும்பியல் அறை, எண் 112, பிரதான பிரிவில் உள்ளது。", 'te': "ప్రవేశం నుండి, లిఫ్ట్ A ద్వారా మొదటి అంతస్తుకు వెళ్లండి, ఆర్థోపెడిక్స్ క్యాబిన్, నంబర్ 112, ప్రధాన విభాగంలో ఉంది।"} }; // 5. Patient Login/Report Display Function (Fixed Logic) function getReport(){ const reportElement = document.getElementById("report"); const pid = document.getElementById("pid").value.trim(); // Determine current language let lang = document.querySelector('input[name="lang"]:checked').id.replace('lang-', ''); const labels = reportLabels[lang]; if (!(pid in patientDatabase) || !(lang in patientDatabase[pid])) { // If ID is invalid or language data is missing (shouldn't happen with current data structure) reportElement.innerHTML = <strong><span class="lang show-${lang}">${labels.title}</span></strong> <p style="color: var(--emergency-red); font-weight: 700;"> <span class="lang show-${lang}"> ${lang === 'en' ? 'Error: Invalid Patient ID. Please enter one of 101, 102, 103, 104, or 105.' : lang === 'hi' ? 'त्रुटि: अमान्य रोगी आईडी। कृपया 101, 102, 103, 104, या 105 में से कोई एक दर्ज करें।' : lang === 'kn' ? 'ದೋಷ: ಅಮಾನ್ಯ ರೋಗಿ ID. ದಯವಿಟ್ಟು 101, 102, 103, 104, ಅಥವಾ 105 ರಲ್ಲಿ ಯಾವುದಾದರೂ ಒಂದನ್ನು ನಮೂದಿಸಿ.' : lang === 'ta' ? 'பிழை: தவறான நோயாளி ஐடி. தயவுசெய்து 101, 102, 103, 104, அல்லது 105 உள்ளிடவும்.' : 'లోపం: చెల్లని రోగి ID. దయచేసి 101, 102, 103, 104, లేదా 105 లో ఒకదాన్ని నమోదు చేయండి।'} </span> </p> ; return; } const data = patientDatabase[pid][lang]; let testsHtml = ''; // Loop through tests to create report structure data.tests.forEach(test => { const resultClass = test.isAbnormal ? 'result-value' : 'normal-range'; testsHtml += <p> <span class="label">${test.name}</span> <span class="value ${resultClass}">${test.result}</span> </p> <p style="margin-top: -5px;"> <span class="label" style="font-size: 0.85rem; font-weight: 400;">(${labels.range}: ${test.range})</span> <span class="value" style="font-size: 0.85rem; font-style: italic; color: ${test.isAbnormal ? 'var(--emergency-red)' : 'var(--muted)'};">${test.note || ''}</span> </p> ; }); reportElement.innerHTML = <strong><span class="lang show-${lang}">${labels.title}</span></strong> <div class="report-section"> <p><span class="label">${labels.patient}</span> <span class="value">${data.name}</span></p> <p><span class="label">${labels.age}</span> <span class="value">${data.age}</span></p> <p><span class="label">${labels.date}</span> <span class="value">${data.date}</span></p> </div> <div class="report-section"> <p><span class="label">${labels.doctor}</span> <span class="value">${data.doctor}</span></p> <p><span class="label">${labels.token}</span> <span class="value">${data.token}</span></p> <p><span class="label">${labels.status}</span> <span class="value">${data.status}</span></p> </div> <div class="report-section" style="margin-top: 20px;"> <p style="border-bottom: 1px solid var(--muted); padding-bottom: 5px;"> <span class="label" style="color: var(--text); font-size: 1rem;">** ${labels.test} **</span> <span class="value" style="color: var(--text); font-size: 1rem;">** ${labels.result} **</span> </p> ${testsHtml} </div> ; } // 6. Language Toggling Fix: Function to reset report on language change and trigger initial visibility. function resetReportText() { // Get the currently checked language let lang = document.querySelector('input[name="lang"]:checked').id.replace('lang-', ''); // Reset the report placeholder text, making sure the correct language placeholder is visible document.getElementById("report").innerHTML = <span class="lang show-en block" style="display:${lang === 'en' ? 'block' : 'none'};">• Lab reports • OPD token • Doctor timings. Enter ID (101-105) and click Get Report.</span> <span class="lang show-hi block" style="display:${lang === 'hi' ? 'block' : 'none'};">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय। आईडी (101-105) दर्ज करें और रिपोर्ट देखें पर क्लिक करें।</span> <span class="lang show-kn block" style="display:${lang === 'kn' ? 'block' : 'none'};">• ಲ್ಯಾಬ್ ವರದಿ • ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ. ಐಡಿ (101-105) ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</span> <span class="lang show-ta block" style="display:${lang === 'ta' ? 'block' : 'none'};">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம். ஐடி (101-105) உள்ளிட்டு அறிக்கையைக் காண்க.</span> <span class="lang show-te block" style="display:${lang === 'te' ? 'block' : 'none'};">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం. ఐడి (101-105) ఎంటర్ చేసి నివేదిక పొందండి క్లిక్ చేయండి.</span> ; document.getElementById("pid").value = ""; stopSpeaking(); } // 7. Attach reset function to language radio buttons document.querySelectorAll('input[name="lang"]').forEach(radio => { radio.addEventListener('change', resetReportText); }); // Ensure initial display is correct on load document.addEventListener('DOMContentLoaded', resetReportText); // Emergency Card Pulsing remains active through CSS, ensuring visual priority. document.addEventListener('DOMContentLoaded', () => { const card = document.getElementById('emergency-card'); card.classList.remove('emergency'); void card.offsetWidth; card.classList.add('emergency'); }); // Stop Speaking Function function stopSpeaking() { if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); } } // 8. Voice Navigation (Multi-language Fix) function speakDirections(destination) { // 1. Cancel any current speech (ensures the stop button works immediately) stopSpeaking(); // 2. Get the current selected language let lang = document.querySelector('input[name="lang"]:checked').id.replace('lang-', ''); // 3. Get the language code compatible with the Speech Synthesis API const languageCodes = { 'en': 'en-IN', 'hi': 'hi-IN', 'kn': 'kn-IN', 'ta': 'ta-IN', 'te': 'te-IN' }; const langCode = languageCodes[lang] || 'en-US'; // 4. Get the correct text from the multi-language object const textToSpeak = spokenDirections[destination] ? spokenDirections[destination][lang] : Directions for ${destination} are not yet available.; if ('speechSynthesis' in window) { const utterance = new SpeechSynthesisUtterance(textToSpeak); // 5. Set the voice language utterance.lang = langCode; window.speechSynthesis.speak(utterance); } else { alert("Text-to-speech not supported in this browser. Directions: " + textToSpeak); } } // 9. Dark Mode Function (CSS fix applied in style block) function toggleDarkMode() { document.getElementById('body').classList.toggle('dark-mode'); } </script>
-</body>
+    <div class="map-visual">
+  <img src="Hospital-map.png" alt="Hospital Floor Map">
+  <small class="muted">
+    <span class="lang show-en">Scroll / pinch to zoom</span>
+    <span class="lang show-hi">स्क्रॉल करें / ज़ूम करें</span>
+    <span class="lang show-kn">ಸ್ಕ್ರೋಲ್ ಮಾಡಿ / ಜೂಮ್ ಮಾಡಿ</span>
+    <span class="lang show-ta">ஸ்க்ரோல் / ஜூம் செய்யவும்</span>
+    <span class="lang show-te">స్క్రోల్ / జూమ్ చేయండి</span>
+  </small>
+</div>
+    <div class="modal-actions">
+      <label for="floor-map-toggle" class="close-label">
+        <span class="lang show-en">Close Map</span>
+        <span class="lang show-hi">नक्शा बंद करें</span>
+        <span class="lang show-kn">ನಕ್ಷೆ ಮುಚ್ಚಿ</span>
+        <span class="lang show-ta">வரைபடத்தை மூடு</span>
+        <span class="lang show-te">మ్యాప్‌ను మూసివేయి</span>
+      </label>
+    </div>
+  </div>
+</div>
 
+<div class="grid">
+  <input type="checkbox" id="emg" class="modal-toggle">
+<div class="card emergency" id="emergency-card">
+<h2>🚑 <span class="lang show-en">Emergency</span><span class="lang show-hi">आपातकाल</span><span class="lang show-kn">ತುರ್ತು</span><span class="lang show-ta">அவசரம்</span><span class="lang show-te">ఎమర్జెన్సీ</span>
+<span class="badge red">24×7</span></h2>
+<div class="incharge">
+<span class="lang show-en">Incharge: Dr. Kavya S</span>
+<span class="lang show-hi">प्रभारी: डॉ. काव्या S</span>
+<span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಕಾವ್ಯಾ S</span>
+<span class="lang show-ta">பொறுப்பு: டாக்டர் கவ்யா S</span>
+<span class="lang show-te">ఇంచార్జ్: డా. కావ్యా S</span>
+</div>
+<label for="emg" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">దిశలు తెರವండి</span></label>
+</div>
+
+<div class="modal-backdrop" id="emergency-modal">
+<div class="modal-box">
+<div class="modal-head">
+  <span class="lang show-en">Emergency – Fastest Route</span>
+  <span class="lang show-hi">आपातकाल – सबसे तेज़ मार्ग</span>
+  <span class="lang show-kn">ತುರ್ತು – ವೇಗದ ಮಾರ್ಗ</span>
+  <span class="lang show-ta">அவசரம் – விரைவான வழி</span>
+  <span class="lang show-te">ఎమర్జెన్సీ – వేగవంతమైన మార్గం</span>
+</div>
+<div class="modal-body">
+<span class="badge red">⚡ <span class="lang show-en">Fastest Route</span><span class="lang show-hi">सबसे तेज़ मार्ग</span><span class="lang show-kn">ವೇಗದ ಮಾರ್ಗ</span><span class="lang show-ta">விரைவான வழி</span><span class="lang show-te">వేగవంతమైన మార్గం</span></span>
+<div class="steps">
+<span class="lang show-en">Entrance → Follow Red arrows → Emergency Room (Ground Floor)</span>
+<span class="lang show-hi">प्रवेश → लाल तीर → आपातकाल कक्ष (भू-तल)</span>
+<span class="lang show-kn">ಪ್ರವೇಶ → ಕೆಂಪು ಬಾಣ → ತುರ್ತು ಕೊಠಡಿ (ನೆಲ ಮಹಡಿ)</span>
+<span class="lang show-ta">நுழைவு → சிவப்பு அம்புகள் → அவசர அறை (தரை தளம்)</span>
+<span class="lang show-te">ప్రవేశం → ఎరుపు బాణాలు → ఎమర్జెన్సీ గది (గ్రౌండ్ ఫ్లోర్)</span>
+</div>
+<div class="map-visual">
+  <img src="emergency-ground-floor.png" alt="Emergency Ground Floor Map">
+
+  <small class="muted">
+    <span class="lang show-en">Scroll / pinch to zoom</span>
+    <span class="lang show-hi">स्क्रॉल करें / ज़ूम करें</span>
+    <span class="lang show-kn">ಸ್ಕ್ರೋಲ್ ಮಾಡಿ / ಜೂಮ್ ಮಾಡಿ</span>
+    <span class="lang show-ta">ஸ்க்ரோல் / ஜூம் செய்யவும்</span>
+    <span class="lang show-te">స్క్రోల్ / జూమ్ చేయండి</span>
+  </small>
+</div>
+<div class="voice-control-group">
+  <button class="voice-tag" onclick="speakDirections('Emergency')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
+  <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
+</div>
+</div>
+<div class="modal-actions">
+  <label for="emg" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూసివేయి</span>
+  </label>
+</div>
+</div>
+</div>
+
+<input type="checkbox" id="opd" class="modal-toggle">
+<div class="card">
+<h2>🩺 <span class="lang show-en">OPD</span><span class="lang show-hi">ओपीडी</span><span class="lang show-kn">ಒಪಿಡಿ</span><span class="lang show-ta">OPD</span><span class="lang show-te">ఓపీడి</span></h2>
+
+<div class="incharge">
+<span class="lang show-en">Incharge: Dr. Manjunath R</span>
+<span class="lang show-hi">प्रभारी: डॉ. मंजुनाथ R</span>
+<span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಮಂಜುನಾಥ R</span>
+<span class="lang show-ta">பொறுப்பு: டாக்டர் மஞ்சுநாத் R</span>
+<span class="lang show-te">ఇంచార్జ్: డా. మంజునాథ్ R</span>
+</div>
+<span class="badge green">
+  <span class="lang show-en">Available Till 4:00 PM</span>
+  <span class="lang show-hi">शाम 4:00 बजे तक उपलब्ध</span>
+  <span class="lang show-kn">ಸಂಜೆ 4:00 ರವರೆಗೆ ಲಭ್ಯವಿದೆ</span>
+  <span class="lang show-ta">மாலை 4:00 மணி வரை கிடைக்கும்</span>
+  <span class="lang show-te">సాయంత్రం 4:00 వరకు అందుబాటులో</span>
+</span>
+
+<label for="opd" class="btn">
+<span class="lang show-en">Open Directions</span>
+<span class="lang show-hi">दिशा खोलें</span>
+<span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
+<span class="lang show-ta">வழிகாட்டியை திற</span>
+<span class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span>
+</label>
+</div>
+
+<div class="modal-backdrop">
+<div class="modal-box">
+<div class="modal-head">
+  <span class="lang show-en">OPD Directions</span>
+  <span class="lang show-hi">ओपीडी दिशा</span>
+  <span class="lang show-kn">ಒಪಿಡಿ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">OPD வழிமுறை</span>
+  <span class="lang show-te">ఓపీడి దిశలు</span>
+</div><div class="modal-body">
+<div class="steps">
+<span class="lang show-en">Reception → Lift A → 1st Floor → OPD</span>
+<span class="lang show-hi">रिसेप्शन → लिफ्ट A → पहली मंजिल → ओपीडी</span>
+<span class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ → ಒಪಿಡಿ</span>
+<span class="lang show-ta">வரவேற்பு → லிப்ட் A → 1வது மாடி → OPD</span>
+<span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ A → 1వ అంతస్తు → ఓపీడి</span>
+</div>
+<div class="map-visual">
+  <img src="opd-1st-floor.png" alt="Emergency Ground Floor Map">
+
+  <small class="muted">
+    <span class="lang show-en">Scroll / pinch to zoom</span>
+    <span class="lang show-hi">स्क्रॉल करें / ज़ूम करें</span>
+    <span class="lang show-kn">ಸ್ಕ್ರೋಲ್ ಮಾಡಿ / ಜೂಮ್ ಮಾಡಿ</span>
+    <span class="lang show-ta">ஸ்க்ரோல் / ஜூம் செய்யவும்</span>
+    <span class="lang show-te">స్క్రోల్ / జూమ్ చేయండి</span>
+  </small>
+</div>
+<div class="voice-control-group">
+  <button class="voice-tag" onclick="speakDirections('OPD')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
+  <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
+</div>
+</div>
+<div class="modal-actions">
+  <label for="opd" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూసివేయి</span>
+  </label>
+</div>
+</div>
+</div>
+
+<input type="checkbox" id="ph" class="modal-toggle">
+<div class="card">
+<h2>💊 <span class="lang show-en">Pharmacy</span><span class="lang show-hi">फार्मेसी</span><span class="lang show-kn">ಫಾರ್ಮಸಿ</span><span class="lang show-ta">மருந்தகம்</span><span class="lang show-te">ఫార్మసీ</span></h2>
+<div class="incharge">
+<span class="lang show-en">Incharge: Mr. Prakash M</span>
+<span class="lang show-hi">प्रभारी: श्री प्रकाश M</span>
+<span class="lang show-kn">ಪ್ರಭಾರಿ: ಶ್ರೀ ಪ್ರಕಾಶ M</span>
+<span class="lang show-ta">பொறுப்பு: திரு. பிரகாஷ் M</span>
+<span class="lang show-te">ఇంచార్జ్: శ్రీ ప్రకాష్ M</span>
+</div>
+<label for="ph" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi">दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span></label>
+</div>
+<div class="modal-backdrop">
+<div class="modal-box">
+<div class="modal-head">
+  <span class="lang show-en">Pharmacy Directions</span>
+  <span class="lang show-hi">फार्मेसी दिशा</span>
+  <span class="lang show-kn">ಫಾರ್ಮಸಿ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">மருந்தகம் வழிமுறை</span>
+  <span class="lang show-te">ఫార్మసీ దిశలు</span>
+</div>
+<div class="modal-body">
+<div class="steps">
+<span class="lang show-en">Reception → Left Corridor → Pharmacy Counter (Ground Floor)</span>
+<span class="lang show-hi">रिसेप्शन → बायां गलियारा → फार्मेसी काउंटर (भू-तल)</span>
+<span class="lang show-kn">ಸ್ವಾಗತ → ಎಡ ದಾರಿ → ಫಾರ್ಮಸಿ ಕೌಂಟರ್ (ನೆಲ ಮಹಡಿ)</span>
+<span class="lang show-ta">வரவேற்பு → இடது வழி → மருந்தக கவுண்டர் (தரை தளம்)</span>
+<span class="lang show-te">రిసెప్షన్ → ఎడమ దారి → ఫార్మసీ కౌంటర్ (గ్రౌండ్ ఫ్లోర్)</span>
+</div>
+<div class="map-visual">
+  <img src="pharmacy-ground-floor.png" alt="Emergency Ground Floor Map">
+
+  <small class="muted">
+    <span class="lang show-en">Scroll / pinch to zoom</span>
+    <span class="lang show-hi">स्क्रॉल करें / ज़ूम करें</span>
+    <span class="lang show-kn">ಸ್ಕ್ರೋಲ್ ಮಾಡಿ / ಜೂಮ್ ಮಾಡಿ</span>
+    <span class="lang show-ta">ஸ்க்ரோல் / ஜூம் செய்யவும்</span>
+    <span class="lang show-te">స్క్రోల్ / జూమ్ చేయండి</span>
+  </small>
+</div>
+<div class="voice-control-group">
+  <button class="voice-tag" onclick="speakDirections('Pharmacy')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
+  <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
+</div>
+</div>
+<div class="modal-actions">
+  <label for="ph" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూసివేయి</span>
+  </label>
+</div>
+</div>
+</div>
+
+<input type="checkbox" id="lab" class="modal-toggle">
+<div class="card">
+<h2>🧪 <span class="lang show-en">Lab (Blood Tests)</span><span class="lang show-hi">लैब (रक्त परीक्षण)</span><span class="lang show-kn">ಲ್ಯಾಬ್ (ರಕ್ತ ಪರೀಕ್ಷೆ)</span><span class="lang show-ta">ஆய்வகம் (இரத்த பரிசோதனை)</span><span class="lang show-te">ల్యాబ్ (రక్త పరీక్షలు)</span></h2>
+<div class="incharge">
+<span class="lang show-en">Incharge: Dr. Shalini B</span>
+<span class="lang show-hi">प्रभारी: डॉ. शालिनी B</span>
+<span class="lang show-kn">ಪ್ರಭಾರಿ: ಡಾ. ಶಾಲಿನಿ B</span>
+<span class="lang show-ta">பொறுப்பு: டாக்டர் ஷாலினி B</span>
+<span class="lang show-te">ఇంచార్జ్: డా. శాలಿನಿ B</span>
+</div>
+<span class="badge green">
+  <span class="lang show-en">Available Till 5:30 PM</span>
+  <span class="lang show-hi">शाम 5:30 बजे तक उपलब्ध</span>
+  <span class="lang show-kn">ಸಂಜೆ 5:30 ರವರೆಗೆ ಲಭ್ಯವಿದೆ</span>
+  <span class="lang show-ta">மாலை 5:30 மணி வரை கிடைக்கும்</span>
+  <span class="lang show-te">సాయంత్రం 5:30 వరకు అందుబాటులో</span>
+</span>
+<br>
+<label for="lab" class="btn"><span class="lang show-en">Open Directions</span><span class="lang show-hi"> दिशा खोलें</span><span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span><span class="lang show-ta">வழிகாட்டியை திற</span><span class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span></label>
+</div>
+<div class="modal-backdrop">
+<div class="modal-box">
+<div class="modal-head">
+  <span class="lang show-en">Lab Directions</span>
+  <span class="lang show-hi">लैब दिशा</span>
+  <span class="lang show-kn">ಲ್ಯಾಬ್ ದಿಕ್ಕು</span>
+  <span class="lang show-ta">ஆய்ವகம் வழிமுறை</span>
+  <span class="lang show-te">ల్యాబ్ దిశలు</span>
+</div>
+<div class="modal-body">
+<div class="steps">
+<span class="lang show-en">Lift C → 2nd Floor → Lab Room 210 (Blood Sample Collection)</span>
+<span class="lang show-hi">लिफ्ट C → दूसरी मंजिल → लैब कक्ष 210 (रक्त नमूना संग्रह)</span>
+<span class="lang show-kn">ಲಿಫ್ಟ್ C → 2ನೇ ಮಹಡಿ → ಲ್ಯಾಬ್ ಕೊಠಡಿ 210 (ರಕ್ತ ಮಾದರಿ ಸಂಗ್ರಹ)</span>
+<span class="lang show-ta">லிப்ட் C → 2வது மாடி → ஆய்வக அறை 210 (இரத்த மாதிரி சேகரிப்பு)</span>
+<span class="lang show-te">లిఫ్ట్ C → 2వ అంతస్తు → ల్యాబ్ గది 210 (రక్త నమూనా సేకరణ)</span>
+</div>
+<div class="map-visual">
+  <img src="lad-2nd-floor.png" alt="Emergency Ground Floor Map">
+
+  <small class="muted">
+    <span class="lang show-en">Scroll / pinch to zoom</span>
+    <span class="lang show-hi">स्क्रॉल करें / ज़ूम करें</span>
+    <span class="lang show-kn">ಸ್ಕ್ರೋಲ್ ಮಾಡಿ / ಜೂಮ್ ಮಾಡಿ</span>
+    <span class="lang show-ta">ஸ்க்ரோல் / ஜூம் செய்யவும்</span>
+    <span class="lang show-te">స్క్రోల్ / జూమ్ చేయండి</span>
+  </small>
+</div>
+<div class="voice-control-group">
+  <button class="voice-tag" onclick="speakDirections('Lab')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
+  <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
+</div>
+</div>
+<div class="modal-actions">
+  <label for="lab" class="close-label">
+    <span class="lang show-en">Close</span>
+    <span class="lang show-hi">बंद करें</span>
+    <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+    <span class="lang show-ta">மூடு</span>
+    <span class="lang show-te">మూಸಿవేయి</span>
+  </label>
+</div>
+</div>
+</div>
+<input type="checkbox" id="doc1" class="modal-toggle">
+<div class="card">
+  <h2>
+    👨‍⚕️ <span class="lang show-en">Dr. A. Sharma (Cardiology)</span>
+    <span class="lang show-hi">डॉ. ए. शर्मा (हृदय रोग)</span>
+    <span class="lang show-kn">ಡಾ. ಎ. ಶರ್ಮಾ (ಹೃದಯ ವಿಜ್ಞಾನ)</span>
+    <span class="lang show-ta">டாக்டர் ஏ. சர்மா (இதய மருத்துவம்)</span>
+    <span class="lang show-te">డా. ఏ. శర్మ (హృదయ వైద్యం)</span>
+  </h2>
+  <p class="muted">
+    <span class="lang show-en">Cabin 205 – 2nd Floor</span>
+    <span class="lang show-hi">कक्ष 205 – दूसरी मंजिल</span>
+    <span class="lang show-kn">ಕೊಠಡಿ 205 – 2ನೇ ಮಹಡಿ</span>
+    <span class="lang show-ta">அறை 205 – 2வது மாடி</span>
+    <span class="lang show-te">గది 205 – 2వ అంతస్తు</span>
+  </p>
+  <span class="badge green">
+    <span class="lang show-en">Available till 1:00 PM</span>
+    <span class="lang show-hi">दोपहर 1:00 बजे तक उपलब्ध</span>
+    <span class="lang show-kn">ಮಧ್ಯಾಹ್ನ 1:00 ರವರೆಗೆ ಲಭ್ಯವಿದೆ</span>
+    <span class="lang show-ta">பிற்பகல் 1:00 மணி வரை கிடைக்கும்</span>
+    <span class="lang show-te">మధ్యాహ్నం 1:00 వరకు అందుబాటులో</span>
+  </span>
+  <br>
+  <label for="doc1" class="btn">
+    <span class="lang show-en">Open Directions</span>
+    <span class="lang show-hi">दिशा खोलें</span>
+    <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
+    <span class="lang show-ta">வழிகாட்டியை திற</span>
+    <span class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span>
+  </label>
+</div>
+
+<div class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="lang show-en">Doctor Cabin Directions</span>
+      <span class="lang show-hi">डॉक्टर कक्ष दिशा</span>
+      <span class="lang show-kn">ವೈದ್ಯರ ಕೊಠಡಿ ದಿಕ್ಕು</span>
+      <span class="lang show-ta">மருத்துவர் அறை வழிமுறை</span>
+      <span class="lang show-te">డాక్టర్ గది దిశలు</span>
+    </div>
+    <div class="modal-body">
+      <div class="steps">
+        <span class="lang show-en">Reception → Lift B → 2nd Floor → Cabin 205 (Cardiology)</span>
+        <span class="lang show-hi">रिसेप्शन → लिफ्ट B → दूसरी मंजिल → कक्ष 205 (हृदय रोग)</span>
+        <span class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ B → 2ನೇ ಮಹಡಿ → ಕೊಠಡಿ 205 (ಹೃದಯ ವಿಭಾಗ)</span>
+        <span class="lang show-ta">வரவேற்பு → லிப்ட் B → 2வது மாடி → அறை 205 (இதய மருத்துவம்)</span>
+        <span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ B → 2వ అంతస్తు → గది 205 (హృదయ వైద్యం)</span>
+      </div>
+      <div class="map-visual">
+  <img src="cardiology-2nd-floor.png" alt="Emergency Ground Floor Map">
+
+  <small class="muted">
+    <span class="lang show-en">Scroll / pinch to zoom</span>
+    <span class="lang show-hi">स्क्रॉल करें / ज़ूम करें</span>
+    <span class="lang show-kn">ಸ್ಕ್ರೋಲ್ ಮಾಡಿ / ಜೂಮ್ ಮಾಡಿ</span>
+    <span class="lang show-ta">ஸ்க்ரோல் / ஜூம் செய்யவும்</span>
+    <span class="lang show-te">స్క్రోల్ / జూమ్ చేయండి</span>
+  </small>
+</div>
+      <div class="voice-control-group">
+        <button class="voice-tag" onclick="speakDirections('Cardiology Cabin')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
+        <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <label for="doc1" class="close-label">
+        <span class="lang show-en">Close</span>
+        <span class="lang show-hi">बंद करें</span>
+        <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+        <span class="lang show-ta">மூடு</span>
+        <span class="lang show-te">మూసివేయి</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<input type="checkbox" id="doc2" class="modal-toggle">
+<div class="card">
+  <h2>
+    👨‍⚕️ <span class="lang show-en">Dr. R. Khan (Orthopedics)</span>
+    <span class="lang show-hi">डॉ. आर. खान (अस्थि रोग)</span>
+    <span class="lang show-kn">ಡಾ. ಆರ್. ಖಾನ್ (ಅಸ್ಥಿ ವಿಜ್ಞಾನ)</span>
+    <span class="lang show-ta">டாக்டர் ஆர். கான் (எலும்பியல்)</span>
+    <span class="lang show-te">డా. ఆర్. ఖాన్ (అస్థి వైద్యం)</span>
+  </h2>
+  <p class="muted">
+    <span class="lang show-en">Cabin 112 – 1st Floor</span>
+    <span class="lang show-hi">कक्ष 112 – पहली मंजिल</span>
+    <span class="lang show-kn">ಕೊಠಡಿ 112 – 1ನೇ ಮಹಡಿ</span>
+    <span class="lang show-ta">அறை 112 – 1வது மாடி</span>
+    <span class="lang show-te">గది 112 – 1వ అంతస్తు</span>
+  </p>
+  <span class="badge red">
+    <span class="lang show-en">Next available: Tomorrow 10:00 AM</span>
+    <span class="lang show-hi">अगला उपलब्ध: कल सुबह 10:00 बजे</span>
+    <span class="lang show-kn">ಮುಂದಿನ ಲಭ್ಯತೆ: ನಾಳೆ ಬೆಳಿಗ್ಗೆ 10:00 ಗಂಟೆಗೆ</span>
+    <span class="lang show-ta">அடுத்து கிடைக்கும்: நாளை காலை 10:00 மணி</span>
+    <span class="lang show-te">తరువాత అందుబాటులో: రేపు ఉదయం 10:00 గంటలకు</span>
+  </span>
+  <br>
+  <label for="doc2" class="btn">
+    <span class="lang show-en">Open Directions</span>
+    <span class="lang show-hi">दिशा खोलें</span>
+    <span class="lang show-kn">ದಿಕ್ಕು ತೆರೆ</span>
+    <span class="lang show-ta">வழிகாட்டியை திற</span>
+    <span class="lang show-te">ದಿಶಲು ತೆರವಂಡಿ</span>
+  </label>
+</div>
+
+<div class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="lang show-en">Doctor Cabin Directions</span>
+      <span class="lang show-hi">डॉक्टर कक्ष दिशा</span>
+      <span class="lang show-kn">ವೈದ್ಯರ ಕೊಠಡಿ ದಿಕ್ಕು</span>
+      <span class="lang show-ta">மருத்துவர் அறை வழிமுறை</span>
+      <span class="lang show-te">డాక్టర్ గది దిశలు</span>
+    </div>
+    <div class="modal-body">
+      <div class="steps">
+        <span class="lang show-en">Entrance → Lift A → 1st Floor → Cabin 112 (Orthopedics)</span>
+        <span class="lang show-hi">प्रवेश द्वार → लिफ्ट A → पहली मंजिल → कक्ष 112 (अस्थि रोग)</span>
+        <span class="lang show-kn">ಪ್ರವೇಶ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ → ಕೊಠಡಿ 112 (ಅಸ್ಥಿ ವಿಭಾಗ)</span>
+        <span class="lang show-ta">நுழைவாயில் → லிப்ட் A → 1வது மாடி → அறை 112 (எலும்பியல்)</span>
+        <span class="lang show-te">ప్రవేశం → లిఫ్ట్ A → 1వ అంతస్తు → గది 112 (అస్థి వైద్యం)</span>
+      </div>
+      <div class="map-visual">
+  <img src="orthopedics-1st-floor.png" alt="Emergency Ground Floor Map">
+
+  <small class="muted">
+    <span class="lang show-en">Scroll / pinch to zoom</span>
+    <span class="lang show-hi">स्क्रॉल करें / ज़ूम करें</span>
+    <span class="lang show-kn">ಸ್ಕ್ರೋಲ್ ಮಾಡಿ / ಜೂಮ್ ಮಾಡಿ</span>
+    <span class="lang show-ta">ஸ்க்ரோல் / ஜூம் செய்யவும்</span>
+    <span class="lang show-te">స్క్రోల్ / జూమ్ చేయండి</span>
+  </small>
+</div>
+      <div class="voice-control-group">
+        <button class="voice-tag" onclick="speakDirections('Orthopedics Cabin')">🔊 <span class="lang show-en">Speak Directions</span><span class="lang show-hi">दिशा बोलें</span><span class="lang show-kn">ದಿಕ್ಕು ಮಾತನಾಡಿ</span><span class="lang show-ta">வழிகாட்டியை பேசு</span><span class="lang show-te">దిశలు చెప్పండి</span></button>
+        <button class="voice-stop-btn" onclick="stopSpeaking()">🛑 <span class="lang show-en">Stop Speaker</span><span class="lang show-hi">स्पीकर बंद करें</span><span class="lang show-kn">ಸ್ಪೀಕರ್ ನಿಲ್ಲಿಸಿ</span><span class="lang show-ta">பேசுவதை நிறுத்து</span><span class="lang show-te">స్పీకర్ ఆపండి</span></button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <label for="doc2" class="close-label">
+        <span class="lang show-en">Close</span>
+        <span class="lang show-hi">बंद करें</span>
+        <span class="lang show-kn">ಮುಚ್ಚಿ</span>
+        <span class="lang show-ta">மூடு</span>
+        <span class="lang show-te">మూసివేయి</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+</div> 
+<h2 style="margin-top:23px">
+<span class="lang show-en">Patient Login</span>
+<span class="lang show-hi">मरीज लॉगिन</span>
+<span class="lang show-kn">ರೋಗಿ ಲಾಗಿನ್</span>
+<span class="lang show-ta">நோயாளர் உள்நுழைவு</span>
+<span class="lang show-te">రోగి లాగిన్</span>
+</h2>
+
+<div class="card login-card">
+<input id="pid" placeholder="Patient ID (e.g. 101)">
+<button class="btn" onclick="getReport()">
+<span class="lang show-en">Get Report / Info</span>
+<span class="lang show-hi">रिपोर्ट / जानकारी देखें</span>
+<span class="lang show-kn">ವರದಿ / ಮಾಹಿತಿ ಪಡೆಯಿರಿ</span>
+<span class="lang show-ta">அறிக்கை / தகவல் காண்க</span>
+<span class="lang show-te">నివేదిక / సమాచారం పొందండి</span>
+</button>
+<div id="report" class="muted">
+<span class="lang show-en block">• Lab reports • OPD token • Doctor timings. Enter ID (101-105) and click Get Report.</span>
+<span class="lang show-hi block" style="display:none">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय। आईडी (101-105) दर्ज करें और रिपोर्ट देखें पर क्लिक करें।</span>
+<span class="lang show-kn block" style="display:none">• ಲ್ಯಾಬ್ ವರದಿ • ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ. ಐಡಿ (101-105) ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</span>
+<span class="lang show-ta block" style="display:none">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம். ஐடி (101-105) உள்ளிட்டு அறிக்கையைக் காண்க.</span>
+<span class="lang show-te block" style="display:none">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం. ఐడి (101-105) ఎంటర్ చేసి నివేదిక పొందండి క్లిక్ చేయండి.</span>
+</div>
+</div>
+
+<div class="qr-placement">
+  <h3>📍 
+    <span class="lang show-en">QR Code Placement Strategy</span>
+    <span class="lang show-hi">QR कोड प्लेसमेंट रणनीति</span>
+    <span class="lang show-kn">QR ಕೋಡ್ ನಿಯೋಜನೆ ತಂತ್ರ</span>
+    <span class="lang show-ta">QR குறியீடு வைக்கும் உத்தி</span>
+    <span class="lang show-te">QR కోడ్ ప్లేస్‌మెంట్ వ్యూహం</span>
+  </h3>
+  <ul class="dark-placement-list">
+    <li class="lang show-en list-item">**Main Gate/Entrance:** For first-time visitors to get overall map and directions.</li>
+    <li class="lang show-hi list-item">**मुख्य द्वार/प्रवेश:** पहली बार आने वालों के लिए समग्र नक्शा और दिशा-निर्देश प्राप्त करने हेतु।</li>
+    <li class="lang show-kn list-item">**ಮುಖ್ಯ ಗೇಟ್/ಪ್ರವೇಶ:** ಮೊದಲ ಬಾರಿಗೆ ಭೇಟಿ ನೀಡುವವರಿಗೆ ಒಟ್ಟಾರೆ ನಕ್ಷೆ ಮತ್ತು ದಿಕ್ಕುಗಳನ್ನು ಪಡೆಯಲು.</li>
+    <li class="lang show-ta list-item">**பிரதான வாயில்/நுழைவு:** முதல் முறை வருபவர்கள் ஒட்டுமொத்த வரைபடம் மற்றும் வழிகாட்டியைப் பெற.</li>
+    <li class="lang show-te list-item">**ప్రధాన గేట్/ప్రవేశం:** మొదటిసారి వచ్చే సందర్శకులు మొత్తం మ్యాప్ మరియు దిశలను పొందడానికి.</li>
+    
+    <li class="lang show-en list-item">**Lift/Staircase Area:** For inter-floor navigation (e.g., from 1st floor to 2nd floor lab).</li>
+    <li class="lang show-hi list-item">**लिफ्ट/सीढ़ी क्षेत्र:** अंतर-मंजिल नेविगेशन के लिए (जैसे, पहली मंजिल से दूसरी मंजिल लैब तक)।</li>
+    <li class="lang show-kn list-item">**ಲಿಫ್ಟ್/ಮೆಟ್ಟಿಲು ಪ್ರದೇಶ:** ಅಂತರ್-ಮಹಡಿ ನ್ಯಾವಿಗೇಷನ್‌ಗಾಗಿ (ಉದಾ, 1ನೇ ಮಹಡಿಯಿಂದ 2ನೇ ಮಹಡಿಯ ಲ್ಯಾಬ್‌ಗೆ).</li>
+    <li class="lang show-ta list-item">**லிப்ட்/மாடிப்படி பகுதி:** மாடிகளுக்கு இடையிலான வழிசெலுத்தலுக்காக (எ.கா., 1வது மாடியிலிருந்து 2வது மாடி ஆய்வகத்திற்கு).</li>
+    <li class="lang show-te list-item">**లిఫ్ట్/మెట్ల ప్రాంతం:** అంతస్తుల మధ్య నావిగేషన్ కోసం (ఉదా. 1వ అంతస్తు నుండి 2వ అంతస్తు ల్యాబ్‌కు).</li>
+    
+    <li class="lang show-en list-item">**OPD Waiting Hall:** Quick access to token status and doctor availability.</li>
+    <li class="lang show-hi list-item">**ओपीडी प्रतीक्षालय:** टोकन स्थिति और डॉक्टर की उपलब्धता तक त्वरित पहुंच के लिए।</li>
+    <li class="lang show-kn list-item">**ಒಪಿಡಿ ಕಾಯುವ ಹಾಲ್:** ಟೋಕನ್ ಸ್ಥಿತಿ ಮತ್ತು ವೈದ್ಯರ ಲಭ್ಯತೆಗೆ ತ್ವರಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ.</li>
+    <li class="lang show-ta list-item">**OPD காத்திருப்பு கூடம்:** டோக்கன் நிலை மற்றும் மருத்துவர் கிடைக்கும் நேரத்தை விரைவாக அணுக.</li>
+    <li class="lang show-te list-item">**ఓపీడి వెయిటింగ్ హాల్:** టోకెన్ స్థితి మరియు డాక్టర్ లభ్యతకు త్వరిత ప్రాప్యత కోసం.</li>
+    
+    <li class="lang show-en list-item">**Pharmacy/Lab Counter:** For easy report collection and post-consultation directions.</li>
+    <li class="lang show-hi list-item">**फार्मेसी/लैब काउंटर:** आसान रिपोर्ट संग्रह और परामर्श के बाद की दिशाओं के लिए।</li>
+    <li class="lang show-kn list-item">**ಫಾರ್ಮಸಿ/ಲ್ಯಾಬ್ ಕೌಂಟರ್:** ಸುಲಭ ವರದಿ ಸಂಗ್ರಹಣೆ ಮತ್ತು ಸಮಾಲೋಚನೆಯ ನಂತರದ ದಿಕ್ಕುಗಳಿಗಾಗಿ.</li>
+    <li class="lang show-ta list-item">**மருந்தகம்/ஆய்வக கவுண்டர்:** எளிதான அறிக்கை சேகரிப்பு மற்றும் ஆலோசனைக்கு பிந்தைய வழிகாட்டலுக்காக.</li>
+    <li class="lang show-te list-item">**ఫార్మసీ/ల్యాబ్ కౌంటర్:** సులభ నివేదిక సేకరణ మరియు సంప్రదింపుల తర్వాత దిశల కోసం.</li>
+  </ul>
+  <small class="muted">
+    <span class="lang show-en">Ensures continuous navigation support throughout the patient journey.</span>
+    <span class="lang show-hi">रोगी की पूरी यात्रा के दौरान निरंतर नेविगेशन समर्थन सुनिश्चित करता है।</span>
+    <span class="lang show-kn">ರೋಗಿಯ ಪ್ರಯಾಣದ ಉದ್ದಕ್ಕೂ ನಿರಂತರ ನ್ಯಾವಿಗೇಷನ್ ಬೆಂಬಲವನ್ನು ಖಚಿತಪಡಿಸುತ್ತದೆ.</span>
+    <span class="lang show-ta">நோயாளியின் பயணத்தில் தொடர்ச்சியான வழிசெலுத்தல் ஆதரவை உறுதி செய்கிறது.</span>
+    <span class="lang show-te">రోగి ప్రయాణంలో నిరంతర నావిగేషన్ మద్దతును నిర్ధారిస్తుంది.</span>
+  </small>
+</div>
+
+</div>
+
+<script>
+// Multi-language Patient Database for realistic reports (101-105 only)
+const patientDatabase = {
+    '101': {
+        en: {name: 'Ravi Kumar', age: 45, date: '15 Dec 2025', doctor: 'Dr. A. Sharma (Cardiology)', token: 'A-23', status: 'Available at 11:30 AM', tests: [{ name: 'ECG Report', result: 'Abnormal', range: 'Normal', note: 'Requires immediate review.', isAbnormal: true }, { name: 'Total Cholesterol', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'Glucose (Fasting)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]},
+        hi: {name: 'रवि कुमार', age: 45, date: '15 दिसं 2025', doctor: 'डॉ. ए. शर्मा (हृदय रोग)', token: 'ए-23', status: '11:30 बजे उपलब्ध', tests: [{ name: 'ईसीजी रिपोर्ट', result: 'असामान्य', range: 'सामान्य', note: 'तत्काल समीक्षा की आवश्यकता है।', isAbnormal: true }, { name: 'कुल कोलेस्ट्रॉल', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'ग्लूकोज (उपवास)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]},
+        kn: {name: 'ರವಿ ಕುಮಾರ್', age: 45, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಎ. ಶರ್ಮಾ (ಹೃದಯ ವಿಜ್ಞಾನ)', token: 'ಎ-23', status: '11:30 ಗಂಟೆಗೆ ಲಭ್ಯವಿದೆ', tests: [{ name: 'ಇಸಿಜಿ ವರದಿ', result: 'ಅಸಹಜ', range: 'ಸಾಮಾನ್ಯ', note: 'ತಕ್ಷಣದ ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ.', isAbnormal: true }, { name: 'ಒಟ್ಟು ಕೊಲೆಸ್ಟ್ರಾಲ್', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'ಗ್ಲುಕೋಸ್ (ಉಪವಾಸ)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]},
+        ta: {name: 'ரவி குமார்', age: 45, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் ஏ. சர்மா (இதய மருத்துவம்)', token: 'A-23', status: '11:30 AM வரை கிடைக்கும்', tests: [{ name: 'ECG அறிக்கை', result: 'சாதாரணமற்றது', range: 'சாதாரணம்', note: 'உடனடி மறுஆய்வு தேவை.', isAbnormal: true }, { name: 'மொத்த கொலஸ்ட்ரால்', result: '245 mg/dL', range: '< 200 mg/dL', isAbnormal: true }, { name: 'குளுக்கோஸ் (உண்ணாவிரதம்)', result: '95 mg/dL', range: '70-100 mg/dL', isAbnormal: false }]},
+        te: {name: 'దీపక్ రావు', age: 55, date: '15 డిసెంబర్ 2025', doctor: 'డా. మంజునాథ్ R (సాధారణ వైద్యం)', token: 'B-11', status: '11:00 AM వరకు అందుబాటులో', tests: [{ name: 'క్రియేటినిన్', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'సోడియం', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]}
+    },
+    '102': {
+        en: {name: 'Priya Sharma', age: 28, date: '15 Dec 2025', doctor: 'Dr. R. Khan (Orthopedics)', token: 'C-05', status: 'Not Available Today', tests: [{ name: 'X-Ray (Hand)', result: 'Small fracture detected', range: 'No fracture', note: 'Requires cast and follow-up with Dr. Khan.', isAbnormal: true }, { name: 'Vitamin D', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]},
+        hi: {name: 'प्रिया शर्मा', age: 28, date: '15 दिसं 2025', doctor: 'डॉ. आर. खान (अस्थि रोग)', token: 'सी-05', status: 'आज उपलब्ध नहीं', tests: [{ name: 'एक्स-रे (हाथ)', result: 'छोटा फ्रैक्चर पाया गया', range: 'कोई फ्रैक्चर नहीं', note: 'डॉ. खान के साथ प्लास्टर और फॉलो-अप की आवश्यकता है।', isAbnormal: true }, { name: 'विटामिन डी', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]},
+        kn: {name: 'ಪ್ರಿಯಾ ಶರ್ಮಾ', age: 28, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಆರ್. ಖಾನ್ (ಅಸ್ಥಿ ವಿಜ್ಞಾನ)', token: 'ಸಿ-05', status: 'ಇಂದು ಲಭ್ಯವಿಲ್ಲ', tests: [{ name: 'ಎಕ್ಸ್-ರೇ (ಕೈ)', result: 'ಸಣ್ಣ ಬಿರುಕು ಕಂಡುಬಂದಿದೆ', range: 'ಬಿರುಕು ಇಲ್ಲ', note: 'ಡಾ. ಖಾನ್ ಜೊತೆ ಪ್ಲಾಸ್ಟರ್ ಮತ್ತು ಫಾಲೋ-ಅಪ್ ಅಗತ್ಯವಿದೆ.', isAbnormal: true }, { name: 'ವಿಟಮಿನ್ ಡಿ', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]},
+        ta: {name: 'பிரியா சர்மா', age: 28, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் ஆர். கான் (எலும்பியல்)', token: 'C-05', status: 'இன்று கிடைக்கவில்லை', tests: [{ name: 'எக்ஸ்-ரே (கை)', result: 'சிறு முறிவு கண்டறியப்பட்டது', range: 'முறிவு இல்லை', note: 'பிளாஸ்டர் மற்றும் டாக்டர் கானுடன் தொடர் ஆலோசனை தேவை.', isAbnormal: true }, { name: 'வைட்டமின் டி', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]},
+        te: {name: 'ప్రియా శర్మ', age: 28, date: '15 డిసెంబర్ 2025', doctor: 'డా. ఆర్. ఖాన్ (అస్థి వైద్యం)', token: 'C-05', status: 'ఈరోజు అందుబాటులో లేదు', tests: [{ name: 'ఎక్స్-రే (చేయి)', result: 'చిన్న పగులు గుర్తించబడింది', range: 'పగులు లేదు', note: 'డా. ఖాన్‌తో కాస్ట్ మరియు ఫాలో-అప్ అవసరం.', isAbnormal: true }, { name: 'విటమిన్ డి', result: '45 ng/mL', range: '30-100 ng/mL', isAbnormal: false }]}
+    },
+    '103': {
+        en: {name: 'Arjun Reddy', age: 60, date: '15 Dec 2025', doctor: 'Dr. Manjunath R (General Medicine)', token: 'B-10', status: 'Available at 10:45 AM', tests: [{ name: 'Hemoglobin', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ESR', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'WBC Count', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]},
+        hi: {name: 'अर्जुन रेड्डी', age: 60, date: '15 दिसं 2025', doctor: 'डॉ. मंजुनाथ R (सामान्य चिकित्सा)', token: 'बी-10', status: '10:45 बजे उपलब्ध', tests: [{ name: 'हीमोग्लोबिन', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ईएसआर', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'डब्ल्यूबीसी गणना', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]},
+        kn: {name: 'ಅರ್ಜುನ್ ರೆಡ್ಡಿ', age: 60, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಮಂಜುನಾಥ R (ಸಾಮಾನ್ಯ ಔಷಧ)', token: 'ಬಿ-10', status: '10:45 ಗಂಟೆಗೆ ಲಭ್ಯವಿದೆ', tests: [{ name: 'ಹಿಮೋಗ್ಲೋಬಿನ್', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ಇಎಸ್ಆರ್', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'ಡಬ್ಲ್ಯೂಬಿಸಿ ಕೌಂಟ್', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]},
+        ta: {name: 'அர்ஜுன் ரெட்டி', age: 60, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் மஞ்சுநாத் R (பொது மருத்துவம்)', token: 'B-10', status: '10:45 AM வரை கிடைக்கும்', tests: [{ name: 'ஹீமோகுளோபின்', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ESR', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'WBC எண்ணிக்கை', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]},
+        te: {name: 'అర్జున్ రెడ్డి', age: 60, date: '15 డిసెంబర్ 2025', doctor: 'డా. మంజునాథ్ R (సాధారణ వైద్యం)', token: 'B-10', status: '10:45 AM వరకు అందుబాటులో', tests: [{ name: 'హెమోగ్లోబిన్', result: '13.8 g/dL', range: '13.5-17.5 g/dL', isAbnormal: false }, { name: 'ESR', result: '30 mm/hr', range: '0-20 mm/hr', isAbnormal: true }, { name: 'WBC సంఖ్య', result: '8.2 x 10³/μL', range: '4.5-11.0 x 10³/μL', isAbnormal: false }]}
+    },
+    '104': {
+        en: {name: 'Shreya Varma', age: 32, date: '15 Dec 2025', doctor: 'Dr. Shalini B (Lab Consultation)', token: 'D-01', status: 'Report Ready', tests: [{ name: 'Thyroid Stimulating Hormone (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'Total Blood Count', result: 'All parameters normal', range: 'Normal', isAbnormal: false }]},
+        hi: {name: 'श्रेया वर्मा', age: 32, date: '15 दिसं 2025', doctor: 'डॉ. शालिनी B (लैब परामर्श)', token: 'डी-01', status: 'रिपोर्ट तैयार', tests: [{ name: 'थायराइड उत्तेजक हार्मोन (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'कुल रक्त गणना', result: 'सभी पैरामीटर सामान्य', range: 'सामान्य', isAbnormal: false }]},
+        kn: {name: 'ಶ್ರೇಯಾ ವರ್ಮಾ', age: 32, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಶಾಲಿನಿ B (ಲ್ಯಾಬ್ ಸಮಾಲೋಚನೆ)', token: 'ಡಿ-01', status: 'ವರದಿ ಸಿದ್ಧವಾಗಿದೆ', tests: [{ name: 'ಥೈರಾಯ್ಡ್ ಉತ್ತೇಜಕ ಹಾರ್ಮೋನ್ (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'कुल रक्त गणना', result: 'सभी पैरामीटर सामान्य', range: 'सामान्य', isAbnormal: false }]},
+        kn: {name: 'ಶ್ರೇಯಾ ವರ್ಮಾ', age: 32, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಶಾಲಿನಿ B (ಲ್ಯಾಬ್ ಸಮಾಲೋಚನೆ)', token: 'ಡಿ-01', status: 'ವರದಿ ಸಿದ್ಧವಾಗಿದೆ', tests: [{ name: 'ಥೈರಾಯ್ಡ್ ಉತ್ತೇಜಕ ಹಾರ್ಮೋನ್ (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'ಒಟ್ಟು ರಕ್ತ ಕೌಂಟ್', result: 'ಎಲ್ಲಾ ನಿಯತಾಂಕಗಳು ಸಾಮಾನ್ಯ', range: 'ಸಾಮಾನ್ಯ', isAbnormal: false }]},
+        ta: {name: 'ஸ்ரேயா வர்மா', age: 32, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் ஷாலினி B (ஆய்வக ஆலோசனை)', token: 'D-01', status: 'அறிக்கை தயார்', tests: [{ name: 'தைராய்டு தூண்டும் ஹார்மோன் (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'மொத்த இரத்த எண்ணிக்கை', result: 'அனைத்து அளவுருக்கள் சாதாரணம்', range: 'சாதாரணம்', isAbnormal: false }]},
+        te: {name: 'శ్రేయ వర్మ', age: 32, date: '15 డిసెంబర్ 2025', doctor: 'డా. శాలిని B (ల్యాబ్ సంప్రదింపులు)', token: 'D-01', status: 'నివేదిక సిద్ధంగా ఉంది', tests: [{ name: 'థైరాయిడ్ స్టిమ్యులేటింగ్ హార్మోన్ (TSH)', result: '3.1 mIU/L', range: '0.4-4.0 mIU/L', isAbnormal: false }, { name: 'మొత్తం రక్త గణన', result: 'అన్ని పారామీటర్లు సాధారణం', range: 'సాధారణం', isAbnormal: false }]}
+    },
+    '105': {
+        en: {name: 'Deepak Rao', age: 55, date: '15 Dec 2025', doctor: 'Dr. Manjunath R (General Medicine)', token: 'B-11', status: 'Available at 11:00 AM', tests: [{ name: 'Creatinine', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'Sodium', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]},
+        hi: {name: 'दीपक राव', age: 55, date: '15 दिसं 2025', doctor: 'डॉ. मंजुनाथ R (सामान्य चिकित्सा)', token: 'बी-11', status: '11:00 बजे उपलब्ध', tests: [{ name: 'क्रिएटिनिन', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'सोडियम', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]},
+        kn: {name: 'ದೀಪಕ್ ರಾವ್', age: 55, date: '15 ಡಿಸೆಂಬರ್ 2025', doctor: 'ಡಾ. ಮಂಜುನಾಥ R (ಸಾಮಾನ್ಯ ಔಷಧ)', token: 'ಬಿ-11', status: '11:00 ಗಂಟೆಗೆ ಲಭ್ಯವಿದೆ', tests: [{ name: 'ಕ್ರಿಯೇಟಿನೈನ್', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'ಸೋಡಿಯಂ', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]},
+        ta: {name: 'தீபக் ராவ்', age: 55, date: '15 டிசம்பர் 2025', doctor: 'டாக்டர் மஞ்சுநாத் R (பொது மருத்துவம்)', token: 'B-11', status: '11:00 AM வரை கிடைக்கும்', tests: [{ name: 'கிரியேட்டினின்', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'சோடியம்', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]},
+        te: {name: 'దీపక్ రావు', age: 55, date: '15 డిసెంబర్ 2025', doctor: 'డా. మంజునాథ్ R (సాధారణ వైద్యం)', token: 'B-11', status: '11:00 AM వరకు అందుబాటులో', tests: [{ name: 'క్రియేటినిన్', result: '1.8 mg/dL', range: '0.6-1.2 mg/dL', isAbnormal: true }, { name: 'సోడియం', result: '138 mEq/L', range: '135-145 mEq/L', isAbnormal: false }]}
+    }
+};
+
+// Language specific labels for the report
+const reportLabels = {
+    'en': {title: 'Diagnostic Report & OPD Status', patient: 'Patient:', age: 'Age:', date: 'Date:', doctor: 'Doctor:', token: 'OPD Token:', status: 'OPD Status:', test: 'Test Name', result: 'Result', range: 'Reference Range'},
+    'hi': {title: 'नैदानिक रिपोर्ट और ओपीडी स्थिति', patient: 'रोगी:', age: 'आयु:', date: 'दिनांक:', doctor: 'डॉक्टर:', token: 'ओपीडी टोकन:', status: 'ओपीडी स्थिति:', test: 'परीक्षण का नाम', result: 'परिणाम', range: 'संदर्भ सीमा'},
+    'kn': {title: 'ರೋಗನಿರ್ಣಯ ವರದಿ ಮತ್ತು OPD ಸ್ಥಿತಿ', patient: 'ರೋಗಿ:', age: 'ವಯಸ್ಸು:', date: 'ದಿನಾಂಕ:', doctor: 'ವೈದ್ಯರು:', token: 'ಒಪಿಡಿ ಟೋಕನ್:', status: 'ಒಪಿಡಿ ಸ್ಥಿತಿ:', test: 'ಪರೀಕ್ಷೆಯ ಹೆಸರು', result: 'ಫಲಿತಾಂಶ', range: 'ಉಲ್ಲೇಖ ಶ್ರೇಣಿ'},
+    'ta': {title: 'நோயறிதல் அறிக்கை மற்றும் OPD நிலை', patient: 'நோயாளர்:', age: 'வயது:', date: 'தேதி:', doctor: 'மருத்துவர்:', token: 'OPD டோக்கன்:', status: 'OPD நிலை:', test: 'பரிசோதனை பெயர்', result: 'விளைவு', range: 'குறிப்பு வரம்பு'},
+    'te': {title: 'డయాగ్నస్టిక్ నివేదిక & OPD స్థితి', patient: 'రోగి:', age: 'వయస్సు:', date: 'తేదీ:', doctor: 'డాక్టర్:', token: 'ఓపీడి టోకెన్:', status: 'ఓపీడి స్థితి:', test: 'పరీక్ష పేరు', result: 'ఫలితం', range: 'సూచన పరిధి'}
+};
+
+// Multi-language Spoken Directions
+const spokenDirections = {
+    'Emergency': {'en': "From the entrance, follow the red arrows directly to the Emergency Room on the Ground Floor.", 'hi': "प्रवेश द्वार से, लाल तीरों का अनुसरण करें और सीधे भूतल पर आपातकाल कक्ष में पहुंचें।", 'kn': "ಪ್ರವೇಶ ದ್ವಾರದಿಂದ, ಕೆಂಪು ಬಾಣಗಳನ್ನು ಅನುಸರಿಸಿ ಮತ್ತು ನೆಲ ಮಹಡಿಯಲ್ಲಿರುವ ತುರ್ತು ಕೊಠಡಿಗೆ ನೇರವಾಗಿ ತಲುಪಿ.", 'ta': "நுழைவாயிலில் இருந்து, சிவப்பு அம்புக்குறிகளைப் பின்பற்றி, தரை தளத்தில் உள்ள அவசர அறைக்கு நேராகச் செல்லவும்.", 'te': "ప్రవేశం నుండి, ఎరుపు బాణాలను అనుసరించండి మరియు నేరుగా గ్రౌండ్ ఫ్లోర్‌లోని ఎమర్జెన్సీ గదికి చేరుకోండి।"},
+    'OPD': {'en': "Go to the reception, take Lift A to the First Floor, and the Outpatient Department will be right there.", 'hi': "रिसेप्शन पर जाएं, लिफ्ट ए से पहली मंजिल पर जाएं, और ओपीडी आपको वहीं मिल जाएगी।", 'kn': "ಸ್ವಾಗತಕ್ಕೆ ಹೋಗಿ, ಲಿಫ್ಟ್ A ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಹೊರರೋಗಿ ವಿಭಾಗವು ಅಲ್ಲೇ ಇರುತ್ತದೆ。", 'ta': "வரவேற்புக்குச் சென்று, லிப்ட் A மூலம் முதல் மாடிக்குச் செல்லவும், வெளி நோயாளித் துறை அங்கேயே இருக்கும்。", 'te': "రిసెప్షన్‌కు వెళ్లి, లిఫ్ట్ A ద్వారా మొదటి అంతస్తుకు వెళ్లండి, అవుట్‌పేషెంట్ డిపార్ట్‌మెంట్ అక్కడే ఉంటుంది।"},
+    'Pharmacy': {'en': "From the reception, take the left corridor. The Pharmacy Counter is straight ahead on the Ground Floor.", 'hi': "रिसेप्शन से, बाएं गलियारे में जाएं। फार्मेसी काउंटर भूतल पर सीधा आगे है।", 'kn': "ಸ್ವಾಗತದಿಂದ, ಎಡ ಹಜಾರವನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ. ಫಾರ್ಮಸಿ ಕೌಂಟರ್ ನೆಲ ಮಹಡಿಯಲ್ಲಿ ನೇರವಾಗಿ ಮುಂದೆ ಇದೆ。", 'ta': "வரவேற்பில் இருந்து, இடதுபுறக் காரிடாரை எடுத்துக் கொள்ளுங்கள். மருந்தக கவுண்டர் தரை தளத்தில் நேராக உள்ளது。", 'te': "రిసెప్షన్ నుండి, ఎడమ కారిడార్ తీసుకోండి. ఫార్మసీ కౌంటర్ గ్రౌండ్ ఫ్లోర్‌లో నేరుగా ఉంది।"},
+    'Lab': {'en': "Take Lift C to the Second Floor. The Lab, room 210 for blood collection, is down the main hallway.", 'hi': "लिफ्ट सी से दूसरी मंजिल पर जाएं। लैब, रक्त संग्रह के लिए कमरा 210, मुख्य गलियारे के नीचे है।", 'kn': "ಲಿಫ್ಟ್ C ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ. ರಕ್ತ ಸಂಗ್ರಹಕ್ಕಾಗಿ ಲ್ಯಾಬ್, ಕೊಠಡಿ 210, ಮುಖ್ಯ ಹಜಾರದ ಕೆಳಗೆ ಇದೆ。", 'ta': "லிப்ட் C ஐப் பயன்படுத்தி இரண்டாவது மாடிக்குச் செல்லவும். இரத்தப் பரிசோதனைக்கான ஆய்வகம், அறை 210, பிரதான கூடத்தின் கீழே உள்ளது。", 'te': "లిఫ్ట్ C ద్వారా రెండవ అంతస్తుకు వెళ్లండి. బ్లడ్ కలెక్షన్ కోసం ల్యాబ్, గది 210, ప్రధాన హాలులో ఉంది।"},
+    'Cardiology Cabin': {'en': "Go to the reception, take Lift B to the Second Floor, and the Cardiology Cabin, number 205, is nearby.", 'hi': "रिसेप्शन पर जाएं, लिफ्ट बी से दूसरी मंजिल पर जाएं, और कार्डियोलॉजी कक्ष, संख्या 205, पास ही है।", 'kn': "ಸ್ವಾಗತಕ್ಕೆ ಹೋಗಿ, ಲಿಫ್ಟ್ B ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಹೃದಯ ವಿಜ್ಞಾನದ ಕ್ಯಾಬಿನ್, ಸಂಖ್ಯೆ 205, ಹತ್ತಿರದಲ್ಲಿದೆ。", 'ta': "வரவேற்புக்குச் சென்று, லிப்ட் B மூலம் இரண்டாவது மாடிக்குச் செல்லவும், இருதயவியல் அறை, எண் 205, அருகிலேயே உள்ளது。", 'te': "రిసెప్షన్‌కు వెళ్లి, లిఫ్ట్ B ద్వారా రెండవ అంతస్తుకు వెళ్లండి, కార్డియాలజీ క్యాబిన్, నంబర్ 205, దగ్గరగా ఉంది।"},
+    'Orthopedics Cabin': {'en': "From the entrance, take Lift A to the First Floor, and the Orthopedics Cabin, number 112, is in the main wing.", 'hi': "प्रवेश द्वार से, लिफ्ट ए से पहली मंजिल पर जाएं, और अस्थि रोग कक्ष, संख्या 112, मुख्य विंग में है।", 'kn': "ಪ್ರವೇಶದಿಂದ, ಲಿಫ್ಟ್ A ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಅಸ್ಥಿ ರೋಗ कक्ष, ಸಂಖ್ಯೆ 112, ಮುಖ್ಯ ವಿಭಾಗದಲ್ಲಿದೆ。", 'ta': "நுழைவாயிலில் இருந்து, லிப்ட் A மூலம் முதல் மாடிக்குச் செல்லவும், எலும்பியல் அறை, எண் 112, பிரதான பிரிவில் உள்ளது。", 'te': "ప్రవేశం నుండి, లిఫ్ట్ A ద్వారా మొదటి అంతస్తుకు వెళ్లండి, ఆర్థోపెడిక్స్ క్యాబిన్, నంబర్ 112, ప్రధాన విభాగంలో ఉంది।"}
+};
+
+// 5. Patient Login/Report Display Function (Fixed Logic)
+function getReport(){
+  const reportElement = document.getElementById("report");
+  const pid = document.getElementById("pid").value.trim();
+  
+  // Determine current language
+  let lang = document.querySelector('input[name="lang"]:checked').id.replace('lang-', '');
+  const labels = reportLabels[lang];
+
+  if (!(pid in patientDatabase) || !(lang in patientDatabase[pid])) {
+    // If ID is invalid or language data is missing (shouldn't happen with current data structure)
+    reportElement.innerHTML = `
+      <strong><span class="lang show-${lang}">${labels.title}</span></strong>
+      <p style="color: var(--emergency-red); font-weight: 700;">
+        <span class="lang show-${lang}">
+          ${lang === 'en' ? 'Error: Invalid Patient ID. Please enter one of 101, 102, 103, 104, or 105.' : 
+            lang === 'hi' ? 'त्रुटि: अमान्य रोगी आईडी। कृपया 101, 102, 103, 104, या 105 में से कोई एक दर्ज करें।' :
+            lang === 'kn' ? 'ದೋಷ: ಅಮಾನ್ಯ ರೋಗಿ ID. ದಯವಿಟ್ಟು 101, 102, 103, 104, ಅಥವಾ 105 ರಲ್ಲಿ ಯಾವುದಾದರೂ ಒಂದನ್ನು ನಮೂದಿಸಿ.' :
+            lang === 'ta' ? 'பிழை: தவறான நோயாளி ஐடி. தயவுசெய்து 101, 102, 103, 104, அல்லது 105 உள்ளிடவும்.' :
+            'లోపం: చెల్లని రోగి ID. దయచేసి 101, 102, 103, 104, లేదా 105 లో ఒకదాన్ని నమోదు చేయండి।'}
+        </span>
+      </p>
+    `;
+    return;
+  }
+
+  const data = patientDatabase[pid][lang];
+
+  let testsHtml = '';
+  // Loop through tests to create report structure
+  data.tests.forEach(test => {
+    const resultClass = test.isAbnormal ? 'result-value' : 'normal-range';
+    
+    testsHtml += `
+      <p>
+        <span class="label">${test.name}</span>
+        <span class="value ${resultClass}">${test.result}</span>
+      </p>
+      <p style="margin-top: -5px;">
+        <span class="label" style="font-size: 0.85rem; font-weight: 400;">(${labels.range}: ${test.range})</span>
+        <span class="value" style="font-size: 0.85rem; font-style: italic; color: ${test.isAbnormal ? 'var(--emergency-red)' : 'var(--muted)'};">${test.note || ''}</span>
+      </p>
+    `;
+  });
+
+
+  reportElement.innerHTML = `
+    <strong><span class="lang show-${lang}">${labels.title}</span></strong>
+    
+    <div class="report-section">
+      <p><span class="label">${labels.patient}</span> <span class="value">${data.name}</span></p>
+      <p><span class="label">${labels.age}</span> <span class="value">${data.age}</span></p>
+      <p><span class="label">${labels.date}</span> <span class="value">${data.date}</span></p>
+    </div>
+
+    <div class="report-section">
+      <p><span class="label">${labels.doctor}</span> <span class="value">${data.doctor}</span></p>
+      <p><span class="label">${labels.token}</span> <span class="value">${data.token}</span></p>
+      <p><span class="label">${labels.status}</span> <span class="value">${data.status}</span></p>
+    </div>
+
+    <div class="report-section" style="margin-top: 20px;">
+      <p style="border-bottom: 1px solid var(--muted); padding-bottom: 5px;">
+        <span class="label" style="color: var(--text); font-size: 1rem;">** ${labels.test} **</span>
+        <span class="value" style="color: var(--text); font-size: 1rem;">** ${labels.result} **</span>
+      </p>
+      ${testsHtml}
+    </div>
+  `;
+}
+
+
+// 6. Language Toggling Fix: Function to reset report on language change and trigger initial visibility.
+function resetReportText() {
+    // Get the currently checked language
+    let lang = document.querySelector('input[name="lang"]:checked').id.replace('lang-', '');
+    
+    // Reset the report placeholder text, making sure the correct language placeholder is visible
+    document.getElementById("report").innerHTML = `
+      <span class="lang show-en block" style="display:${lang === 'en' ? 'block' : 'none'};">• Lab reports • OPD token • Doctor timings. Enter ID (101-105) and click Get Report.</span>
+      <span class="lang show-hi block" style="display:${lang === 'hi' ? 'block' : 'none'};">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय। आईडी (101-105) दर्ज करें और रिपोर्ट देखें पर क्लिक करें।</span>
+      <span class="lang show-kn block" style="display:${lang === 'kn' ? 'block' : 'none'};">• ಲ್ಯಾಬ್ ವರದಿ • ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ. ಐಡಿ (101-105) ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</span>
+      <span class="lang show-ta block" style="display:${lang === 'ta' ? 'block' : 'none'};">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம். ஐடி (101-105) உள்ளிட்டு அறிக்கையைக் காண்க.</span>
+      <span class="lang show-te block" style="display:${lang === 'te' ? 'block' : 'none'};">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం. ఐడి (101-105) ఎంటర్ చేసి నివేదిక పొందండి క్లిక్ చేయండి.</span>
+    `;
+
+    document.getElementById("pid").value = ""; 
+    stopSpeaking(); 
+}
+
+// 7. Attach reset function to language radio buttons
+document.querySelectorAll('input[name="lang"]').forEach(radio => {
+    radio.addEventListener('change', resetReportText);
+});
+// Ensure initial display is correct on load
+document.addEventListener('DOMContentLoaded', resetReportText);
+  // Emergency Card Pulsing remains active through CSS, ensuring visual priority.
+document.addEventListener('DOMContentLoaded', () => {
+    const card = document.getElementById('emergency-card');
+    card.classList.remove('emergency'); 
+    void card.offsetWidth; 
+    card.classList.add('emergency'); 
+});
+
+// Stop Speaking Function 
+function stopSpeaking() {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+    }
+}
+
+// 8. Voice Navigation (Multi-language Fix)
+function speakDirections(destination) {
+    // 1. Cancel any current speech (ensures the stop button works immediately)
+    stopSpeaking();
+    
+    // 2. Get the current selected language
+    let lang = document.querySelector('input[name="lang"]:checked').id.replace('lang-', '');
+    
+    // 3. Get the language code compatible with the Speech Synthesis API
+    const languageCodes = {
+        'en': 'en-IN', 
+        'hi': 'hi-IN', 
+        'kn': 'kn-IN', 
+        'ta': 'ta-IN', 
+        'te': 'te-IN'  
+    };
+    
+    const langCode = languageCodes[lang] || 'en-US'; 
+
+    // 4. Get the correct text from the multi-language object
+    const textToSpeak = spokenDirections[destination] ? spokenDirections[destination][lang] : `Directions for ${destination} are not yet available.`;
+
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        
+        // 5. Set the voice language
+        utterance.lang = langCode;
+        
+        window.speechSynthesis.speak(utterance);
+    } else {
+        alert("Text-to-speech not supported in this browser. Directions: " + textToSpeak);
+    }
+}
+
+// 9. Dark Mode Function (CSS fix applied in style block)
+function toggleDarkMode() {
+    document.getElementById('body').classList.toggle('dark-mode');
+}
+</script>
+
+</body>
 </html>
