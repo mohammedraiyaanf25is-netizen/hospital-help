@@ -306,6 +306,16 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
   /* Use the list-item display style for language toggling fix */
   display: none; 
 }
+@media(max-width:900px){
+  .main-layout{
+    grid-template-columns:1fr;
+  }
+
+  .sticky-map{
+    height:260px;
+  }
+}
+
 </style>
 </head>
 <body id="body">
@@ -385,7 +395,8 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
   </div>
 </div>
 
-<div class="grid">
+<div class="main-layout">
+    <div class="left-panel grid">
   <input type="checkbox" id="emg" class="modal-toggle">
 <div class="card emergency" id="emergency-card">
 <h2>🚑 <span class="lang show-en">Emergency</span><span class="lang show-hi">आपातकाल</span><span class="lang show-kn">ತುರ್ತು</span><span class="lang show-ta">அவசரம்</span><span class="lang show-te">ఎమర్జెన్సీ</span>
