@@ -306,16 +306,6 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
   /* Use the list-item display style for language toggling fix */
   display: none; 
 }
-@media(max-width:900px){
-  .main-layout{
-    grid-template-columns:1fr;
-  }
-
-  .sticky-map{
-    height:260px;
-  }
-}
-
 </style>
 </head>
 <body id="body">
@@ -395,8 +385,7 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
   </div>
 </div>
 
-<div class="main-layout">
-    <div class="left-panel grid">
+<div class="grid">
   <input type="checkbox" id="emg" class="modal-toggle">
 <div class="card emergency" id="emergency-card">
 <h2>🚑 <span class="lang show-en">Emergency</span><span class="lang show-hi">आपातकाल</span><span class="lang show-kn">ತುರ್ತು</span><span class="lang show-ta">அவசரம்</span><span class="lang show-te">ఎమర్జెన్సీ</span>
@@ -816,7 +805,7 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 </h2>
 
 <div class="card login-card">
-<input id="pid" placeholder="Patient ID ">
+<input id="pid" placeholder="Patient ID (e.g. 101)">
 <button class="btn" onclick="getReport()">
 <span class="lang show-en">Get Report / Info</span>
 <span class="lang show-hi">रिपोर्ट / जानकारी देखें</span>
@@ -825,11 +814,11 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 <span class="lang show-te">నివేదిక / సమాచారం పొందండి</span>
 </button>
 <div id="report" class="muted">
-<span class="lang show-en block">• Lab reports • OPD token • Doctor timings. Enter ID and click Get Report.</span>
-<span class="lang show-hi block" style="display:none">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय। आईडी दर्ज करें और रिपोर्ट देखें पर क्लिक करें।</span>
-<span class="lang show-kn block" style="display:none">• ಲ್ಯಾಬ್ ವರದಿ • ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ. ಐಡಿ  ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</span>
-<span class="lang show-ta block" style="display:none">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம். ஐடி  உள்ளிட்டு அறிக்கையைக் காண்க.</span>
-<span class="lang show-te block" style="display:none">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం. ఐడి  ఎంటర్ చేసి నివేదిక పొందండి క్లిక్ చేయండి.</span>
+<span class="lang show-en block">• Lab reports • OPD token • Doctor timings. Enter ID (101-105) and click Get Report.</span>
+<span class="lang show-hi block" style="display:none">• लैब रिपोर्ट • ओपीडी टोकन • डॉक्टर समय। आईडी (101-105) दर्ज करें और रिपोर्ट देखें पर क्लिक करें।</span>
+<span class="lang show-kn block" style="display:none">• ಲ್ಯಾಬ್ ವರದಿ • ಒಪಿಡಿ ಟೋಕನ್ • ವೈದ್ಯ ಸಮಯ. ಐಡಿ (101-105) ನಮೂದಿಸಿ ಮತ್ತು ವರದಿ ಪಡೆಯಿರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.</span>
+<span class="lang show-ta block" style="display:none">• ஆய்வக அறிக்கை • OPD டோக்கன் • மருத்துவர் நேரம். ஐடி (101-105) உள்ளிட்டு அறிக்கையைக் காண்க.</span>
+<span class="lang show-te block" style="display:none">• ల్యాబ్ నివేదిక • ఓపీడి టోకెన్ • డాక్టర్ సమయం. ఐడి (101-105) ఎంటర్ చేసి నివేదిక పొందండి క్లిక్ చేయండి.</span>
 </div>
 </div>
 
@@ -1090,4 +1079,3 @@ function toggleDarkMode() {
 
 </body>
 </html>
-
