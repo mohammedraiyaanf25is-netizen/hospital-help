@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sri Rama Hospital – Smart Hospital Navigation System using QR Code</title>
+<title>(Hospital Name) – Smart Hospital Navigation System using QR Code</title>
 
 <style>
 /* 1. Global Variables (Light Mode Default) */
@@ -328,7 +329,7 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 
 <header>
 <h1>
-<span class="lang show-en">Sri Rama Hospital – Smart Hospital Navigation System using QR Code</span>
+<span class="lang show-en">(Hospital Name) – Smart Hospital Navigation System using QR Code</span>
 <span class="lang show-hi">श्री राम अस्पताल – QR कोड का उपयोग करके स्मार्ट अस्पताल नेविगेशन सिस्टम</span>
 <span class="lang show-kn">ಶ್ರೀ ರಾಮ ಆಸ್ಪತ್ರೆ – QR ಕೋಡ್ ಬಳಸಿ ಸ್ಮಾರ್ಟ್ ಆಸ್ಪತ್ರೆ ನ್ಯಾವಿಗೇಷನ್ ಸಿಸ್ಟಮ್</span>
 <span class="lang show-ta">ஸ்ரீ ராமா மருத்துவமனை – QR குறியீட்டைப் பயன்படுத்தி ஸ்மார்ட் மருத்துவமனை வழிசெலுத்தல் அமைப்பு</span>
@@ -412,14 +413,15 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 <div class="modal-body">
 <span class="badge red">⚡ <span class="lang show-en">Fastest Route</span><span class="lang show-hi">सबसे तेज़ मार्ग</span><span class="lang show-kn">ವೇಗದ ಮಾರ್ಗ</span><span class="lang show-ta">விரைவான வழி</span><span class="lang show-te">వేగవంతమైన మార్గం</span></span>
 <div class="steps">
-<span class="lang show-en">Entrance → Follow Red arrows → Emergency Room (Ground Floor)</span>
-<span class="lang show-hi">प्रवेश → लाल तीर → आपातकाल कक्ष (भू-तल)</span>
-<span class="lang show-kn">ಪ್ರವೇಶ → ಕೆಂಪು ಬಾಣ → ತುರ್ತು ಕೊಠಡಿ (ನೆಲ ಮಹಡಿ)</span>
-<span class="lang show-ta">நுழைவு → சிவப்பு அம்புகள் → அவசர அறை (தரை தளம்)</span>
-<span class="lang show-te">ప్రవేశం → ఎరుపు బాణాలు → ఎమర్జెన్సీ గది (గ్రౌండ్ ఫ్లోర్)</span>
+<span class="lang show-en">From Entrance → Go straight → Turn left → Go straight → Emergency Room (Ground Floor)</span>
+<span class="lang show-hi">प्रवेश से सीधे जाएं → बाएँ मुड़ें → फिर सीधे जाएँ → आपातकाल कक्ष (भूतल)</span>
+<span class="lang show-kn">ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ → ಎಡಕ್ಕೆ ತಿರುಗಿ → ಮತ್ತೆ ನೆಟ್ಟಗೆ ಹೋಗಿ → ತುರ್ತು ಕೊಠಡಿ (ನೆಲ ಮಹಡಿ)</span>
+<span class="lang show-ta">நுழைவாயிலில் இருந்து நேராக செல்லவும் → இடப்பக்கம் திரும்பவும் → மீண்டும் நேராக செல்லவும் → அவசர அறை (தரை தளம்)</span>
+<span class="lang show-te">ప్రవేశం నుంచి నేరుగా వెళ్లండి → ఎడమ వైపు తిరగండి → మళ్లీ నేరుగా వెళ్లండి → ఎమర్జెన్సీ గది (గ్రౌండ్ ఫ్లోర్)</span>
 </div>
+
 <div class="map-visual">
-  <img src="emergency-ground-floor.png" alt="Emergency Ground Floor Map">
+  <img src="emergency-ground-foor.png" alt="Emergency Ground Floor Map">
 
   <small class="muted">
     <span class="lang show-en">Scroll / pinch to zoom</span>
@@ -484,14 +486,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
   <span class="lang show-te">ఓపీడి దిశలు</span>
 </div><div class="modal-body">
 <div class="steps">
-<span class="lang show-en">Reception → Lift A → 1st Floor → OPD</span>
-<span class="lang show-hi">रिसेप्शन → लिफ्ट A → पहली मंजिल → ओपीडी</span>
-<span class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ → ಒಪಿಡಿ</span>
-<span class="lang show-ta">வரவேற்பு → லிப்ட் A → 1வது மாடி → OPD</span>
-<span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ A → 1వ అంతస్తు → ఓపీడి</span>
+<span class="lang show-en">Entrance → Go straight → Turn right → Go straight → Take Lift → Go to 1st Floor → Turn right → OPD Hall</span>
+<span class="lang show-hi">प्रवेश से सीधे जाएँ → दाएं मुड़ें → सीधे जाएँ → लिफ्ट लें → पहली मंजिल → दाएं मुड़ें → ओपीडी हॉल</span>
+<span class="lang show-kn">ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ → ಬಲಕ್ಕೆ ತಿರುಗಿ → ನೆಟ್ಟಗೆ ಹೋಗಿ → ಲಿಫ್ಟ್ ತೆಗೆದುಕೊಳ್ಳಿ → 1ನೇ ಮಹಡಿ → ಬಲಕ್ಕೆ ತಿರುಗಿ → OPD ಹಾಲ್</span>
+<span class="lang show-ta">நுழைவாயில் → நேராக செல்லவும் → வலப்பக்கம் திரும்பவும் → நேராக செல்லவும் → லிப்ட் எடுக்கவும் → 1வது மாடி → வலப்பக்கம் திரும்பவும் → OPD ஹால்</span>
+<span class="lang show-te">ప్రవేశం → నేరుగా వెళ్లండి → కుడి వైపు తిరగండి → నేరుగా వెళ్లండి → లిఫ్ట్ తీసుకోండి → 1వ అంతస్తు → కుడి వైపు తిరగండి → OPD హాల్</span>
 </div>
 <div class="map-visual">
-  <img src="opd-1st-floor.png" alt="Emergency Ground Floor Map">
+  <img src="opd-1st-floo.png" alt="Emergency Ground Floor Map">
 
   <small class="muted">
     <span class="lang show-en">Scroll / pinch to zoom</span>
@@ -541,14 +543,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 </div>
 <div class="modal-body">
 <div class="steps">
-<span class="lang show-en">Reception → Left Corridor → Pharmacy Counter (Ground Floor)</span>
-<span class="lang show-hi">रिसेप्शन → बायां गलियारा → फार्मेसी काउंटर (भू-तल)</span>
-<span class="lang show-kn">ಸ್ವಾಗತ → ಎಡ ದಾರಿ → ಫಾರ್ಮಸಿ ಕೌಂಟರ್ (ನೆಲ ಮಹಡಿ)</span>
-<span class="lang show-ta">வரவேற்பு → இடது வழி → மருந்தக கவுண்டர் (தரை தளம்)</span>
-<span class="lang show-te">రిసెప్షన్ → ఎడమ దారి → ఫార్మసీ కౌంటర్ (గ్రౌండ్ ఫ్లోర్)</span>
+<span class="lang show-en">Entrance → Go straight → Turn left → Go straight → Pharmacy Counter (Ground Floor)</span>
+<span class="lang show-hi">प्रवेश से सीधे जाएँ → बाएँ मुड़ें → सीधे जाएँ → फार्मेसी काउंटर (भूतल)</span>
+<span class="lang show-kn">ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ → ಎಡಕ್ಕೆ ತಿರುಗಿ → ನೆಟ್ಟಗೆ ಹೋಗಿ → ಫಾರ್ಮಸಿ ಕೌಂಟರ್ (ನೆಲ ಮಹಡಿ)</span>
+<span class="lang show-ta">நுழைவாயில் → நேராக செல்லவும் → இடப்பக்கம் திரும்பவும் → நேராக செல்லவும் → மருந்தகம் (தரை தளம்)</span>
+<span class="lang show-te">ప్రవేశం → నేరుగా వెళ్లండి → ఎడమ వైపు తిరగండి → నేరుగా వెళ్లండి → ఫార్మసీ కౌంటర్ (గ్రౌండ్ ఫ్లోర్)</span>
 </div>
 <div class="map-visual">
-  <img src="pharmacy-ground-floor.png" alt="Emergency Ground Floor Map">
+  <img src="pharmacy-groundfloor.png" alt="Emergency Ground Floor Map">
 
   <small class="muted">
     <span class="lang show-en">Scroll / pinch to zoom</span>
@@ -606,14 +608,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
 </div>
 <div class="modal-body">
 <div class="steps">
-<span class="lang show-en">Lift C → 2nd Floor → Lab Room 210 (Blood Sample Collection)</span>
-<span class="lang show-hi">लिफ्ट C → दूसरी मंजिल → लैब कक्ष 210 (रक्त नमूना संग्रह)</span>
-<span class="lang show-kn">ಲಿಫ್ಟ್ C → 2ನೇ ಮಹಡಿ → ಲ್ಯಾಬ್ ಕೊಠಡಿ 210 (ರಕ್ತ ಮಾದರಿ ಸಂಗ್ರಹ)</span>
-<span class="lang show-ta">லிப்ட் C → 2வது மாடி → ஆய்வக அறை 210 (இரத்த மாதிரி சேகரிப்பு)</span>
-<span class="lang show-te">లిఫ్ట్ C → 2వ అంతస్తు → ల్యాబ్ గది 210 (రక్త నమూనా సేకరణ)</span>
+<span class="lang show-en">Entrance → Go straight → Take Lift → Go to 2nd Floor → Turn left → Go straight → Lab Room 210</span>
+<span class="lang show-hi">प्रवेश से सीधे जाएँ → लिफ्ट लें → दूसरी मंजिल → बाएँ मुड़ें → सीधे जाएँ → लैब कक्ष 210</span>
+<span class="lang show-kn">ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ → ಲಿಫ್ಟ್ ತೆಗೆದುಕೊಳ್ಳಿ → 2ನೇ ಮಹಡಿ → ಎಡಕ್ಕೆ ತಿರುಗಿ → ನೆಟ್ಟಗೆ ಹೋಗಿ → ಲ್ಯಾಬ್ ರೂಮ್ 210</span>
+<span class="lang show-ta">நுழைவாயில் → நேராக செல்லவும் → லிப்ட் எடுக்கவும் → 2வது மாடி → இடப்பக்கம் திரும்பவும் → நேராக செல்லவும் → ஆய்வக அறை 210</span>
+<span class="lang show-te">ప్రవేశం → నేరుగా వెళ్లండి → లిఫ్ట్ తీసుకోండి → 2వ అంతస్తు → ఎడమ వైపు తిరగండి → నేరుగా వెళ్లండి → ల్యాబ్ రూమ్ 210</span>
 </div>
 <div class="map-visual">
-  <img src="lad-2nd-floor.png" alt="Emergency Ground Floor Map">
+  <img src="lad-2nd-flor.png" alt="Emergency Ground Floor Map">
 
   <small class="muted">
     <span class="lang show-en">Scroll / pinch to zoom</span>
@@ -683,14 +685,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
     </div>
     <div class="modal-body">
       <div class="steps">
-        <span class="lang show-en">Reception → Lift B → 2nd Floor → Cabin 205 (Cardiology)</span>
-        <span class="lang show-hi">रिसेप्शन → लिफ्ट B → दूसरी मंजिल → कक्ष 205 (हृदय रोग)</span>
-        <span class="lang show-kn">ಸ್ವಾಗತ → ಲಿಫ್ಟ್ B → 2ನೇ ಮಹಡಿ → ಕೊಠಡಿ 205 (ಹೃದಯ ವಿಭಾಗ)</span>
-        <span class="lang show-ta">வரவேற்பு → லிப்ட் B → 2வது மாடி → அறை 205 (இதய மருத்துவம்)</span>
-        <span class="lang show-te">రిసెప్షన్ → లిఫ్ట్ B → 2వ అంతస్తు → గది 205 (హృదయ వైద్యం)</span>
-      </div>
+<span class="lang show-en">Entrance → Go straight → Take Lift → 2nd Floor → Turn right → Go straight → Room 205 (Cardiology)</span>
+<span class="lang show-hi">प्रवेश से सीधे जाएँ → लिफ्ट लें → दूसरी मंजिल → दाएँ मुड़ें → सीधे जाएँ → कक्ष 205 (हृदय रोग)</span>
+<span class="lang show-kn">ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ → ಲಿಫ್ಟ್ → 2ನೇ ಮಹಡಿ → ಬಲಕ್ಕೆ ತಿರುಗಿ → ನೆಟ್ಟಗೆ ಹೋಗಿ → ಕೊಠಡಿ 205 (ಹೃದಯ ವಿಭಾಗ)</span>
+<span class="lang show-ta">நுழைவாயில் → நேராக செல்லவும் → லிப்ட் எடுக்கவும் → 2வது மாடி → வலப்பக்கம் திரும்பவும் → நேராக செல்லவும் → அறை 205 (இதய மருத்துவம்)</span>
+<span class="lang show-te">ప్రవేశం → నేరుగా వెళ్లండి → లిఫ్ట్ తీసుకోండి → 2వ అంతస్తు → కుడివైపు తిరగండి → నేరుగా వెళ్లండి → గది 205 (కార్డియాలజీ)</span>
+</div>
       <div class="map-visual">
-  <img src="cardiology-2nd-floor.png" alt="Emergency Ground Floor Map">
+  <img src="cardiology-2nd-oor.png" alt="Emergency Ground Floor Map">
 
   <small class="muted">
     <span class="lang show-en">Scroll / pinch to zoom</span>
@@ -761,14 +763,14 @@ input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--input-bor
     </div>
     <div class="modal-body">
       <div class="steps">
-        <span class="lang show-en">Entrance → Lift A → 1st Floor → Cabin 112 (Orthopedics)</span>
-        <span class="lang show-hi">प्रवेश द्वार → लिफ्ट A → पहली मंजिल → कक्ष 112 (अस्थि रोग)</span>
-        <span class="lang show-kn">ಪ್ರವೇಶ → ಲಿಫ್ಟ್ A → 1ನೇ ಮಹಡಿ → ಕೊಠಡಿ 112 (ಅಸ್ಥಿ ವಿಭಾಗ)</span>
-        <span class="lang show-ta">நுழைவாயில் → லிப்ட் A → 1வது மாடி → அறை 112 (எலும்பியல்)</span>
-        <span class="lang show-te">ప్రవేశం → లిఫ్ట్ A → 1వ అంతస్తు → గది 112 (అస్థి వైద్యం)</span>
-      </div>
+<span class="lang show-en">Entrance → Go straight → Take Lift → 1st Floor → Turn left → Go straight → Room 112 (Orthopedics)</span>
+<span class="lang show-hi">प्रवेश से सीधे जाएँ → लिफ्ट लें → पहली मंजिल → बाएँ मुड़ें → सीधे जाएँ → कक्ष 112 (अस्थि रोग)</span>
+<span class="lang show-kn">ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ → ಲಿಫ್ಟ್ → 1ನೇ ಮಹಡಿ → ಎಡಕ್ಕೆ ತಿರುಗಿ → ನೆಟ್ಟಗೆ ಹೋಗಿ → ಕೊಠಡಿ 112 (ಅಸ್ಥಿ ವಿಭಾಗ)</span>
+<span class="lang show-ta">நுழைவாயில் → நேராக செல்லவும் → லிப்ட் எடுக்கவும் → 1வது மாடி → இடப்பக்கம் திரும்பவும் → நேராக செல்லவும் → அறை 112 (எலும்பியல்)</span>
+<span class="lang show-te">ప్రవేశం → నేరుగా వెళ్లండి → లిఫ్ట్ తీసుకోండి → 1వ అంతస్తు → ఎడమ వైపు తిరగండి → నేరుగా వెళ్లండి → గది 112 (ఆర్థోపెడిక్స్)</span>
+</div>
       <div class="map-visual">
-  <img src="orthopedics-1st-floor.png" alt="Emergency Ground Floor Map">
+  <img src="orthopedics-1st-floo.png" alt="Emergency Ground Floor Map">
 
   <small class="muted">
     <span class="lang show-en">Scroll / pinch to zoom</span>
@@ -918,12 +920,55 @@ const reportLabels = {
 
 // Multi-language Spoken Directions
 const spokenDirections = {
-    'Emergency': {'en': "From the entrance, follow the red arrows directly to the Emergency Room on the Ground Floor.", 'hi': "प्रवेश द्वार से, लाल तीरों का अनुसरण करें और सीधे भूतल पर आपातकाल कक्ष में पहुंचें।", 'kn': "ಪ್ರವೇಶ ದ್ವಾರದಿಂದ, ಕೆಂಪು ಬಾಣಗಳನ್ನು ಅನುಸರಿಸಿ ಮತ್ತು ನೆಲ ಮಹಡಿಯಲ್ಲಿರುವ ತುರ್ತು ಕೊಠಡಿಗೆ ನೇರವಾಗಿ ತಲುಪಿ.", 'ta': "நுழைவாயிலில் இருந்து, சிவப்பு அம்புக்குறிகளைப் பின்பற்றி, தரை தளத்தில் உள்ள அவசர அறைக்கு நேராகச் செல்லவும்.", 'te': "ప్రవేశం నుండి, ఎరుపు బాణాలను అనుసరించండి మరియు నేరుగా గ్రౌండ్ ఫ్లోర్‌లోని ఎమర్జెన్సీ గదికి చేరుకోండి।"},
-    'OPD': {'en': "Go to the reception, take Lift A to the First Floor, and the Outpatient Department will be right there.", 'hi': "रिसेप्शन पर जाएं, लिफ्ट ए से पहली मंजिल पर जाएं, और ओपीडी आपको वहीं मिल जाएगी।", 'kn': "ಸ್ವಾಗತಕ್ಕೆ ಹೋಗಿ, ಲಿಫ್ಟ್ A ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಹೊರರೋಗಿ ವಿಭಾಗವು ಅಲ್ಲೇ ಇರುತ್ತದೆ。", 'ta': "வரவேற்புக்குச் சென்று, லிப்ட் A மூலம் முதல் மாடிக்குச் செல்லவும், வெளி நோயாளித் துறை அங்கேயே இருக்கும்。", 'te': "రిసెప్షన్‌కు వెళ్లి, లిఫ్ట్ A ద్వారా మొదటి అంతస్తుకు వెళ్లండి, అవుట్‌పేషెంట్ డిపార్ట్‌మెంట్ అక్కడే ఉంటుంది।"},
-    'Pharmacy': {'en': "From the reception, take the left corridor. The Pharmacy Counter is straight ahead on the Ground Floor.", 'hi': "रिसेप्शन से, बाएं गलियारे में जाएं। फार्मेसी काउंटर भूतल पर सीधा आगे है।", 'kn': "ಸ್ವಾಗತದಿಂದ, ಎಡ ಹಜಾರವನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ. ಫಾರ್ಮಸಿ ಕೌಂಟರ್ ನೆಲ ಮಹಡಿಯಲ್ಲಿ ನೇರವಾಗಿ ಮುಂದೆ ಇದೆ。", 'ta': "வரவேற்பில் இருந்து, இடதுபுறக் காரிடாரை எடுத்துக் கொள்ளுங்கள். மருந்தக கவுண்டர் தரை தளத்தில் நேராக உள்ளது。", 'te': "రిసెప్షన్ నుండి, ఎడమ కారిడార్ తీసుకోండి. ఫార్మసీ కౌంటర్ గ్రౌండ్ ఫ్లోర్‌లో నేరుగా ఉంది।"},
-    'Lab': {'en': "Take Lift C to the Second Floor. The Lab, room 210 for blood collection, is down the main hallway.", 'hi': "लिफ्ट सी से दूसरी मंजिल पर जाएं। लैब, रक्त संग्रह के लिए कमरा 210, मुख्य गलियारे के नीचे है।", 'kn': "ಲಿಫ್ಟ್ C ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ. ರಕ್ತ ಸಂಗ್ರಹಕ್ಕಾಗಿ ಲ್ಯಾಬ್, ಕೊಠಡಿ 210, ಮುಖ್ಯ ಹಜಾರದ ಕೆಳಗೆ ಇದೆ。", 'ta': "லிப்ட் C ஐப் பயன்படுத்தி இரண்டாவது மாடிக்குச் செல்லவும். இரத்தப் பரிசோதனைக்கான ஆய்வகம், அறை 210, பிரதான கூடத்தின் கீழே உள்ளது。", 'te': "లిఫ్ట్ C ద్వారా రెండవ అంతస్తుకు వెళ్లండి. బ్లడ్ కలెక్షన్ కోసం ల్యాబ్, గది 210, ప్రధాన హాలులో ఉంది।"},
-    'Cardiology Cabin': {'en': "Go to the reception, take Lift B to the Second Floor, and the Cardiology Cabin, number 205, is nearby.", 'hi': "रिसेप्शन पर जाएं, लिफ्ट बी से दूसरी मंजिल पर जाएं, और कार्डियोलॉजी कक्ष, संख्या 205, पास ही है।", 'kn': "ಸ್ವಾಗತಕ್ಕೆ ಹೋಗಿ, ಲಿಫ್ಟ್ B ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಹೃದಯ ವಿಜ್ಞಾನದ ಕ್ಯಾಬಿನ್, ಸಂಖ್ಯೆ 205, ಹತ್ತಿರದಲ್ಲಿದೆ。", 'ta': "வரவேற்புக்குச் சென்று, லிப்ட் B மூலம் இரண்டாவது மாடிக்குச் செல்லவும், இருதயவியல் அறை, எண் 205, அருகிலேயே உள்ளது。", 'te': "రిసెప్షన్‌కు వెళ్లి, లిఫ్ట్ B ద్వారా రెండవ అంతస్తుకు వెళ్లండి, కార్డియాలజీ క్యాబిన్, నంబర్ 205, దగ్గరగా ఉంది।"},
-    'Orthopedics Cabin': {'en': "From the entrance, take Lift A to the First Floor, and the Orthopedics Cabin, number 112, is in the main wing.", 'hi': "प्रवेश द्वार से, लिफ्ट ए से पहली मंजिल पर जाएं, और अस्थि रोग कक्ष, संख्या 112, मुख्य विंग में है।", 'kn': "ಪ್ರವೇಶದಿಂದ, ಲಿಫ್ಟ್ A ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಮತ್ತು ಅಸ್ಥಿ ರೋಗ कक्ष, ಸಂಖ್ಯೆ 112, ಮುಖ್ಯ ವಿಭಾಗದಲ್ಲಿದೆ。", 'ta': "நுழைவாயிலில் இருந்து, லிப்ட் A மூலம் முதல் மாடிக்குச் செல்லவும், எலும்பியல் அறை, எண் 112, பிரதான பிரிவில் உள்ளது。", 'te': "ప్రవేశం నుండి, లిఫ్ట్ A ద్వారా మొదటి అంతస్తుకు వెళ్లండి, ఆర్థోపెడిక్స్ క్యాబిన్, నంబర్ 112, ప్రధాన విభాగంలో ఉంది।"}
+
+Emergency: {
+en: "From the entrance, go straight, then turn left, go straight again and you will reach the Emergency Room on the ground floor.",
+hi: "प्रवेश द्वार से सीधे जाएं, फिर बाएँ मुड़ें और सीधे जाएँ, आप भूतल के आपातकाल कक्ष तक पहुँच जाएंगे।",
+kn: "ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ, ನಂತರ ಎಡಕ್ಕೆ ತಿರುಗಿ, ಮತ್ತೆ ನೆಟ್ಟಗೆ ಹೋದರೆ ನೆಲ ಮಹಡಿಯ ತುರ್ತು ಕೊಠಡಿಗೆ ತಲುಪುತ್ತೀರಿ.",
+ta: "நுழைவாயிலில் இருந்து நேராக சென்று, இடப்பக்கம் திரும்பி மீண்டும் நேராக சென்றால் தரை தள அவசர அறையை அடைவீர்கள்.",
+te: "ప్రవేశం నుంచి నేరుగా వెళ్లి, ఎడమ వైపు తిరిగి, మళ్లీ నేరుగా వెళితే గ్రౌండ్ ఫ్లోర్ ఎమర్జెన్సీ గదికి చేరుకుంటారు."
+},
+
+OPD: {
+en: "From the entrance, go straight, then turn right, go straight, take the lift to the first floor, turn right and you will reach the OPD hall.",
+hi: "प्रवेश से सीधे जाएं, दाएं मुड़ें, सीधे जाएं, लिफ्ट से पहली मंजिल पर जाएं, दाएं मुड़ें और ओपीडी हॉल पहुँच जाएं।",
+kn: "ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ, ಬಲಕ್ಕೆ ತಿರುಗಿ, ಲಿಫ್ಟ್ ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಬಲಕ್ಕೆ ತಿರುಗಿ ಒಪಿಡಿ ಹಾಲ್ ತಲುಪುತ್ತೀರಿ.",
+ta: "நுழைவாயிலில் இருந்து நேராக சென்று, வலப்பக்கம் திரும்பி, லிப்ட் எடுத்து முதல் மாடிக்குச் சென்று வலப்பக்கம் திரும்பினால் OPD ஹாலுக்கு செல்வீர்கள்.",
+te: "ప్రవేశం నుంచి నేరుగా వెళ్లి, కుడివైపు తిరిగి, లిఫ్ట్ తీసుకుని 1వ అంతస్తుకు వెళ్లి కుడివైపు తిరిగితే OPD హాల్‌కు చేరుతారు."
+},
+
+Pharmacy: {
+en: "From the entrance go straight, turn left, go straight and you will find the Pharmacy Counter on the ground floor.",
+hi: "प्रवेश से सीधे जाएं, बाएँ मुड़ें, सीधे जाएं और भूतल पर फार्मेसी काउंटर मिलेगा।",
+kn: "ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ, ಎಡಕ್ಕೆ ತಿರುಗಿ, ನೆಟ್ಟಗೆ ಹೋದರೆ ಫಾರ್ಮಸಿ ಕೌಂಟರ್ ಸಿಗುತ್ತದೆ.",
+ta: "நுழைவாயிலில் இருந்து நேராக சென்று, இடப்பக்கம் திரும்பி நேராக சென்றால் மருந்தகம் கிடைக்கும்.",
+te: "ప్రవేశం నుంచి నేరుగా వెళ్లి, ఎడమ వైపు తిరిగి, నేరుగా వెళితే ఫార్మసీ కౌంటర్ కనిపిస్తుంది."
+},
+
+Lab: {
+en: "From the entrance go straight, take the lift to the second floor, turn left, go straight and you will reach Lab Room 210.",
+hi: "प्रवेश से सीधे जाएं, लिफ्ट लेकर दूसरी मंजिल पर जाएं, बाएँ मुड़ें, सीधे जाएं और लैब कक्ष 210 पहुँचें।",
+kn: "ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ, ಲಿಫ್ಟ್ ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ, ಎಡಕ್ಕೆ ತಿರುಗಿ ನೆಟ್ಟಗೆ ಹೋದರೆ ಲ್ಯಾಬ್ ರೂಮ್ 210 ತಲುಪುತ್ತೀರಿ.",
+ta: "நுழைவாயிலில் இருந்து நேராக சென்று, லிப்ட் எடுத்து இரண்டாவது மாடிக்குச் சென்று, இடப்பக்கம் திரும்பி நேராக சென்றால் ஆய்வக அறை 210 அடைவீர்கள்.",
+te: "ప్రవేశం నుంచి నేరుగా వెళ్లి, లిఫ్ట్‌తో 2వ అంతస్తుకు వెళ్లి, ఎడమ వైపు తిరిగి నేరుగా వెళితే ల్యాబ్ 210 చేరుతారు."
+},
+
+"Cardiology Cabin": {
+en: "From the entrance go straight, take the lift to the second floor, turn right, go straight and you will reach Room 205 Cardiology.",
+hi: "प्रवेश से सीधे जाएं, दूसरी मंजिल पर लिफ्ट लें, दाएं मुड़ें और सीधे जाएं, कक्ष 205 कार्डियोलॉजी पहुँचें।",
+kn: "ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ, ಲಿಫ್ಟ್ ಮೂಲಕ ಎರಡನೇ ಮಹಡಿಗೆ ಹೋಗಿ, ಬಲಕ್ಕೆ ತಿರುಗಿ ನೆಟ್ಟಗೆ ಹೋದರೆ ಕೊಠಡಿ 205 ತಲುಪುತ್ತೀರಿ.",
+ta: "நுழைவாயிலில் இருந்து நேராக சென்று, லிப்ட் எடுத்து இரண்டாவது மாடிக்குச் சென்று, வலப்பக்கம் திரும்பி நேராக சென்றால் அறை 205 அடைவீர்கள்.",
+te: "ప్రవేశం నుంచి నేరుగా వెళ్లి, లిఫ్ట్‌తో 2వ అంతస్తుకు వెళ్లి, కుడివైపు తిరిగి నేరుగా వెళితే గది 205 చేరుతారు."
+},
+
+"Orthopedics Cabin": {
+en: "From the entrance go straight, take the lift to the first floor, turn left, go straight and you will reach Room 112 Orthopedics.",
+hi: "प्रवेश से सीधे जाएं, पहली मंजिल पर लिफ्ट लें, बाएं मुड़ें और सीधे जाएं, कक्ष 112 ऑर्थोपेडिक्स पहुँचें।",
+kn: "ಪ್ರವೇಶದಿಂದ ನೆಟ್ಟಗೆ ಹೋಗಿ, ಲಿಫ್ಟ್ ಮೂಲಕ ಮೊದಲ ಮಹಡಿಗೆ ಹೋಗಿ, ಎಡಕ್ಕೆ ತಿರುಗಿ ನೆಟ್ಟಗೆ ಹೋದರೆ ಕೊಠಡಿ 112 ತಲುಪುತ್ತೀರಿ.",
+ta: "நுழைவாயிலில் இருந்து நேராக சென்று, லிப்ட் எடுத்து முதல் மாடிக்குச் சென்று, இடப்பக்கம் திரும்பி நேராக சென்றால் அறை 112 அடைவீர்கள்.",
+te: "ప్రవేశం నుంచి నేరుగా వెళ్లి, లిఫ్ట్‌తో 1వ అంతస్తుకు వెళ్లి, ఎడమ వైపు తిరిగి నేరుగా వెళితే గది 112 చేరుతారు."
+}
+
 };
 
 // 5. Patient Login/Report Display Function (Fixed Logic)
